@@ -1,0 +1,75 @@
+﻿@model Lg.EducationPlatform.ViewModel.LoginUser
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>长沙理工大学综合管理系统——登录</title>
+    <link rel="stylesheet" href="/Content/css/style.default.css" type="text/css" />
+    <!--[if IE 9]>
+        <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
+    <![endif]-->
+    <!--[if IE 8]>
+        <link rel="stylesheet" media="screen" href="css/style.ie8.css"/>
+    <![endif]-->
+    <!--[if lt IE 9]>
+        <script src="js/plugins/css3-mediaqueries.js"></script>
+    <![endif]-->
+
+</head>
+<body class="loginpage">
+    <div class="loginbox">
+        <div class="loginboxinner">
+
+            <div class="logo">
+                <h1 class="logo"><span>长沙理工大学</span></h1>
+                <span class="slogan">综合管理系统</span>
+            </div><!--logo-->
+
+            <br clear="all" />
+
+            <form id="login" action="" method="post">
+
+                <div class="username">
+                    <div class="usernameinner">
+                        @Html.EditorFor(u => u.UserName)
+                        <div class="hide">
+                            @Html.ValidationMessageFor(u => u.UserName)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="password">
+                    <div class="passwordinner">
+                        @Html.PasswordFor(p => p.PassWord)
+                        <div class="hide">
+                            @Html.ValidationMessageFor(u => u.PassWord)
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit">登录</button>
+
+                <div class="keep"><input type="checkbox" /> 记住密码</div>
+
+            </form>
+
+        </div><!--loginboxinner-->
+    </div><!--loginbox-->
+
+    <script type="text/javascript" src="/Content/js/plugins/jquery-1.7.min.js"></script>
+    <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/Content/js/plugins/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/Content/js/plugins/jquery.base64.js"></script>
+    <script type="text/javascript" src="/Content/js/plugins/jquery.uniform.min.js"></script>
+    <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/Content/js/plugins/jquery.validate.unobtrusive.js"></script>
+    <script type="text/javascript" src="/Content/js/custom/index.js"></script>
+    <script type="text/javascript" src="/Content/layer/layer.js"></script>
+</body>
+</html>

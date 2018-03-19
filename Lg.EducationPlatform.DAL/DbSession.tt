@@ -1,0 +1,64 @@
+﻿<#@ template language="C#" debug="false" hostspecific="true"#>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ output extension=".cs"#>
+<#
+CodeGenerationTools code = new CodeGenerationTools(this);
+MetadataLoader loader = new MetadataLoader(this);
+CodeRegion region = new CodeRegion(this, 1);
+MetadataTools ef = new MetadataTools(this);
+string inputFile = @"..\Lg.EducationPlatform.Model\EduDbModel.edmx";
+EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(inputFile);
+string namespaceName = code.VsNamespaceSuggestion();
+EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Lg.EducationPlatform.IDAL;
+
+namespace Lg.EducationPlatform.DAL
+{
+    /// <summary>
+    /// DbSession：本质就是一个简单工厂+一个SaveChange方法，从抽象意义来说，它就是整个数据库访问层的统一入口
+    /// 因为拿到了DbSession就能拿到整个数据库访问层所有的Dal。之前是：		
+	/// public IUserInfoDal UserInfoDal
+    ///    {
+    ///        get { return new UserInfoDal(); }
+    ///    }
+	/// 现在是:私有的字段，公共属性。get中先判断有没有当前对象
+	/// 因为当new一个对象时，是先初始化其字段值，再执行构造函数？
+	/// 最后将Dal以接口的形式返回
+    /// </summary>
+	public partial class DbSession : IDbSession
+    {
+<#
+int version=0;
+// Emit Entity Types
+foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+{
+    //fileManager.StartNewFile(entity.Name + "RepositoryExt.cs");
+    //BeginNamespace(namespaceName, code);
+    version++;
+#>
+		#region <#=version.ToString("00") #> 数据接口 <#=entity.Name#>DAL
+		private I<#=entity.Name#>DAL _<#=entity.Name#>DAL;
+		public I<#=entity.Name#>DAL <#=entity.Name#>DAL
+		{
+			get
+			{
+				if(_<#=entity.Name#>DAL == null)
+					_<#=entity.Name#>DAL = new <#=entity.Name#>DAL();
+				return _<#=entity.Name#>DAL;
+			}
+			set
+			{
+				_<#=entity.Name#>DAL = value;
+			}
+		}
+		#endregion
+
+<#}#>
+    }
+
+}
