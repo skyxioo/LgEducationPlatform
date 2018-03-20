@@ -421,6 +421,9 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 .headermenu li a span.icon-speech { background: url(../images/icons/speech.white.png) no-repeat center center; }
 .headermenu li a span.icon-message { background: url(../images/icons/message.white.png) no-repeat center center; }
 .headermenu li a span.icon-chart { background: url(../images/icons/chart.white.png) no-repeat center center; }
+    .headermenu li a span.icon-users {
+        background: url(../images/icons/users.white.png) no-repeat center center;
+    }
 .headermenu li a:hover { 
 	background: url(../images/default/bghover.png) no-repeat center bottom; -moz-box-shadow: inset 0 1px 0 #4f627e; 
 	-webkit-box-shadow: inset 0 1px 0 #4f627e; box-shadow: inset 0 1px 0 #4f627e;

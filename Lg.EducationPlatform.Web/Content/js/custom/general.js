@@ -157,49 +157,6 @@ jQuery(document).ready(function(){
 	});
 	
 	
-	///// SEARCH BOX WITH AUTOCOMPLETE /////
-	
-	var availableTags = [
-			"ActionScript",
-			"AppleScript",
-			"Asp",
-			"BASIC",
-			"C",
-			"C++",
-			"Clojure",
-			"COBOL",
-			"ColdFusion",
-			"Erlang",
-			"Fortran",
-			"Groovy",
-			"Haskell",
-			"Java",
-			"JavaScript",
-			"Lisp",
-			"Perl",
-			"PHP",
-			"Python",
-			"Ruby",
-			"Scala",
-			"Scheme"
-		];
-	jQuery('#keyword').autocomplete({
-		source: availableTags
-	});
-	
-	
-	///// SEARCH BOX ON FOCUS /////
-	
-	jQuery('#keyword').bind('focusin focusout', function(e){
-		var t = jQuery(this);
-		if(e.type == 'focusin' && t.val() == 'Enter keyword(s)') {
-			t.val('');
-		} else if(e.type == 'focusout' && t.val() == '') {
-			t.val('Enter keyword(s)');	
-		}
-	});
-	
-	
 	///// NOTIFICATION CLOSE BUTTON /////
 	
 	jQuery('.notibar .close').click(function(){

@@ -76,5 +76,23 @@ namespace Lg.EducationPlatform.Web.Controllers
                 });
             }
         }
+
+        /// <summary>
+        /// 退出登录：删除session,跳转到登录页
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Logout()
+        {
+            ////删除Session
+            //if (Session["loginuser"] != null)
+            //    Session.Remove("loginuser");
+
+            HttpCookie cookie = new HttpCookie("LgEduTicket");
+            cookie.Expires = new DateTime(1990 - 11 - 23);
+            this.Response.Cookies.Add(cookie);
+
+            //跳转到登录页
+            return Redirect("Login");
+        }
     }
 }

@@ -4,8 +4,9 @@
 
 @section headScript{
     <script type="text/javascript">
-        $(function () {
-            $('#home').addClass('current');
+        jQuery.noConflict();
+        jQuery(function () {
+            jQuery('#home').addClass('current');
         });
     </script>
 }
