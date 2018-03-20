@@ -1,1 +1,15 @@
-﻿
+﻿@{
+    ViewBag.Title = "长沙理工大学综合管理系统|学生管理";
+}
+
+@section headScript{
+    <script type="text/javascript">
+        var $j = jQuery.noConflict();
+        $j(function () {
+            $j('#student,#stu_info').addClass('current');
+            $j('body').addClass('withvernav');
+        });
+    </script>
+}
+
+@{ Html.RenderPartial("~/Views/Shared/_StudentMenu.cshtml"); }
