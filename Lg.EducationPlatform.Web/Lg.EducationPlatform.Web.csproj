@@ -102,6 +102,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\plugins\bootstrap.css" />
     <Content Include="Content\css\plugins\colorbox.css" />
     <Content Include="Content\css\plugins\colorpicker.css" />
     <Content Include="Content\css\plugins\fullcalendar.css" />
@@ -409,6 +410,7 @@
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
     <Content Include="Views\Shared\_StudentMenu.cshtml" />
+    <Content Include="Views\Student\Add.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

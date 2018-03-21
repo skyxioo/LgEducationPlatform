@@ -13,3 +13,51 @@
 }
 
 @{ Html.RenderPartial("~/Views/Shared/_StudentMenu.cshtml"); }
+
+    <div class="centercontent">
+        <ul class="breadcrumbs">
+            <li>首页</li>
+            <li><a href="">学生管理</a></li>
+            <li>添加学生</li>
+        </ul>
+        <form id="form1" class="stdform" method="post" action="">
+            <p>
+                <label>First Name</label>
+                <span class="field"><input type="text" name="firstname" id="firstname" class="longinput" /></span>
+            </p>
+
+            <p>
+                <label>Last Name</label>
+                <span class="field"><input type="text" name="lastname" id="lastname" class="longinput" /></span>
+            </p>
+
+            <p>
+                <label>Email</label>
+                <span class="field"><input type="text" name="email" id="email" class="longinput" /></span>
+            </p>
+
+            <p>
+                <label>Location</label>
+                <span class="field"><textarea cols="80" rows="5" name="location" class="mediuminput" id="location"></textarea></span>
+            </p>
+
+            <p>
+                <label>Select</label>
+                <span class="field">
+                    <select name="selection" id="selection">
+                        <option value="">Choose One</option>
+                        <option value="1">Selection One</option>
+                        <option value="2">Selection Two</option>
+                        <option value="3">Selection Three</option>
+                        <option value="4">Selection Four</option>
+                    </select>
+                </span>
+            </p>
+
+            <br />
+
+            <p class="stdformbutton">
+                <button class="submit radius2">Submit Button</button>
+            </p>
+        </form>
+    </div>

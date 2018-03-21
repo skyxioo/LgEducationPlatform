@@ -13,5 +13,10 @@ namespace Lg.EducationPlatform.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult Add()
+        {
+            return View();
+        }
     }
 }

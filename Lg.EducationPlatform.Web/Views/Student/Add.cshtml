@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "长沙理工大学综合管理系统|学生管理|添加";
+}
+
+@section headScript{
+    <style type="text/css">
+        .recentshots li {
+            width: 48%;
+            text-align:left;
+        }
+    </style>
+    <script type="text/javascript">
+        var $j = jQuery.noConflict();
+        $j(function () {
+            $j('#student,#stu_add').addClass('current');
+            $j('body').addClass('withvernav');
+        });
+    </script>
+}
+
+@{ Html.RenderPartial("~/Views/Shared/_StudentMenu.cshtml"); }
+
+    <div class="centercontent">
+        <ul class="breadcrumbs">
+            <li><a>首页</a></li>
+            <li><a href="">学生管理</a></li>
+            <li>添加学生</li>
+        </ul>
+        <div class="contentwrapper">
+            <div class="contenttitle2">
+                <h3>基本信息</h3>
+            </div>
+            @*<form id="form1" class="stdform" method="post" action="">
+            <ul class="recentshots" style="width:100%;">
+                <li>
+                    <p>
+                        <label>民族</label>
+                        <span class="field"><input type="text" name="firstname" id="firstname" class="longinput" /></span>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <label>手机</label>
+                        <span class="field"><input type="text" name="email" id="email" class="longinput" /></span>
+                    </p>
+                </li>
+            </ul>
+        </form>*@
+
+            <form id="form1" class="stdform" method="post" action="">
+                <p>
+                    <label>姓名</label>
+                    <span class="field">
+                        <input type="text" name="firstname" id="firstname" class="smallinput" />
+                    </span>
+                </p>
+                <p>
+                    <label>性别</label>
+                    <span class="formwrapper">
+                        <div class="radio" id="uniform-undefined">
+                            <span><input name="radiofield" style="opacity: 0;" type="radio"></span></div> 男 &nbsp; &nbsp;
+                        <div class="radio" id="uniform-undefined">
+                            <span><input name="radiofield" checked="checked" style="opacity: 0;" type="radio"></span></div> 女 
+                    </span>
+                </p>
+                <p>
+                    <label>民族</label>
+                    <span class="field"><input type="text" name="firstname" id="firstname" class="smallinput" /></span>
+                </p>
+                <p>
+                    <label>手机</label>
+                    <span class="field"><input type="text" name="email" id="email" class="smallinput" /></span>
+                </p>
+                <p>
+                    <label>届别</label>
+                    <span class="field"><input type="text" name="email" id="email" class="longinput" /></span>
+                </p>
+
+                <p>
+                    <label>政治面貌</label>
+                    <span class="field"><textarea cols="80" rows="5" name="location" class="mediuminput" id="location"></textarea></span>
+                </p>
+                <p>
+                    <label>通讯地址</label>
+                    <span class="field"><textarea cols="80" rows="5" name="location" class="mediuminput" id="location"></textarea></span>
+                </p>
+
+                <p>
+                    <label>文化层次</label>
+                    <span class="field"><input type="text" name="email" id="email" class="longinput" /></span>
+                </p>
+
+                <p>
+                    <label>报考层次</label>
+                    <span class="field"><textarea cols="80" rows="5" name="location" class="mediuminput" id="location"></textarea></span>
+                </p>
+
+                <p>
+                    <label>专业</label>
+                    <span class="field"><input type="text" name="lastname" id="lastname" class="longinput" /></span>
+                </p>
+                <p>
+                    <label>免试条件</label>
+                    <span class="field"><textarea cols="80" rows="5" name="location" class="mediuminput" id="location"></textarea></span>
+                </p>
+                <p>
+                    <label>备注</label>
+                    <span class="field">
+                        <select name="selection" id="selection">
+                            <option value="">Choose One</option>
+                            <option value="1">Selection One</option>
+                            <option value="2">Selection Two</option>
+                            <option value="3">Selection Three</option>
+                            <option value="4">Selection Four</option>
+                        </select>
+                    </span>
+                </p>
+
+                <br />
+
+                <p class="stdformbutton">
+                    <button class="submit radius2">Submit Button</button>
+                </p>
+            </form>
+        </div>
+    </div>
