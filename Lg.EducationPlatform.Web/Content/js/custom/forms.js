@@ -47,44 +47,21 @@ jQuery(document).ready(function(){
 	///// FORM VALIDATION /////
 	jQuery("#form1").validate({
 		rules: {
-			firstname: "required",
-			lastname: "required",
-			email: {
+            SurName: "required",
+            Nationality: "required",
+            Phone: {
 				required: true,
-				email: true,
+				phone: true,
 			},
-			location: "required",
+            Period: "required",
 			selection: "required"
 		},
 		messages: {
-			firstname: "Please enter your first name",
-			lastname: "Please enter your last name",
-			email: "Please enter a valid email address",
-			location: "Please enter your location"
+            SurName: "学生姓名不能为空",
+            Nationality: "请输入民族",
+            Phone: "请输入一个正确的手机号码",
+            Period: "请输入届别"
 		}
 	});
-	
-	
-	///// TAG INPUT /////
-	
-	jQuery('#tags').tagsInput();
-
-	
-	///// SPINNER /////
-	
-	jQuery("#spinner").spinner({min: 0, max: 100, increment: 2});
-	
-	
-	///// CHARACTER COUNTER /////
-	
-	jQuery("#textarea2").charCount({
-		allowed: 120,		
-		warning: 20,
-		counterText: 'Characters left: '	
-	});
-	
-	
-	///// SELECT WITH SEARCH /////
-	jQuery(".chzn-select").chosen();
 	
 });

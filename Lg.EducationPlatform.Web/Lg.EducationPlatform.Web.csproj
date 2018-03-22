@@ -290,6 +290,7 @@
     <Content Include="Content\js\custom\forms.js" />
     <Content Include="Content\js\custom\general.js" />
     <Content Include="Content\js\custom\index.js" />
+    <Content Include="Content\js\plugins\jquery-ui.min.js" />
     <Content Include="Content\js\custom\messages.js" />
     <Content Include="Content\js\custom\newsfeed.js" />
     <Content Include="Content\js\custom\productlist.js" />
