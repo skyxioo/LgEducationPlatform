@@ -283,6 +283,7 @@
     <Content Include="Content\images\uniform\sprite.png" />
     <Content Include="Content\js\custom\blog.js" />
     <Content Include="Content\js\custom\calendar.js" />
+    <Content Include="Content\js\custom\calendar.zh-cn.js" />
     <Content Include="Content\js\custom\charts.js" />
     <Content Include="Content\js\custom\dashboard.js" />
     <Content Include="Content\js\custom\editor.js" />

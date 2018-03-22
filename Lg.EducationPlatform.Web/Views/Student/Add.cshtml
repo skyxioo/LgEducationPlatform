@@ -5,6 +5,7 @@
 @section headScript{
     <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/custom/calendar.zh-cn.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
@@ -12,8 +13,10 @@
 
             jQuery('#student,#stu_add').addClass('current');
             jQuery('body').addClass('withvernav');
-            jQuery('#datepicker').datepicker({
-                dateFormat: 'yyyy-mm-dd'
+            jQuery('#Birthday').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true
             });
 
             jQuery("#form1").validate({
@@ -21,6 +24,9 @@
                     SurName: {
                         required: true,
                         maxlength: 5
+                    },
+                    Birthday: {
+                        required: true
                     },
                     Nationality: {
                         required: true,
@@ -38,6 +44,9 @@
                     SurName: {
                         required: "学生姓名不能为空",
                         maxlength: "您输入的姓名太长"
+                    },
+                    Birthday: {
+                        required: "生日不能为空"
                     },
                     Nationality: {
                         required: "请输入民族",
@@ -92,7 +101,7 @@
             <p>
                 <label>生日</label>
                 <span class="field">
-                    <input id="datepicker" class="width100 hasDatepicker" type="text">
+                    @Html.TextBox("Birthday", string.Empty, new { @class = "width100" })
                 </span>
             </p>
             <p>
