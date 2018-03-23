@@ -6,6 +6,7 @@
     <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript" src="~/Content/js/custom/calendar.zh-cn.js"></script>
+    <script type="text/javascript" src="~/Content/layer/layer.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
@@ -19,7 +20,7 @@
                 changeYear: true
             });
 
-            jQuery("#form1").validate({
+            jQuery("#addstudentform").validate({
                 rules: {
                     SurName: {
                         required: true,
@@ -38,7 +39,15 @@
                         maxlength: 11,
                         isPhoneNum: true
                     },
-                    Period: "required"
+                    Period: "required",
+                    Address: {
+                        required: true,
+                        maxlength: 100
+                    },
+                    MajorName: {
+                        required: true,
+                        maxlength: 20
+                    }
                 },
                 messages: {
                     SurName: {
@@ -58,7 +67,30 @@
                         minlength: "请填写11位的手机号",
                         isPhoneNum: "请填写正确的手机号码"
                     },
-                    Period: "请输入届别"
+                    Period: "请输入届别",
+                    Address: {
+                        required: "地址不能为空",
+                        maxlength: "您输入的地址太长了"
+                    },
+                    MajorName: {
+                        required: "专业名称不能为空",
+                        maxlength: "专业名称太长了"
+                    }
+                },
+                submitHandler: function (form) {
+                    jQuery.post("/Student/Add", jQuery(form).serialize(), function (data) {
+                        if (data.Status == "1") {
+                            layer.confirm(data.Message, {
+                                btn: ['学生信息', '继续添加']
+                            }, function () {
+                                window.location.href = "/Student/Index";
+                            }, function () {
+                                window.location.href = '/Student/Add';
+                            });
+                        } else {
+                            layer.alert(data.Message);
+                        }
+                    });
                 }
             });
         });
@@ -81,7 +113,7 @@
         <li>添加学生</li>
     </ul>
     <div class="contentwrapper">
-        <form id="form1" class="stdform" method="post" action="">
+        <form id="addstudentform" class="stdform" method="post" action="">
             <div class="contenttitle2">
                 <h3>基本信息</h3>
             </div>

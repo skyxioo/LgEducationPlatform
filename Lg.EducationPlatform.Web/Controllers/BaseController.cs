@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Lg.EducationPlatform.Model;
+using Newtonsoft.Json;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {
@@ -28,8 +30,10 @@ namespace Lg.EducationPlatform.Web.Controllers
                 name = ticket.Name;
                 if (!string.IsNullOrEmpty(name))
                 {
+                    UserDto user = JsonConvert.DeserializeObject<UserDto>(ticket.UserData);
                     ViewBag.AdminUser = name;
-                    ViewBag.RoleId = ticket.UserData;
+                    ViewBag.User = user;
+                    ViewBag.RoleId = user.RoleId;
                     return;
                 }
                 else

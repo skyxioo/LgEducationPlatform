@@ -16,14 +16,14 @@ namespace Lg.EducationPlatform.Model
     {
         public long Id { get; set; }
         public string SurName { get; set; }
-        public bool Sex { get; set; }
+        public byte Sex { get; set; }
         public string Period { get; set; }
-        public bool ExaminationLevel { get; set; }
+        public byte ExaminationLevel { get; set; }
         public string MajorName { get; set; }
         public string Nationality { get; set; }
         public string Birthday { get; set; }
         public string PoliticalStatus { get; set; }
-        public bool EducationalLevel { get; set; }
+        public byte EducationalLevel { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
         public string TestFreeCondition { get; set; }

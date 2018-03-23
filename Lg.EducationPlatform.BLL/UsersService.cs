@@ -18,6 +18,7 @@ namespace Lg.EducationPlatform.BLL
             var users = CurrentDAL.GetDataListBy(whereExp);
             var user = (from p in users
                        select new UserDto {
+                           UserId = p.Id,
                            UserName = p.UserName,
                            PassWord = p.HashPassword,
                            RoleId = p.RoleId

@@ -9,6 +9,7 @@ using Lg.EducationPlatform.IBLL;
 using Lg.EducationPlatform.WebHelper;
 using Lg.EducationPlatform.Model;
 using System.Web.Security;
+using Newtonsoft.Json;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {    
@@ -38,13 +39,14 @@ namespace Lg.EducationPlatform.Web.Controllers
                     ////写Session //跳转到首页 
                     //Session.Add("loginuser", userModel);
 
+                    userDto.PassWord = string.Empty;
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
                         2,
                         userModel.UserName,
                         DateTime.Now,
                         DateTime.Now.AddHours(2),
                         true,
-                        userDto.RoleId.ToString()
+                        JsonConvert.SerializeObject(userDto)
                         );
                     HttpCookie cookie = new HttpCookie("LgEduTicket");
                     string ticketString = FormsAuthentication.Encrypt(ticket);

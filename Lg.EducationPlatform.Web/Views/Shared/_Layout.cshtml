@@ -50,11 +50,11 @@
                 </div>-->
                 <div class="userinfo">
                     <img src="/Content/images/thumbs/avatar.png" alt="" />
-                    @if (ViewBag.RoleId == "0")
+                    @if (ViewBag.RoleId == 0)
                     {
                         <span>@ViewBag.AdminUser，管理员</span>
                     }
-                    else if (ViewBag.RoleId == "1")
+                    else if (ViewBag.RoleId == 1)
                     {
                         <span>@ViewBag.AdminUser，教师</span>
                     }

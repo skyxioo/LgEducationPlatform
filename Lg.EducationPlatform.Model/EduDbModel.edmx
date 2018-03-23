@@ -11,14 +11,14 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SurName" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Sex" Type="bit" Nullable="false" />
+          <Property Name="Sex" Type="tinyint" Nullable="false" />
           <Property Name="Period" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="ExaminationLevel" Type="bit" Nullable="false" />
+          <Property Name="ExaminationLevel" Type="tinyint" Nullable="false" />
           <Property Name="MajorName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Nationality" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="Birthday" Type="varchar" MaxLength="10" />
           <Property Name="PoliticalStatus" Type="nvarchar" MaxLength="20" />
-          <Property Name="EducationalLevel" Type="bit" Nullable="false" />
+          <Property Name="EducationalLevel" Type="tinyint" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
           <Property Name="Phone" Type="char" MaxLength="11" Nullable="false" />
           <Property Name="TestFreeCondition" Type="nvarchar" MaxLength="100" />
@@ -116,14 +116,14 @@
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SurName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Sex" Type="Boolean" Nullable="false" />
+          <Property Name="Sex" Type="Byte" Nullable="false" />
           <Property Name="Period" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ExaminationLevel" Type="Boolean" Nullable="false" />
+          <Property Name="ExaminationLevel" Type="Byte" Nullable="false" />
           <Property Name="MajorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Nationality" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Birthday" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="PoliticalStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="EducationalLevel" Type="Boolean" Nullable="false" />
+          <Property Name="EducationalLevel" Type="Byte" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="TestFreeCondition" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
