@@ -1,6 +1,8 @@
 ﻿using Lg.EducationPlatform.Common;
+using Lg.EducationPlatform.Enum;
 using Lg.EducationPlatform.IBLL;
 using Lg.EducationPlatform.Model;
+using Lg.EducationPlatform.Model.FormatModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,20 @@ namespace Lg.EducationPlatform.BLL
                            RoleId = p.RoleId
                        }).FirstOrDefault();
             return user;
+        }
+
+        public List<ItemModel> GetTeacherItems()
+        {
+            var whereExp = PredicateBuilder.True<Users>();
+            whereExp.And(p => p.IsActive && !p.IsDeleted && p.RoleId == (int)UserRole.教师);
+            var users = CurrentDAL.GetDataListBy(whereExp);
+            var items = (from p in users
+                        select new ItemModel
+                        {
+                            Text = p.RealName,
+                            Value = p.Id.ToString()
+                        }).ToList();
+            return items;
         }
     }
 }

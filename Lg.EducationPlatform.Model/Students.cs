@@ -37,6 +37,7 @@ namespace Lg.EducationPlatform.Model
         public System.DateTime CreationTime { get; set; }
         public Nullable<long> LastModifierUserId { get; set; }
         public Nullable<System.DateTime> LastModificationTime { get; set; }
+        public bool Status { get; set; }
     
         public virtual Users Users { get; set; }
         public virtual Users Users1 { get; set; }

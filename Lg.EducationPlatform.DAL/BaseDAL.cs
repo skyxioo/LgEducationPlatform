@@ -212,7 +212,7 @@ namespace Lg.EducationPlatform.DAL
                 return dbContext.Set<T>()
                                 .Where<T>(whereLambda)
                                 .OrderBy<T, TKey>(orderLambda)
-                                .Skip((pageIndex - 1) * pageSize)
+                                .Skip(pageIndex * pageSize)
                                 .Take(pageSize);
             }
             else
@@ -220,7 +220,7 @@ namespace Lg.EducationPlatform.DAL
                 return dbContext.Set<T>()
                                .Where<T>(whereLambda)
                                .OrderByDescending<T, TKey>(orderLambda)
-                               .Skip((pageIndex - 1) * pageSize)
+                               .Skip(pageIndex * pageSize)
                                .Take(pageSize);
             }
         }

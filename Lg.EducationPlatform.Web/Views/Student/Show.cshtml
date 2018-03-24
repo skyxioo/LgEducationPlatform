@@ -1,0 +1,152 @@
+﻿@model Lg.EducationPlatform.ViewModel.StudentViewModel
+@{
+    ViewBag.Title = "长沙理工大学综合管理系统|学生管理|查看";
+}
+
+@section headLink{
+    <style type="text/css">
+        p label {
+            float: left;
+            width: 200px;
+            text-align: right;
+            padding: 0px 20px 0 0;
+        }
+        .field {
+            padding-left: 20px;
+        }
+    </style>
+}
+
+@section headScript{
+    <script type="text/javascript" src="~/Content/layer/layer.js"></script>
+    <script type="text/javascript">
+        jQuery.noConflict();
+        jQuery(function () {
+            jQuery('#student,#stu_info').addClass('current');
+            jQuery('body').addClass('withvernav');
+        });
+    </script>
+}
+
+@{ Html.RenderPartial("~/Views/Shared/_StudentMenu.cshtml"); }
+
+<div class="centercontent">
+    <ul class="breadcrumbs">
+        <li><a>首页</a></li>
+        <li><a href="">学生管理</a></li>
+        <li>查看详情</li>
+    </ul>
+    <div class="contentwrapper">
+        <div class="contenttitle2">
+            <h3>基本信息</h3>
+        </div>
+        <p>
+            <label>姓名：</label>
+            <span class="field">
+                @Model.SurName
+            </span>
+        </p>
+        <p>
+            <label>性别：</label>
+            <span class="field">
+                @Model.Sex
+            </span>
+        </p>
+        <p>
+            <label>生日：</label>
+            <span class="field">
+                @Model.Birthday
+            </span>
+        </p>
+        <p>
+            <label>民族：</label>
+            <span class="field">
+                @Model.Nationality
+            </span>
+        </p>
+        <p>
+            <label>手机：</label>
+            <span class="field">
+                @Model.Phone
+            </span>
+        </p>
+        <p>
+            <label>届别：</label>
+            <span class="field">
+                @Model.Period
+            </span>
+        </p>
+
+        <p>
+            <label>政治面貌：</label>
+            <span class="field">
+                @Model.PoliticalStatus
+            </span>
+        </p>
+        <p>
+            <label>通讯地址：</label>
+            <span class="field">
+                @Model.Address
+            </span>
+        </p>
+        <div class="contenttitle2">
+            <h3>报考信息</h3>
+        </div>
+        <p>
+            <label>文化层次：</label>
+            <span class="field">
+
+            </span>
+        </p>
+
+        <p>
+            <label>报考层次：</label>
+            <span class="field">
+
+            </span>
+        </p>
+
+        <p>
+            <label>专业：</label>
+            <span class="field">
+                @Model.MajorName
+            </span>
+        </p>
+        <p>
+            <label>免试条件：</label>
+            <span class="field">
+                @Model.TestFreeCondition
+            </span>
+        </p>
+        <p>
+            <label>备注：</label>
+            <span class="field">
+                @Model.Remark
+            </span>
+        </p>
+        <div class="contenttitle2">
+            <h3>其他信息</h3>
+        </div>
+        <p>
+            <label>2寸蓝底免冠照</label>
+            <span class="field">
+            </span>
+        </p>
+        <p>
+            <label>身份证正面</label>
+            <span class="field">
+            </span>
+        </p>
+        <p>
+            <label>身份证反面</label>
+            <span class="field">
+            </span>
+        </p>
+        <br />
+
+        <p class="stdformbutton">
+            <label>&nbsp;</label>
+            <button class="stdbtn btn_orange" onclick="javascript: history.go(-1);"><<返回学生管理</button>
+        </p>
+    </div>
+</div>

@@ -70,6 +70,8 @@
     </Compile>
     <Compile Include="FormatModel\ItemModel.cs" />
     <Compile Include="FormatModel\JsonModel.cs" />
+    <Compile Include="jqDataTableModel\jqDataTableModel.cs" />
+    <Compile Include="jqDataTableModel\jqDataTableParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Students.cs">
       <DependentUpon>EduDbModel.tt</DependentUpon>
@@ -78,6 +80,8 @@
       <DependentUpon>EduDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\LoginUser.cs" />
+    <Compile Include="ViewModel\StudentOutput.cs" />
+    <Compile Include="ViewModel\StudentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

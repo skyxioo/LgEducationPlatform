@@ -3,34 +3,38 @@
 }
 
 @section headLink{
+    <link rel="stylesheet" href="~/Content/css/style.datatable.css" type="text/css" />
     <style type="text/css">
-        #student_search{
+        #student_search {
             padding: 0px 30px;
         }
-        #student_search ul li {
-            width: 25%;
+
+        #delstudent {
+            margin-left: 5px;
         }
+
+        #student_search ul li {
+            width: auto;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
         #student_search label {
             display: inline-block;
             width: 100px;
             text-align: right
         }
-        .stu_table{
+
+        .stu_table {
             padding: 0px 30px;
         }
-        .stu_table table th {
-            height: auto;
-            font-size: 14px;
-            padding: 5px 10px 2px;
-            border-bottom: 0;
-            text-align: center;
-            color: #666666;
-        }
-    </style>   
+    </style>
 }
 
 @section headScript{
     <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/plugins/moment.min.js"></script>
     <script type="text/javascript" src="~/Content/js/custom/calendar.zh-cn.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
@@ -51,10 +55,10 @@
                 }
             });
 
-            $('#archives-table').dataTable({
+            jQuery('#archives-table').dataTable({
                 "oLanguage": {
                     //国际化
-                    "sProcessing": "<img src='/Content_Admin/img/spinner.gif'>  努力加载数据中...",
+                    "sProcessing": "<img src='/Content/images/loaders/loader10.gif'>  努力加载数据中...",
                     "sLengthMenu": "显示 _MENU_ 条",
                     "sZeroRecords": "没有找到数据",
                     "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
@@ -69,79 +73,113 @@
                         "sLast": "最后一页"
                     }
                 },
-
                 //"bServerSide": false,  //第一种场景:服务端一次性取出所有数据,完全由客户端来处理这些数据.此时为false
                 "bServerSide": true,  //第二种场景:服务端处理分页后数据,客户端呈现,此时为true.但此时aoColumns要变,将'sName'换成mDataProp,同时自定义列也要有对应的数据
-                "sServerMethod": "GET",
-                "sAjaxSource": "/Admin/AdminArchives/GetArchivesJson", //ajax Url地址
+                "sServerMethod": "POST",
+                "sAjaxSource": "/Student/GetStudents", //ajax Url地址
+                "fnServerData": function (sSource, aoData, fnCallback) {
+                    aoData.push({ "name": "realname", "value": jQuery("#realname").val() });
+                    aoData.push({ "name": "creator", "value": jQuery("#creator").val() });
+                    aoData.push({ "name": "status", "value": jQuery("#status").val() });
+                    aoData.push({ "name": "major_name", "value": jQuery("#major_name").val() });
+                    aoData.push({ "name": "start_date", "value": jQuery("#start_date").val() });
+                    aoData.push({ "name": "end_date", "value": jQuery("#end_date").val() });
+                    jQuery.ajax({
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": aoData,
+                        "success": fnCallback
+                    });
+                },
                 "bProcessing": true,
-
                 "bPaginate": true,
                 "sPaginationType": "full_numbers",
                 "bJQueryUI": true,  //客户端传给服务器的参数为sSearch
                 'bFilter': false,
                 //'bsearch':true,
-                'bLengthChange': true,
-                'aLengthMenu': [
-                    [10, 15, 20, -1],
-                    [10, 15, 20, "全部"] // change per page values here
-                ],
-
+                'bLengthChange': false,
                 'iDisplayLength': 10,  //每页显示10条记录
                 'bAutoWidth': true,
                 "scrollX": true,
-
                 "aoColumns": [
-                    { "sWidth": "5%", "mDataProp": "Id" },
-                    {
-                        "sWidth": "40%",
-                        "mDataProp": "Title",
-                        "mRender": function (data, type, row) {
-                            return '<a target="_blank" href="/Archives/Index/' + row.Id + '\">' + data + '</a>';
-                        }
-                    },
-                    { "sWidth": "10%", "mDataProp": "CategoryName" },
-                    { "sWidth": "6%", "mDataProp": "ViewCount", "bStorable": true },
-                    { "sWidth": "6%", "mDataProp": "CommentCount", "bStorable": true },
-                    { "sWidth": "6%", "mDataProp": "Digg", "bStorable": true },
                     {
                         "sWidth": "6%",
-                        "mDataProp": "Status",
+                        "mDataProp": "SurName",
                         "mRender": function (data, type, row) {
-                            var value = "已发布";
-                            if (data == "0")
-                                value = "禁用";
+                            return '<a href="/Student/Show/' + row.Id + '\">' + data + '</a>';
+                        }
+                    },
+                    {
+                        "sWidth": "6%",
+                        "mDataProp": "Sex",
+                        "mRender": function (data, type, row) {
+                            return data == 0 ? "女" : "男";
+                        }
+                    },
+                    { "sWidth": "6%", "mDataProp": "Period" },
+                    { "sWidth": "12%", "mDataProp": "MajorName" },
+                    {
+                        "sWidth": "10%", "mDataProp": "EducationalLevel",
+                        "mRender": function (data, type, row) {
+                            var value = "";
+                            switch (data) {
+                                case 0:
+                                    value = "无";
+                                    break;
+                                case 1:
+                                    value = "初中";
+                                    break;
+                                case 2:
+                                    value = "高中";
+                                    break;
+                                case 3:
+                                    value = "中专";
+                                    break;
+                                case 4:
+                                    value = "大专在读";
+                                    break;
+                                case 5:
+                                    value = "大专毕业";
+                                    break;
+                            }
                             return value;
                         }
                     },
-                    { //自定义列 : 启用/禁用
-                        "mDataProp": "null",
-                        "sWidth": "6%",
-                        "bSearchable": false,
-                        "bStorable": false,
+                    {
+                        "sWidth": "10%", "mDataProp": "ExaminationLevel",
                         "mRender": function (data, type, row) {
-                            var actionstr = '<a id="publicarticle" class="publicaction"  target-id="' + row.Id + '" href="#">发 布</a>';
-                            if (row.Status == "1")
-                                actionstr = '<a id="delarticle" class="delaction" target-id="' + row.Id + '" href="#">禁 用</a>';
-                            return actionstr;
+                            var value = "本科";
+                            if (data == 1)
+                                value = "专科";
+                            return value;
                         }
                     },
+                    {
+                        "sWidth": "8%", "mDataProp": "CreationTime",
+                        "mRender": function (data, type, row) {
+                            return moment(data).format("YYYY-MM-DD");
+                        }
+                    },
+                    {
+                        "sWidth": "8%",
+                        "mDataProp": "Status",
+                        "mRender": function (data, type, row) {
+                            var value = "已审";
+                            if (!data)
+                                value = "未审";
+                            return value;
+                        }
+                    },
+                    { "sWidth": "15%", "mDataProp": "Remark" },
                     { //自定义列 : 真删除
                         "mDataProp": "null",
                         "sWidth": "6%",
                         "bSearchable": false,
                         "bStorable": false,
                         "mRender": function (data, type, row) {
-                            return '<a id="realdelarticle"  class="tip" target-id="' + row.Id + '" href="#"><i class="icon-remove"></i></a>';
-                        }
-                    },
-                    { //自定义列：编辑
-                        "mDataProp": "null",
-                        "sWidth": "6%",
-                        "bSearchable": false,
-                        "bStorable": false,
-                        "mRender": function (data, type, row) {
-                            return '<a class="tip" href="/Admin/AdminArchives/EditArchive/' + row.Id + '"><i class="icon-pencil"></i></a>';
+                            return row.Status ? '-' : '<a class="tip" href="/Admin/AdminArchives/EditArchive/' + row.Id + '"><i class="icon-pencil"></i></a>&nbsp;&nbsp;' +
+                                '<a id="delstudent"  class="tip" target-id="' + row.Id + '" href="#"><i class="icon-remove"></i></a>';
                         }
                     }
                 ],
@@ -241,85 +279,81 @@
 
 @{ Html.RenderPartial("~/Views/Shared/_StudentMenu.cshtml"); }
 
-    <div class="centercontent tables">
-        <ul class="breadcrumbs">
-            <li><a>首页</a></li>
-            <li><a href="">学生管理</a></li>
-        </ul>
-        <form id="student_search">
-            <div class="contenttitle2">
-                <h3>学生列表</h3>
-            </div>
-            <ul class="buttonlist">
-                <li>
-                    <p>
-                        <label>学生姓名&nbsp;&nbsp;</label>
-                        <span class="field">
-                            <input type="text" id="surname" class="mediuminput" />
-                        </span>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        <label>专业名称&nbsp;&nbsp;</label>
-                        <span class="field"><input type="text" id="major_name" class="mediuminput" /></span>
-                    </p>
-                </li>
-                <li>
-                    <label>审核状态&nbsp;&nbsp;</label>
+<div class="centercontent tables">
+    <ul class="breadcrumbs">
+        <li><a>首页</a></li>
+        <li><a href="">学生管理</a></li>
+    </ul>
+    <form id="student_search">
+        <div class="contenttitle2">
+            <h3>学生列表</h3>
+        </div>
+        <ul>
+            <li>
+                <p>
+                    <label>学生姓名&nbsp;&nbsp;</label>
                     <span class="field">
-                        <select id="audit_status" class="uniformselect">
-                            <option value="0">全部</option>
-                            <option value="1">已审</option>
-                            <option value="2">未审</option>
-                        </select>
+                        <input type="text" id="realname" class="smallinput" />
                     </span>
-                </li>
-            </ul>
-            <ul class="buttonlist">
-                <li>
+                </p>
+            </li>
+            <li>
+                <p>
                     <label>创建人&nbsp;&nbsp;</label>
                     <span class="field">
-                        <select id="selection" class="uniformselect">
-                            <option value="">Choose One</option>
-                            <option value="1">Selection One</option>
-                            <option value="2">Selection Two</option>
-                            <option value="3">Selection Three</option>
-                            <option value="4">Selection Four</option>
-                        </select>
+                        @Html.DropDownList("creator", ViewBag.UserList as IEnumerable<SelectListItem>, new { @class = "uniformselect" })
                     </span>
-                </li>
-                <li>
-                    <label>创建日期&nbsp;&nbsp;</label>
-                    <span class="field">
-                        <input type="text" id="start_date" class="width100" /> -
-                        <input type="text" id="end_date" class="width100" />
-                    </span>
-                </li>
-                <li style="width:45%; padding-left:30px;">
-                    <a href="" class="btn btn_orange btn_search radius50"><span>查询</span></a>&nbsp;&nbsp;
-                    <a href="" class="btn btn_archive radius50"><span>导出表格</span></a>&nbsp;&nbsp;
-                    <a href="" class="btn btn_link radius50"><span>下载图片</span></a>
-                </li>
-            </ul>
-        </form>
-        <div class="dataTables_wrapper stu_table">
-            <table id="archives-table" class="stdtable" cellspacing="0" cellpadding="0" border="0">
-                <thead>
-                    <tr>
-                        <th>姓名</th>
-                        <th>性别</th>
-                        <th>届别</th>
-                        <th>专业</th>
-                        <th>文化层次</th>
-                        <th>报考层次</th>
-                        <th>审核状态</th>
-                        <th>备注</th>
-                        <th>操作</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+                </p>
+            </li>
+            <li>
+                <label>审核状态&nbsp;&nbsp;</label>
+                <span class="field">
+                    <select id="status" class="uniformselect">
+                        <option value="0">全部</option>
+                        <option value="1">已审</option>
+                        <option value="2">未审</option>
+                    </select>
+                </span>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>
+                    <label>专业名称&nbsp;&nbsp;</label>
+                    <span class="field"><input type="text" id="major_name" class="smallinput" /></span>
+                </p>
+            </li>
+            <li>
+                <label>创建日期&nbsp;&nbsp;</label>
+                <span class="field">
+                    <input type="text" id="start_date" class="width100" /> -
+                    <input type="text" id="end_date" class="width100" />
+                </span>
+            </li>
+            <li style="padding-left:30px;">
+                <a href="" class="btn btn_orange btn_search radius50"><span>查询</span></a>&nbsp;&nbsp;
+                <a href="" class="btn btn_archive radius50"><span>导出表格</span></a>&nbsp;&nbsp;
+                <a href="" class="btn btn_link radius50"><span>下载图片</span></a>
+            </li>
+        </ul>
+    </form>
+    <div class="dataTables_wrapper stu_table">
+        <table id="archives-table" class="stdtable table" cellspacing="0" cellpadding="0" border="0">
+            <thead>
+                <tr>
+                    <th align="center">姓名</th>
+                    <th>性别</th>
+                    <th>届别</th>
+                    <th>专业</th>
+                    <th>文化层次</th>
+                    <th>报考层次</th>
+                    <th>创建日期</th>
+                    <th>审核状态</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
+</div>

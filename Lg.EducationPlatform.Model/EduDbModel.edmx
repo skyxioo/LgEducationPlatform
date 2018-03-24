@@ -26,6 +26,7 @@
           <Property Name="IdCardFrontPath" Type="nvarchar" MaxLength="120" />
           <Property Name="IdCardBackPath" Type="nvarchar" MaxLength="120" />
           <Property Name="BareheadedPhotoPath" Type="nvarchar" MaxLength="120" />
+          <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletionTime" Type="datetime" />
           <Property Name="CreatorUserId" Type="bigint" Nullable="false" />
@@ -139,6 +140,7 @@
           <Property Name="LastModificationTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Students_Users1" FromRole="Students" ToRole="Users" />
           <NavigationProperty Name="Users1" Relationship="Self.FK_Students_Users2" FromRole="Students" ToRole="Users" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -226,6 +228,7 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="EduDb4LgModel.Students">
               <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SurName" ColumnName="SurName" />
                 <ScalarProperty Name="Sex" ColumnName="Sex" />

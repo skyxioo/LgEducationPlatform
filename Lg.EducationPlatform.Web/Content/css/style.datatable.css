@@ -1,0 +1,72 @@
+﻿/* Tables */
+tr:hover td {
+    background: #f6f6f6;
+}
+
+.dataTables_paginate {
+    line-height: 16px;
+    text-align: right;
+}
+
+.dataTables_paginate .ui-button, .pagination.alternate li a {
+    font-size: 12px;
+    padding: 4px 10px !important;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #dddddd #dddddd #cccccc; /* for IE < 9 */
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    display: inline-block;
+    line-height: 16px;
+    background: #f5f5f5;
+    color: #333333;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+.dataTables_paginate .ui-button:hover, .pagination.alternate li a:hover {
+    background: #e8e8e8;
+    color: #222222;
+    text-shadow: 0 1px 0 #ffffff;
+    cursor: pointer;
+}
+
+.dataTables_paginate .first {
+    border-radius: 4px 0 0 4px;
+}
+
+.dataTables_paginate .last {
+    border-radius: 0 4px 4px 0;
+}
+
+.dataTables_paginate .ui-state-disabled, .fc-state-disabled, .pagination.alternate li.disabled a {
+    color: #AAAAAA !important;
+}
+
+.dataTables_paginate .ui-state-disabled:hover, .fc-state-disabled:hover, .pagination.alternate li.disabled a:hover {
+    background: #f5f5f5;
+    cursor: default !important;
+}
+
+.dataTables_paginate span .ui-state-disabled, .pagination.alternate li.active a {
+    background: #bcbcbc !important;
+    color: #ffffff !important;
+    cursor: default !important;
+}
+
+div.dataTables_wrapper .ui-widget-header {
+    border-right: medium none;
+    border-top: 1px solid #D5D5D5;
+    font-weight: normal;
+    margin-top: -1px;
+}
+
+.table th {
+    height: auto;
+    font-size: 14px;
+    border-bottom: 0;
+    text-align: center;
+    color: #666666;
+}
+
+.table td{
+    text-align: center;
+}

@@ -414,14 +414,14 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 }
 .headermenu li a { min-width: 80px; text-align: center; }
 .headermenu li a span { opacity: 0.5; }
-.headermenu li a span.icon { height: 30px; display: block; margin-bottom: 10px; }
+.headermenu li a span.h { height: 30px; display: block; margin-bottom: 10px; }
 
-.headermenu li a span.icon-flatscreen { background: url(../images/icons/flatscreen.white.png) no-repeat center center; }
-.headermenu li a span.icon-pencil { background: url(../images/icons/pencil.white.png) no-repeat center center; }
-.headermenu li a span.icon-speech { background: url(../images/icons/speech.white.png) no-repeat center center; }
-.headermenu li a span.icon-message { background: url(../images/icons/message.white.png) no-repeat center center; }
-.headermenu li a span.icon-chart { background: url(../images/icons/chart.white.png) no-repeat center center; }
-    .headermenu li a span.icon-users {
+.headermenu li a span.h-flatscreen { background: url(../images/icons/flatscreen.white.png) no-repeat center center; }
+.headermenu li a span.h-pencil { background: url(../images/icons/pencil.white.png) no-repeat center center; }
+.headermenu li a span.h-speech { background: url(../images/icons/speech.white.png) no-repeat center center; }
+.headermenu li a span.h-message { background: url(../images/icons/message.white.png) no-repeat center center; }
+.headermenu li a span.h-chart { background: url(../images/icons/chart.white.png) no-repeat center center; }
+    .headermenu li a span.h-users {
         background: url(../images/icons/users.white.png) no-repeat center center;
     }
 .headermenu li a:hover { 
@@ -957,7 +957,6 @@ input.hasDatepicker {
 .stdtable th, .stdtable td { line-height: 21px; vertical-align: middle; color: #333; }
 .stdtable thead th, .stdtable thead td { 
 	padding: 7px 10px; border: 1px solid #ddd; border-left: 0; 
-	text-align: left; 
 }
 .stdtable tfoot th, .stdtable tfoot td { padding: 7px 10px; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; text-align: left; }
 .stdtable thead th:first-child, .stdtable tfoot th:first-child,
@@ -2097,9 +2096,9 @@ blockquote.bq2 {
 .invoicelogo { height: 100px; overflow: hidden; }
 .invoicefor { margin-top: 22px; }
 
-.table { border-collapse: collapse; width: 100%; }
-.table tr td { padding: 7px 10px; border: 1px solid #ddd; }
-.table tr td:first-child { text-align: right; background: #fcfcfc; }
+/*.table { border-collapse: collapse; width: 100%; }
+.table tr td { padding: 7px 10px; border: 1px solid #ddd; }*/
+/*.table tr td:first-child { text-align: right; background: #fcfcfc; }*/
 
 .invoiceinfo { margin-top: 40px; }
 .invoicetable { margin-top: 40px; width: 100%; }

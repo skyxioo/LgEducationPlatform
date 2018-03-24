@@ -124,7 +124,7 @@
     <Content Include="Content\css\style.greenline.css" />
     <Content Include="Content\css\style.ie8.css" />
     <Content Include="Content\css\style.ie9.css" />
-    <Content Include="Content\fonts\roboto.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\images\accordinarrow.png" />
     <Content Include="Content\images\addfolder.png" />
     <Content Include="Content\images\arrow.png" />
@@ -329,6 +329,7 @@
     <Content Include="Content\js\plugins\jquery.validate.min.js" />
     <Content Include="Content\js\plugins\jquery.validate.unobtrusive.js" />
     <Content Include="Content\js\plugins\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Content\js\plugins\moment.min.js" />
     <Content Include="Content\js\plugins\tinymce\jquery.tinymce.js" />
     <Content Include="Content\js\plugins\ui.spinner.min.js" />
     <Content Include="Content\layer\layer.js" />
@@ -356,57 +357,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <Content Include="Content\fonts\Roboto-Black-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-Black-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-Black-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-BlackItalic-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-BlackItalic-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-BlackItalic-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-Bold-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-Bold-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-Bold-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-BoldCondensed-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-BoldCondensed-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-BoldCondensed-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-BoldCondensedItalic-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-BoldCondensedItalic-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-BoldCondensedItalic-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-BoldItalic-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-BoldItalic-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-BoldItalic-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-Condensed-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-Condensed-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-Condensed-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-CondensedItalic-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-CondensedItalic-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-CondensedItalic-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-Italic-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-Italic-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-Italic-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-Light-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-Light-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-Light-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-LightItalic-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-LightItalic-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-LightItalic-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-Medium-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-Medium-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-Medium-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-MediumItalic-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-MediumItalic-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-MediumItalic-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-Regular-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-Regular-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-Regular-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-Thin-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-Thin-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-Thin-webfont.woff" />
-    <Content Include="Content\fonts\Roboto-ThinItalic-webfont.eot" />
-    <Content Include="Content\fonts\Roboto-ThinItalic-webfont.ttf" />
-    <Content Include="Content\fonts\Roboto-ThinItalic-webfont.woff" />
     <Content Include="log4net.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Content\css\style.datatable.css" />
+    <Content Include="Content\font-awesome\css\Descr.WD3" />
+    <Content Include="Content\font-awesome\font\Descr.WD3" />
+    <Content Include="Content\font-awesome\font\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\font\fontawesome-webfont.eot%40" />
+    <Content Include="Content\font-awesome\font\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\font\fontawesome-webfont.woff" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -416,6 +376,7 @@
     <Content Include="Views\Teacher\Index.cshtml" />
     <Content Include="Views\Shared\_StudentMenu.cshtml" />
     <Content Include="Views\Student\Add.cshtml" />
+    <Content Include="Views\Student\Show.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
