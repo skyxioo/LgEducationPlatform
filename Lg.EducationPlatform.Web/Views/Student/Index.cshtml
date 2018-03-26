@@ -42,16 +42,16 @@
             jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
             jQuery('#student,#stu_info').addClass('current');
             jQuery('body').addClass('withvernav');
-            jQuery('#start_date').datepicker({
+            var dates = jQuery("#start_date, #end_date").datepicker({
                 dateFormat: 'yy-mm-dd',
-                onSelect: function (dateText, inst) {
-                    $("#end_date").datepicker("option", "minDate", dateText);
-                }
-            });
-            jQuery('#end_date').datepicker({
-                dateFormat: 'yy-mm-dd',
-                onSelect: function (dateText, inst) {
-                    $("#start_date").datepicker("option", "maxDate", new Date(dateText.replace("-", "-")));
+                onSelect: function (selectedDate) {
+                    var option = this.id == "start_date" ? "minDate" : "maxDate",
+                        instance = jQuery(this).data("datepicker"),
+                        date = jQuery.datepicker.parseDate(
+                            instance.settings.dateFormat ||
+                            jQuery.datepicker._defaults.dateFormat,
+                            selectedDate, instance.settings);
+                    dates.not(this).datepicker("option", option, date);
                 }
             });
 
@@ -202,45 +202,49 @@
             });
 
             //2.0 草稿和正常状态的文章 ：软删除<a id='delarticle'>标签注册删除事件
-            $('#archives-table').on('click', '#delarticle', function (e) {
-                //异步软删除
-                e.preventDefault();
+            //$('#archives-table').on('click', '#delarticle', function (e) {
+            //    //异步软删除
+            //    e.preventDefault();
 
-                var curelement = $(this);  //ajax 闭包
-                var id = curelement.attr('target-id');
+            //    var curelement = $(this);  //ajax 闭包
+            //    var id = curelement.attr('target-id');
 
-                $.post("/Admin/AdminArchives/DeleteArchive/" + id, function (data) {
-                    if (data == 1) {
-                        layer.alert('禁用成功', {
-                            time: 2000
-                        });
-                        //重新加载本页数据
-                        $('#archives-table').dataTable().fnDraw(false);
-                    } else if (data) {
-                        layer.alert('禁用失败', 8);
-                    }
-                });
-            });
+            //    $.post("/Admin/AdminArchives/DeleteArchive/" + id, function (data) {
+            //        if (data == 1) {
+            //            layer.alert('禁用成功', {
+            //                time: 2000
+            //            });
+            //            //重新加载本页数据
+            //            $('#archives-table').dataTable().fnDraw(false);
+            //        } else if (data) {
+            //            layer.alert('禁用失败', 8);
+            //        }
+            //    });
+            //});
 
             //3.0 为发布<a id='publicarticle'>标签注册发布事件
-            $('#archives-table').on('click', '#publicarticle', function (e) {
-                //异步发布
-                e.preventDefault();
+            //$('#archives-table').on('click', '#publicarticle', function (e) {
+            //    //异步发布
+            //    e.preventDefault();
 
-                var curElement = $(this);
-                var id = curElement.attr('target-id');
+            //    var curElement = $(this);
+            //    var id = curElement.attr('target-id');
 
-                $.post("/Admin/AdminArchives/PublicArchive/" + id, function (data) {
-                    if (data == 1) {
-                        layer.alert('发布成功', {
-                            time: 2000
-                        });
-                        //重新加载本页数据
-                        $('#archives-table').dataTable().fnDraw(false);
-                    } else if (data) {
-                        layer.alert('发布失败', 8);
-                    }
-                });
+            //    $.post("/Admin/AdminArchives/PublicArchive/" + id, function (data) {
+            //        if (data == 1) {
+            //            layer.alert('发布成功', {
+            //                time: 2000
+            //            });
+            //            //重新加载本页数据
+            //            $('#archives-table').dataTable().fnDraw(false);
+            //        } else if (data) {
+            //            layer.alert('发布失败', 8);
+            //        }
+            //    });
+            //});
+
+            jQuery('#btn_search').click(function () {
+                jQuery('#archives-table').dataTable().fnDraw(false);
             });
 
             //4.0 真删
@@ -252,7 +256,6 @@
                 var id = curElement.attr('target-id');
 
                 //先弹出一个confirm对话框，再发起删除指令
-
                 layer.confirm("此删除操作不可逆，确定删除?", {
                     btn: ['确定', '取消']
                 }, function () {
@@ -309,9 +312,9 @@
                 <label>审核状态&nbsp;&nbsp;</label>
                 <span class="field">
                     <select id="status" class="uniformselect">
-                        <option value="0">全部</option>
+                        <option value="">全部</option>
                         <option value="1">已审</option>
-                        <option value="2">未审</option>
+                        <option value="0">未审</option>
                     </select>
                 </span>
             </li>
@@ -331,9 +334,9 @@
                 </span>
             </li>
             <li style="padding-left:30px;">
-                <a href="" class="btn btn_orange btn_search radius50"><span>查询</span></a>&nbsp;&nbsp;
-                <a href="" class="btn btn_archive radius50"><span>导出表格</span></a>&nbsp;&nbsp;
-                <a href="" class="btn btn_link radius50"><span>下载图片</span></a>
+                <a id="btn_search" href="javascript:void(0);" class="btn btn_orange btn_search radius50"><span>查询</span></a>&nbsp;&nbsp;
+                <a id="btn_export" href="@Url.Action("Export","Student")" class="btn btn_archive radius50"><span>导出表格</span></a>&nbsp;&nbsp;
+                <a id="btn_down" href="javascript:void(0);" class="btn btn_link radius50"><span>下载图片</span></a>
             </li>
         </ul>
     </form>

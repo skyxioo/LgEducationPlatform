@@ -110,7 +110,7 @@ namespace Lg.EducationPlatform.IBLL
         /// <param name="orderLambda">排序条件</param>
         /// <param name="isAsc">是否升序</param>
         /// <returns>List集合</returns>
-        IQueryable<T> GetPagedList<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderLambda, bool isAsc);
+        IQueryable<T> GetPagedList<TKey>(int displayStart, int pageSize, Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderLambda, bool isAsc);
         #endregion
     }
 }

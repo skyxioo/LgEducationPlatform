@@ -5,11 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using Lg.EducationPlatform.Common;
 using Lg.EducationPlatform.Model;
-using Lg.EducationPlatform.FormatModel;
 using Lg.EducationPlatform.IBLL;
 using Lg.EducationPlatform.WebHelper;
 using Lg.EducationPlatform.jqDataTableModel;
 using Lg.EducationPlatform.ViewModel;
+using System.Linq.Expressions;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {
@@ -20,9 +20,21 @@ namespace Lg.EducationPlatform.Web.Controllers
         // GET: Student
         public ActionResult Index()
         {
-            var list = _userService.GetTeacherItems();
-            SelectList itemList = new SelectList(list, "Value", "Text", "");
-            ViewBag.UserList = itemList.AsEnumerable<SelectListItem>();
+            UserDto user = ViewBag.User as UserDto;
+            if (user.RoleId == 0)
+            {
+                var list = _userService.GetTeacherItems();
+                list.Insert(0, new ItemModel { Text = "全部", Value = "" });
+                SelectList itemList = new SelectList(list, "Value", "Text");
+                ViewBag.UserList = itemList.AsEnumerable<SelectListItem>();
+            }
+            else
+            {
+                ViewBag.UserList = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = user.UserName, Value = user.UserId.ToString() }
+                };
+            }
 
             return View();
         }
@@ -104,18 +116,44 @@ namespace Lg.EducationPlatform.Web.Controllers
         public ActionResult GetStudents(jqDataTableParameter tableParam, string realname, string creator, string status, string start_date, string end_date, string major_name)
         {
             UserDto user = ViewBag.User as UserDto;
+
+            #region 组合查询条件
             var whereExp = PredicateBuilder.True<Students>();
-            whereExp.And(p => !p.IsDeleted);
+            whereExp = whereExp.And(p => !p.IsDeleted);
+            //创建人
             if (ViewBag.RoleId != 0)
-                whereExp.And(p => p.CreatorUserId == user.UserId);
+                whereExp = whereExp.And(p => p.CreatorUserId == user.UserId);
+            else
+            {
+                if (!string.IsNullOrEmpty(creator))
+                    whereExp = whereExp.And(p => p.CreatorUserId == int.Parse(creator));
+            }
+            //学生姓名
+            if (!string.IsNullOrEmpty(realname))
+                whereExp = whereExp.And(p => p.SurName == realname.Trim());
+            //审核状态
+            if (!string.IsNullOrEmpty(status))
+                whereExp = whereExp.And(p => p.Status == bool.Parse(status));
+            //专业名称
+            if (!string.IsNullOrEmpty(major_name))
+                whereExp = whereExp.And(p => p.MajorName == major_name);
+            //创建时间
+            if (!string.IsNullOrEmpty(start_date))
+                whereExp = whereExp.And(p => p.CreationTime >= DateTime.Parse(start_date));
+            if (!string.IsNullOrEmpty(end_date))
+                whereExp = whereExp.And(p => p.CreationTime <= DateTime.Parse(end_date));
+
+            ViewBag.Exp = whereExp;
+            #endregion
+
 
             //1.0 首先获取datatable提交过来的参数
             string echo = tableParam.sEcho;  //用于客户端自己的校验
-            int pageIndex = tableParam.iDisplayStart;//要请求的该页第一条数据的序号
+            int displayStart = tableParam.iDisplayStart;//要请求的该页第一条数据的序号
             int pageSize = tableParam.iDisplayLength;//每页容量（=-1表示取全部数据）
 
             var total = _studentsService.GetDataListBy(whereExp).Count();
-            var students = _studentsService.GetPagedList<DateTime>(pageIndex, pageSize, whereExp, p => p.CreationTime, false);
+            var students = _studentsService.GetPagedList<DateTime>(displayStart, pageSize, whereExp, p => p.CreationTime, false);
             var data = (from s in students
                        select new StudentOutput
                        {
@@ -141,6 +179,13 @@ namespace Lg.EducationPlatform.Web.Controllers
                 iTotalDisplayRecords = total,
                 aaData = data
             });
+        }
+
+        public FileResult Export()
+        {
+            Expression<Func<Students, bool>> expression = ViewBag.Exp as Expression<Func<Students, bool>>;
+            var students = _studentsService.GetDataListBy(expression);
+            return File();
         }
     }
 }

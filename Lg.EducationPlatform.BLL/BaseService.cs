@@ -157,9 +157,9 @@ namespace Lg.EducationPlatform.BLL
         /// <param name="orderLambda">排序条件</param>
         /// <param name="isAsc">是否升序</param>
         /// <returns>List<T>集合</returns>
-        public IQueryable<T> GetPagedList<TKey>(int pageIndex, int pageSize, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, System.Linq.Expressions.Expression<Func<T, TKey>> orderLambda, bool isAsc)
+        public IQueryable<T> GetPagedList<TKey>(int displayStart, int pageSize, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, System.Linq.Expressions.Expression<Func<T, TKey>> orderLambda, bool isAsc)
         {
-            return CurrentDAL.GetPagedList(pageIndex, pageSize, whereLambda, orderLambda, isAsc);
+            return CurrentDAL.GetPagedList(displayStart, pageSize, whereLambda, orderLambda, isAsc);
         }
         #endregion
 

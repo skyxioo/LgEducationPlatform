@@ -47,7 +47,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                         DateTime.Now.AddHours(2),
                         true,
                         JsonConvert.SerializeObject(userDto)
-                        );
+                    );
                     HttpCookie cookie = new HttpCookie("LgEduTicket");
                     string ticketString = FormsAuthentication.Encrypt(ticket);
                     cookie.Value = ticketString;

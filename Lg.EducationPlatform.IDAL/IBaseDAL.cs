@@ -51,7 +51,7 @@ namespace Lg.EducationPlatform.IDAL
         #endregion
 
         #region 8.0 分页查询
-        IQueryable<T> GetPagedList<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderLambda, bool isAsc);
+        IQueryable<T> GetPagedList<TKey>(int displayStart, int pageSize, Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderLambda, bool isAsc);
         #endregion
     }
 }

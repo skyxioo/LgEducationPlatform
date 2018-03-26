@@ -5,8 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using LinqKit;
 
 namespace Lg.EducationPlatform.DAL
 {
@@ -170,7 +169,7 @@ namespace Lg.EducationPlatform.DAL
         /// <param name="whereLambda">查询表达式</param>
         public IQueryable<T> GetDataListBy(System.Linq.Expressions.Expression<Func<T, bool>> whereLambda)
         {
-            return dbContext.Set<T>().Where(whereLambda);
+            return dbContext.Set<T>().AsExpandable().Where(whereLambda);
         }
         #endregion
 
@@ -186,11 +185,11 @@ namespace Lg.EducationPlatform.DAL
         {
             if (isAsc)
             {
-                return dbContext.Set<T>().Where(whereExp).OrderBy<T, TKey>(orderExp);
+                return dbContext.Set<T>().AsExpandable().Where(whereExp).OrderBy<T, TKey>(orderExp);
             }
             else
             {
-                return dbContext.Set<T>().Where(whereExp).OrderByDescending<T, TKey>(orderExp);
+                return dbContext.Set<T>().AsExpandable().Where(whereExp).OrderByDescending<T, TKey>(orderExp);
             }
         }
         #endregion
@@ -205,22 +204,24 @@ namespace Lg.EducationPlatform.DAL
         /// <param name="whereLambda">分页查询条件</param>
         /// <param name="orderLambda">排序条件</param>
         /// <returns>List<T>集合</returns>
-        public IQueryable<T> GetPagedList<TKey>(int pageIndex, int pageSize, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, System.Linq.Expressions.Expression<Func<T, TKey>> orderLambda, bool isAsc)
+        public IQueryable<T> GetPagedList<TKey>(int displayStart, int pageSize, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, System.Linq.Expressions.Expression<Func<T, TKey>> orderLambda, bool isAsc)
         {
             if (isAsc)
             {
                 return dbContext.Set<T>()
+                                .AsExpandable()
                                 .Where<T>(whereLambda)
                                 .OrderBy<T, TKey>(orderLambda)
-                                .Skip(pageIndex * pageSize)
+                                .Skip(displayStart)
                                 .Take(pageSize);
             }
             else
             {
                 return dbContext.Set<T>()
+                                .AsExpandable()
                                .Where<T>(whereLambda)
                                .OrderByDescending<T, TKey>(orderLambda)
-                               .Skip(pageIndex * pageSize)
+                               .Skip(displayStart)
                                .Take(pageSize);
             }
         }

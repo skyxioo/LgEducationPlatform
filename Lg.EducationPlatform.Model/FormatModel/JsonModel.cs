@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lg.EducationPlatform.FormatModel
+namespace Lg.EducationPlatform.Model
 {
     /// <summary>
     /// 定制Json统一格式
