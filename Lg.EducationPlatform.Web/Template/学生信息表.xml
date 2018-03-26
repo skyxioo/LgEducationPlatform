@@ -466,45 +466,7 @@
           <Data ss:Type="String">备注</Data>
         </Cell>
       </Row>
-      <Row ss:Height="40">
-        <Cell ss:StyleID="s56">
-          <Data ss:Type="Number">1</Data>
-        </Cell>
-        <Cell ss:StyleID="s57">
-          <Data ss:Type="String">张勇</Data>
-        </Cell>
-        <Cell ss:StyleID="s57">
-          <Data ss:Type="String">男</Data>
-        </Cell>
-        <Cell ss:StyleID="s56">
-          <Data ss:Type="String">汉</Data>
-        </Cell>
-        <Cell ss:StyleID="s58">
-          <Data ss:Type="String">18620425113</Data>
-        </Cell>
-        <Cell ss:StyleID="s58">
-          <Data ss:Type="String">2017</Data>
-        </Cell>
-        <Cell ss:StyleID="s59">
-          <Data ss:Type="String">本科</Data>
-        </Cell>
-        <Cell ss:StyleID="s60">
-          <Data ss:Type="String">大专</Data>
-        </Cell>
-        <Cell ss:StyleID="s60">
-          <Data ss:Type="String">艺术设计</Data>
-        </Cell>
-        <Cell ss:StyleID="s64">
-          <Data ss:Type="String" x:Ticked="1">141225201706000161</Data>
-        </Cell>
-        <Cell ss:StyleID="s60">
-          <Data ss:Type="String">漯河职业技术学院</Data>
-        </Cell>
-        <Cell ss:StyleID="s65">
-          <Data ss:Type="Number">18671066998</Data>
-        </Cell>
-        <Cell ss:StyleID="s56"/>
-      </Row>
+      {content}
     </Table>
     <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
       <PageSetup>

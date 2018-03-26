@@ -10,6 +10,8 @@ using Lg.EducationPlatform.WebHelper;
 using Lg.EducationPlatform.jqDataTableModel;
 using Lg.EducationPlatform.ViewModel;
 using System.Linq.Expressions;
+using System.Text;
+using System.IO;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {
@@ -143,7 +145,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             if (!string.IsNullOrEmpty(end_date))
                 whereExp = whereExp.And(p => p.CreationTime <= DateTime.Parse(end_date));
 
-            ViewBag.Exp = whereExp;
+            OperateHelper.Current.Session["Expression"] = whereExp;
             #endregion
 
 
@@ -183,9 +185,64 @@ namespace Lg.EducationPlatform.Web.Controllers
 
         public FileResult Export()
         {
-            Expression<Func<Students, bool>> expression = ViewBag.Exp as Expression<Func<Students, bool>>;
-            var students = _studentsService.GetDataListBy(expression);
-            return File();
+            Expression<Func<Students, bool>> expression = OperateHelper.Current.Session["Expression"] as Expression<Func<Students, bool>>;
+            var students = _studentsService.GetDataListBy(expression).ToList();
+
+            StringBuilder builder = new StringBuilder();
+            int rowIndex = 0;
+            foreach (var stu in students)
+            {
+                rowIndex++;
+                builder.Append("<Row ss: Height = \"40\" >");
+                builder.Append("   <Cell ss: StyleID = \"s56\" >");
+                builder.Append("       <Data ss: Type = \"Number\" >").Append(rowIndex).Append("</Data>");
+                builder.Append("    </Cell >");
+                builder.Append("    <Cell ss: StyleID = \"s57\" >");
+                builder.Append("        <Data ss: Type = \"String\" >").Append(stu.SurName).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s57\">");
+                builder.Append("        <Data ss: Type = \"String\" >").Append(stu.Sex == 0 ? "女" : "男").Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s56\">");
+                builder.Append("        <Data ss: Type = \"String\" >").Append(stu.Nationality).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s58\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Phone).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s58\">");
+                builder.Append("        < Data ss: Type = \"String\" >").Append(stu.Period).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s59\" >");
+                builder.Append("        < Data ss: Type = \"String\" >").Append(stu.PoliticalStatus).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s60\" >");
+                builder.Append("        < Data ss: Type = \"String\" >").Append(stu.Address).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s60\" >");
+                builder.Append("        < Data ss: Type = \"String\" >").Append(stu.EducationalLevel).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s64\" >");
+                builder.Append("        <Data ss: Type = \"String\" x: Ticked = \"1\">").Append(stu.ExaminationLevel).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s60\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.MajorName).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s65\">");
+                builder.Append("        <Data ss: Type = \"Number\" >").Append(stu.TestFreeCondition).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s56\" />");
+                builder.Append("</Row>");
+            }
+
+            var filePath = Server.MapPath("~") + "Template\\学生信息表.xml";
+            var template = string.Empty;
+            using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+                template = reader.ReadToEnd();
+            }
+            template = template.Replace("{content}", builder.ToString());
+            return File(Encoding.UTF8.GetBytes(template), "application/msexcel", "学生信息表.xls");
         }
     }
 }
