@@ -343,6 +343,7 @@
     <Content Include="Content\layer\skin\default\loading-2.gif" />
     <Content Include="Content\layer\skin\layer.css" />
     <Content Include="Global.asax" />
+    <Content Include="Template\学生信息表.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
