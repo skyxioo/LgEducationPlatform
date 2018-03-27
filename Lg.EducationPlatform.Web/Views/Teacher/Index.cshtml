@@ -1,17 +1,272 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewBag.Title = "长沙理工大学综合管理系统|教师管理";
 }
 
-<!DOCTYPE html>
+@section headLink{
+    <link rel="stylesheet" href="~/Content/css/style.datatable.css" type="text/css" />
+    <style type="text/css">
+        #student_search {
+            padding: 0px 30px;
+        }
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div> 
+        #delstudent {
+            margin-left: 5px;
+        }
+
+        #student_search ul li {
+            width: auto;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        #student_search label {
+            display: inline-block;
+            width: 100px;
+            text-align: right
+        }
+
+        .stu_table {
+            padding: 0px 30px;
+        }
+    </style>
+}
+
+@section headScript{
+    <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/plugins/moment.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/custom/calendar.zh-cn.js"></script>
+    <script type="text/javascript" src="~/Content/layer/layer.js"></script>
+    <script type="text/javascript">
+        jQuery.noConflict();
+        jQuery(function () {
+            jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
+            jQuery('#student,#stu_info').addClass('current');
+            jQuery('body').addClass('withvernav');
+            var dates = jQuery("#start_date, #end_date").datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function (selectedDate) {
+                    var option = this.id == "start_date" ? "minDate" : "maxDate",
+                        instance = jQuery(this).data("datepicker"),
+                        date = jQuery.datepicker.parseDate(
+                            instance.settings.dateFormat ||
+                            jQuery.datepicker._defaults.dateFormat,
+                            selectedDate, instance.settings);
+                    dates.not(this).datepicker("option", option, date);
+                }
+            });
+
+            jQuery('#archives-table').dataTable({
+                "oLanguage": {
+                    //国际化
+                    "sProcessing": "<img src='/Content/images/loaders/loader10.gif'>  努力加载数据中...",
+                    "sLengthMenu": "显示 _MENU_ 条",
+                    "sZeroRecords": "没有找到数据",
+                    "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                    "sInfoEmpty": "记录数为0",
+                    "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                    "sInfoPostFix": "",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "第一页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "最后一页"
+                    }
+                },
+                //"bServerSide": false,  //第一种场景:服务端一次性取出所有数据,完全由客户端来处理这些数据.此时为false
+                "bServerSide": true,  //第二种场景:服务端处理分页后数据,客户端呈现,此时为true.但此时aoColumns要变,将'sName'换成mDataProp,同时自定义列也要有对应的数据
+                "sServerMethod": "POST",
+                "sAjaxSource": "/Student/GetStudents", //ajax Url地址
+                "fnServerData": function (sSource, aoData, fnCallback) {
+                    aoData.push({ "name": "realname", "value": jQuery("#realname").val() });
+                    aoData.push({ "name": "creator", "value": jQuery("#creator").val() });
+                    aoData.push({ "name": "status", "value": jQuery("#status").val() });
+                    aoData.push({ "name": "major_name", "value": jQuery("#major_name").val() });
+                    aoData.push({ "name": "start_date", "value": jQuery("#start_date").val() });
+                    aoData.push({ "name": "end_date", "value": jQuery("#end_date").val() });
+                    jQuery.ajax({
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": aoData,
+                        "success": fnCallback
+                    });
+                },
+                "bProcessing": true,
+                "bPaginate": true,
+                "sPaginationType": "full_numbers",
+                "bJQueryUI": true,  //客户端传给服务器的参数为sSearch
+                'bFilter': false,
+                //'bsearch':true,
+                'bLengthChange': false,
+                'iDisplayLength': 10,  //每页显示10条记录
+                'bAutoWidth': true,
+                "scrollX": true,
+                "aoColumns": [
+                    {
+                        "sWidth": "6%",
+                        "mDataProp": "SurName",
+                        "mRender": function (data, type, row) {
+                            return '<a href="/Student/Show/' + row.Id + '\">' + data + '</a>';
+                        }
+                    },
+                    {
+                        "sWidth": "6%",
+                        "mDataProp": "Sex",
+                        "mRender": function (data, type, row) {
+                            return data == 0 ? "女" : "男";
+                        }
+                    },
+                    { "sWidth": "6%", "mDataProp": "Period" },
+                    { "sWidth": "12%", "mDataProp": "MajorName" },
+                    {
+                        "sWidth": "10%", "mDataProp": "EducationalLevel",
+                        "mRender": function (data, type, row) {
+                            var value = "";
+                            switch (data) {
+                                case 0:
+                                    value = "无";
+                                    break;
+                                case 1:
+                                    value = "初中";
+                                    break;
+                                case 2:
+                                    value = "高中";
+                                    break;
+                                case 3:
+                                    value = "中专";
+                                    break;
+                                case 4:
+                                    value = "大专在读";
+                                    break;
+                                case 5:
+                                    value = "大专毕业";
+                                    break;
+                            }
+                            return value;
+                        }
+                    },
+                    {
+                        "sWidth": "10%", "mDataProp": "ExaminationLevel",
+                        "mRender": function (data, type, row) {
+                            var value = "本科";
+                            if (data == 1)
+                                value = "专科";
+                            return value;
+                        }
+                    },
+                    {
+                        "sWidth": "8%", "mDataProp": "CreationTime",
+                        "mRender": function (data, type, row) {
+                            return moment(data).format("YYYY-MM-DD");
+                        }
+                    },
+                    {
+                        "sWidth": "8%",
+                        "mDataProp": "Status",
+                        "mRender": function (data, type, row) {
+                            var value = "已审";
+                            if (!data)
+                                value = "未审";
+                            return value;
+                        }
+                    },
+                    { "sWidth": "15%", "mDataProp": "Remark" },
+                    { //自定义列 : 真删除
+                        "mDataProp": "null",
+                        "sWidth": "6%",
+                        "bSearchable": false,
+                        "bStorable": false,
+                        "mRender": function (data, type, row) {
+                            return row.Status ? '-' : '<a class="tip" href="/Student/Add/' + row.Id + '"><i class="icon-pencil"></i></a>&nbsp;&nbsp;' +
+                                '<a id="delstudent"  class="tip" target-id="' + row.Id + '" href="#"><i class="icon-remove"></i></a>';
+                        }
+                    }
+                ],
+
+                //"fnInitComplete": function (setting, json) {
+                //    //alert('初始化结束');
+                //    //初始化完成之后替换原先的搜索框。
+                //    //本来想把form标签放到hidden_filter 里面，因为事件绑定的缘故，还是拿出来。
+                //   $(".dataTables_filter").html("<form id='filter_form'>" + $("#hidden_filter").html() + "</form>");
+                //},
+
+                "aoColumnDefs": [
+                    {
+                        //DataTables warning : Requested unknown parameter '1' from the data source for row 0
+                        //加上这段定义就不出错了。
+                        sDefaultContent: '',
+                        aTargets: ['_all']
+                    }
+                ]
+            });
+
+            jQuery('#btn_search').click(function () {
+                jQuery('#archives-table').dataTable().fnDraw(false);
+            });
+
+            //4.0 真删
+            jQuery('#archives-table').on('click', 'a#delstudent', function (e) {
+                //异步删除(级联删除)
+                e.preventDefault();
+
+                var curElement = jQuery(this);
+                var id = curElement.attr('target-id');
+
+                //先弹出一个confirm对话框，再发起删除指令
+                layer.confirm("此删除操作不可逆，确定删除?", {
+                    btn: ['确定', '取消']
+                }, function () {
+                    jQuery.post("/Student/Delete/" + id, function (data) {
+                        if (data.Status == "1") {
+                            layer.alert('删除成功', {
+                                time: 2000
+                            });
+                            //重新加载本页数据
+                            jQuery('#archives-table').dataTable().fnDraw(false);
+                        } else if (data) {
+                            layer.alert('删除失败', 8);
+                        }
+                    });
+                }, function () {
+                    //关闭
+                });
+
+            });
+
+        });
+    </script>
+}
+
+@{ Html.RenderPartial("~/Views/Shared/_StudentMenu.cshtml"); }
+
+    <div class="centercontent tables">
+        <ul class="breadcrumbs">
+            <li><a>首页</a></li>
+            <li><a href="">教师管理</a></li>
+        </ul>
+        <div class="contenttitle2">
+            <h3>教师列表</h3>
+        </div>
+        <button id="addCategory" class="btn btn-info newbuild">添加分类</button>
+        <div class="dataTables_wrapper stu_table">
+            <table id="archives-table" class="stdtable table" cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                    <tr>
+                        <th align="center">姓名</th>
+                        <th>性别</th>
+                        <th>届别</th>
+                        <th>专业</th>
+                        <th>文化层次</th>
+                        <th>报考层次</th>
+                        <th>创建日期</th>
+                        <th>审核状态</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
-</body>
-</html>

@@ -86,7 +86,10 @@
             <ul class="headermenu">
                 <li id="home"><a href="/Home/Index"><span class="h h-flatscreen"></span>首页</a></li>
                 <li id="student"><a href="/Student/Index"><span class="h h-pencil"></span>学生管理</a></li>
+                @if (ViewBag.RoleId == 0)
+                {
                 <li id="teacher"><a href="/Teacher/Index"><span class="h h-users"></span>教师管理</a></li>
+                }
             </ul>
         </div><!--header-->
 

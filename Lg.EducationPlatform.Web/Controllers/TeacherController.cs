@@ -8,7 +8,7 @@ namespace Lg.EducationPlatform.Web.Controllers
 {
     public class TeacherController : BaseController
     {
-        // GET: Teacher
+        [UserAuth(AllowRole = Enum.UserRole.管理员)]
         public ActionResult Index()
         {
             return View();
