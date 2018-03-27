@@ -47,7 +47,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             var model = new StudentViewModel {
                 Id = s.Id,
                 SurName = s.SurName,
-                Sex = s.Sex == 0 ? "女" : "男",
+                Sex = s.Sex,
                 Birthday = s.Birthday,
                 Period = s.Period,
                 ExaminationLevel = s.ExaminationLevel,
@@ -61,13 +61,12 @@ namespace Lg.EducationPlatform.Web.Controllers
                 TestFreeCondition = s.TestFreeCondition,
                 IdCardFrontPath = s.IdCardFrontPath,
                 IdCardBackPath = s.IdCardBackPath,
-                BareheadedPhotoPath = s.BareheadedPhotoPath,
-                Status = s.Status
+                BareheadedPhotoPath = s.BareheadedPhotoPath
             };
             return View(model);
         }
 
-        public ActionResult Add()
+        public ActionResult Add(int? id)
         {
             List<SelectListItem> eduItems = new List<SelectListItem>
             {
@@ -85,32 +84,108 @@ namespace Lg.EducationPlatform.Web.Controllers
             };
             ViewBag.EduLevelItemList = eduItems;
             ViewBag.ExamLevelItemList = examItems;
-            return View();
+
+            ViewBag.Title = "长沙理工大学综合管理系统|学生管理|添加";
+            StudentViewModel model = new StudentViewModel();
+            if(id != null && id.Value > 0)
+            {
+                ViewBag.Title = "长沙理工大学综合管理系统|学生管理|编辑";
+
+                var student = _studentsService.GetEntity(id.Value);
+                model.Address = student.Address;
+                model.BareheadedPhotoPath = student.BareheadedPhotoPath;
+                model.Birthday = student.Birthday;
+                model.EducationalLevel = student.EducationalLevel;
+                model.ExaminationLevel = student.ExaminationLevel;
+                model.Id = student.Id;
+                model.IdCardBackPath = student.IdCardBackPath;
+                model.IdCardFrontPath = student.IdCardFrontPath;
+                model.MajorName = student.MajorName;
+                model.Nationality = student.Nationality;
+                model.Period = student.Period;
+                model.Phone = student.Phone;
+                model.PoliticalStatus = student.PoliticalStatus;
+                model.Remark = student.Remark;
+                model.Sex = student.Sex;
+                model.SurName = student.SurName;
+                model.TestFreeCondition = student.TestFreeCondition;
+            }
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Add(Students model)
-        {            
+        public ActionResult Add(StudentViewModel model)
+        {
             UserDto user = ViewBag.User as UserDto;
-            model.CreationTime = DateTime.Now;
-            model.CreatorUserId = user.UserId;
-            
-            int result = _studentsService.Add(model);
-            if(result > 0)
+            Students stu = new Students {
+                Address = model.Address,
+                BareheadedPhotoPath = model.BareheadedPhotoPath,
+                Birthday = model.Birthday,
+                EducationalLevel = model.EducationalLevel,
+                ExaminationLevel = model.ExaminationLevel,
+                IdCardBackPath = model.IdCardBackPath,
+                IdCardFrontPath = model.IdCardFrontPath,
+                MajorName = model.MajorName,
+                Nationality = model.Nationality,
+                Period = model.Period,
+                Phone = model.Phone,
+                PoliticalStatus = model.PoliticalStatus,
+                Remark = model.Remark,
+                Sex = model.Sex,
+                SurName = model.SurName,
+                TestFreeCondition = model.TestFreeCondition
+            };
+
+            int result = 0;
+            if (model.Id > 0)//编辑
             {
-                return Json(new
+                stu.LastModificationTime = DateTime.Now;
+                stu.LastModifierUserId = user.UserId;
+                var propertyNames = model.GetType().GetProperties()
+                    .Where(p => p.Name != "Id")
+                    .Select(p => p.Name)
+                    .ToArray();
+                result = _studentsService.UpdateBy(stu, p => p.Id == model.Id, propertyNames);
+                if (result > 0)
                 {
-                    Status = 1,
-                    Message = "新增成功"
-                });
+                    return Json(new
+                    {
+                        Status = 1,
+                        Message = "编辑成功"
+                    });
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        Status = 0,
+                        Message = "编辑失败"
+                    });
+                }
             }
-            else
+            else//新增
             {
-                return Json(new
+                stu.CreationTime = DateTime.Now;
+                stu.CreatorUserId = user.UserId;
+
+                result = _studentsService.Add(stu);
+                if (result > 0)
                 {
-                    Status = 0,
-                    Message = "新增失败"
-                });
+                    return Json(new
+                    {
+                        Status = 1,
+                        Message = "新增成功"
+                    });
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        Status = 0,
+                        Message = "新增失败"
+                    });
+                }
             }
         }
         
@@ -193,42 +268,42 @@ namespace Lg.EducationPlatform.Web.Controllers
             foreach (var stu in students)
             {
                 rowIndex++;
-                builder.Append("<Row ss: Height = \"40\" >");
-                builder.Append("   <Cell ss: StyleID = \"s56\" >");
-                builder.Append("       <Data ss: Type = \"Number\" >").Append(rowIndex).Append("</Data>");
+                builder.Append("<Row ss: Height = \"40\">");
+                builder.Append("    <Cell ss: StyleID = \"s56\">");
+                builder.Append("       <Data ss: Type = \"Number\">").Append(rowIndex).Append("</Data>");
                 builder.Append("    </Cell >");
-                builder.Append("    <Cell ss: StyleID = \"s57\" >");
-                builder.Append("        <Data ss: Type = \"String\" >").Append(stu.SurName).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s57\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.SurName).Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s57\">");
-                builder.Append("        <Data ss: Type = \"String\" >").Append(stu.Sex == 0 ? "女" : "男").Append("</Data>");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Sex == 0 ? "女" : "男").Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s56\">");
-                builder.Append("        <Data ss: Type = \"String\" >").Append(stu.Nationality).Append("</Data>");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Nationality).Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s58\">");
                 builder.Append("        <Data ss: Type = \"String\">").Append(stu.Phone).Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s58\">");
-                builder.Append("        < Data ss: Type = \"String\" >").Append(stu.Period).Append("</Data>");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Period).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s59\" >");
-                builder.Append("        < Data ss: Type = \"String\" >").Append(stu.PoliticalStatus).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s59\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.PoliticalStatus).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s60\" >");
-                builder.Append("        < Data ss: Type = \"String\" >").Append(stu.Address).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s60\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Address).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s60\" >");
-                builder.Append("        < Data ss: Type = \"String\" >").Append(stu.EducationalLevel).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s60\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.EducationalLevel).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s64\" >");
+                builder.Append("    <Cell ss: StyleID = \"s64\">");
                 builder.Append("        <Data ss: Type = \"String\" x: Ticked = \"1\">").Append(stu.ExaminationLevel).Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s60\">");
                 builder.Append("        <Data ss: Type = \"String\">").Append(stu.MajorName).Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s65\">");
-                builder.Append("        <Data ss: Type = \"Number\" >").Append(stu.TestFreeCondition).Append("</Data>");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.TestFreeCondition).Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s56\" />");
                 builder.Append("</Row>");
@@ -243,6 +318,33 @@ namespace Lg.EducationPlatform.Web.Controllers
             }
             template = template.Replace("{content}", builder.ToString());
             return File(Encoding.UTF8.GetBytes(template), "application/msexcel", "学生信息表.xls");
+        }
+
+        public ActionResult Delete(int id)
+        {
+            Students stu = new Students();
+            stu.IsDeleted = true;
+            stu.DeletionTime = DateTime.Now;
+            stu.LastModifierUserId = (ViewBag.User as UserDto).UserId;
+            stu.LastModificationTime = DateTime.Now;
+            var propertyNames = new string[] { "IsDeleted", "DeletionTime", "LastModifierUserId", "LastModificationTime" };
+            int result = _studentsService.UpdateBy(stu, p => p.Id == id, propertyNames);
+            if (result > 0)
+            {
+                return Json(new
+                {
+                    Status = 1,
+                    Message = "删除成功"
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    Status = 0,
+                    Message = "删除失败"
+                });
+            }
         }
     }
 }

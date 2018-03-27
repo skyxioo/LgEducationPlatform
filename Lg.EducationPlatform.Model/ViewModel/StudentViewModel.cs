@@ -10,7 +10,7 @@ namespace Lg.EducationPlatform.ViewModel
     {
         public long Id { get; set; }
         public string SurName { get; set; }
-        public string Sex { get; set; }
+        public byte Sex { get; set; }
         public string Period { get; set; }
         public byte ExaminationLevel { get; set; }
         public string MajorName { get; set; }
@@ -25,6 +25,5 @@ namespace Lg.EducationPlatform.ViewModel
         public string IdCardFrontPath { get; set; }
         public string IdCardBackPath { get; set; }
         public string BareheadedPhotoPath { get; set; }
-        public bool Status { get; set; }
     }
 }

@@ -178,7 +178,7 @@
                         "bSearchable": false,
                         "bStorable": false,
                         "mRender": function (data, type, row) {
-                            return row.Status ? '-' : '<a class="tip" href="/Admin/AdminArchives/EditArchive/' + row.Id + '"><i class="icon-pencil"></i></a>&nbsp;&nbsp;' +
+                            return row.Status ? '-' : '<a class="tip" href="/Student/Add/' + row.Id + '"><i class="icon-pencil"></i></a>&nbsp;&nbsp;' +
                                 '<a id="delstudent"  class="tip" target-id="' + row.Id + '" href="#"><i class="icon-remove"></i></a>';
                         }
                     }
@@ -248,24 +248,24 @@
             });
 
             //4.0 真删
-            $('#archives-table').on('click', '#realdelarticle', function (e) {
+            jQuery('#archives-table').on('click', 'a#delstudent', function (e) {
                 //异步删除(级联删除)
                 e.preventDefault();
 
-                var curElement = $(this);
+                var curElement = jQuery(this);
                 var id = curElement.attr('target-id');
 
                 //先弹出一个confirm对话框，再发起删除指令
                 layer.confirm("此删除操作不可逆，确定删除?", {
                     btn: ['确定', '取消']
                 }, function () {
-                    $.post("/Admin/AdminArchives/RealDelArchive/" + id, function (data) {
+                    jQuery.post("/Student/Delete/" + id, function (data) {
                         if (data == "1") {
                             layer.alert('删除成功', {
                                 time: 2000
                             });
                             //重新加载本页数据
-                            $('#archives-table').dataTable().fnDraw(false);
+                            jQuery('#archives-table').dataTable().fnDraw(false);
                         } else if (data) {
                             layer.alert('删除失败', 8);
                         }

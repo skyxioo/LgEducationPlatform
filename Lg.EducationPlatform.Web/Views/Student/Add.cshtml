@@ -1,6 +1,4 @@
-﻿@{
-    ViewBag.Title = "长沙理工大学综合管理系统|学生管理|添加";
-}
+﻿@model Lg.EducationPlatform.ViewModel.StudentViewModel
 
 @section headScript{
     <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
@@ -12,7 +10,8 @@
         jQuery(function () {
             jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
 
-            jQuery('#student,#stu_add').addClass('current');
+            var id = jQuery('#Id').val();
+            id > 0 ? jQuery('#student,#stu_info').addClass('current') : jQuery('#student,#stu_add').addClass('current');
             jQuery('body').addClass('withvernav');
             jQuery('#Birthday').datepicker({
                 dateFormat: 'yy-mm-dd',
@@ -81,11 +80,11 @@
                     jQuery.post("/Student/Add", jQuery(form).serialize(), function (data) {
                         if (data.Status == "1") {
                             layer.confirm(data.Message, {
-                                btn: ['学生信息', '继续添加']
+                                btn: ['学生信息', '继续操作']
                             }, function () {
                                 window.location.href = "/Student/Index";
                             }, function () {
-                                window.location.href = '/Student/Add';
+                                window.location.href = '/Student/Add/' + id;
                             });
                         } else {
                             layer.alert(data.Message);
@@ -110,7 +109,11 @@
     <ul class="breadcrumbs">
         <li><a>首页</a></li>
         <li><a href="">学生管理</a></li>
-        <li>添加学生</li>
+        @if (Model.Id > 0) {
+            <li>编辑学生</li>
+        } else {
+            <li>添加学生</li>
+        }
     </ul>
     <div class="contentwrapper">
         <form id="addstudentform" class="stdform" method="post" action="">
@@ -120,51 +123,51 @@
             <p>
                 <label>姓名</label>
                 <span class="field">
-                    @Html.TextBox("SurName", string.Empty, new { @class = "smallinput" })
+                    @Html.TextBoxFor(m => m.SurName, new { @class = "smallinput" })
                 </span>
             </p>
             <p>
                 <label>性别</label>
                 <span class="field">
-                    @Html.RadioButton("Sex", 1, true) 男 &nbsp; &nbsp;
-                    @Html.RadioButton("Sex", 0) 女
+                    @Html.RadioButtonFor(m => m.Sex, 1) 男 &nbsp; &nbsp;
+                    @Html.RadioButtonFor(m => m.Sex, 0) 女
                 </span>
             </p>
             <p>
                 <label>生日</label>
                 <span class="field">
-                    @Html.TextBox("Birthday", string.Empty, new { @class = "width100" })
+                    @Html.TextBoxFor(m => m.Birthday, new { @class = "width100" })
                 </span>
             </p>
             <p>
                 <label>民族</label>
                 <span class="field">
-                    @Html.TextBox("Nationality", string.Empty, new { @class = "smallinput" })
+                    @Html.TextBoxFor(m => m.Nationality, new { @class = "smallinput" })
                 </span>
             </p>
             <p>
                 <label>手机</label>
                 <span class="field">
-                    @Html.TextBox("Phone", string.Empty, new { @class = "smallinput" })
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "smallinput" })
                 </span>
             </p>
             <p>
                 <label>届别</label>
                 <span class="field">
-                    @Html.TextBox("Period", string.Empty, new { @class = "smallinput" })
+                    @Html.TextBoxFor(m => m.Period, new { @class = "smallinput" })
                 </span>
             </p>
 
             <p>
                 <label>政治面貌</label>
                 <span class="field">
-                    @Html.TextBox("PoliticalStatus", string.Empty, new { @class = "mediuminput" })
+                    @Html.TextBoxFor(m => m.PoliticalStatus, new { @class = "mediuminput" })
                 </span>
             </p>
             <p>
                 <label>通讯地址</label>
                 <span class="field">
-                    @Html.TextBox("Address", string.Empty, new { @class = "longinput" })
+                    @Html.TextBoxFor(m => m.Address, new { @class = "longinput" })
                 </span>
             </p>
             <div class="contenttitle2">
@@ -173,33 +176,33 @@
             <p>
                 <label>文化层次</label>
                 <span class="field">
-                    @Html.DropDownList("EducationalLevel", ViewBag.EduLevelItemList as List<SelectListItem>, new { @class = "uniformselect" })
+                    @Html.DropDownListFor(m => m.EducationalLevel, ViewBag.EduLevelItemList as List<SelectListItem>, new { @class = "uniformselect" })
                 </span>
             </p>
 
             <p>
                 <label>报考层次</label>
                 <span class="field">
-                    @Html.DropDownList("ExaminationLevel", ViewBag.ExamLevelItemList as List<SelectListItem>, new { @class = "uniformselect" })
+                    @Html.DropDownListFor(m => m.ExaminationLevel, ViewBag.ExamLevelItemList as List<SelectListItem>, new { @class = "uniformselect" })
                 </span>
             </p>
 
             <p>
                 <label>专业</label>
                 <span class="field">
-                    @Html.TextBox("MajorName", string.Empty, new { @class = "smallinput" })
+                    @Html.TextBoxFor(m => m.MajorName, new { @class = "smallinput" })
                 </span>
             </p>
             <p>
                 <label>免试条件</label>
                 <span class="field">
-                    @Html.TextBox("TestFreeCondition", string.Empty, new { @class = "longinput" })
+                    @Html.TextBoxFor(m => m.TestFreeCondition, new { @class = "longinput" })
                 </span>
             </p>
             <p>
                 <label>备注</label>
                 <span class="field">
-                    @Html.TextArea("Remark", new { @cols = "80", @rows = "5", @class = "longinput" })
+                    @Html.TextAreaFor(m => m.Remark, new { @cols = "80", @rows = "5", @class = "longinput" })
                 </span>
             </p>
             <div class="contenttitle2">
@@ -238,6 +241,7 @@
             <br />
 
             <p class="stdformbutton">
+                @Html.HiddenFor(m => m.Id)
                 <button class="submit radius2">提交学生资料</button>
             </p>
         </form>
