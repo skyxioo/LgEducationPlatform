@@ -36,6 +36,7 @@
     <script type="text/javascript" src="~/Content/js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="~/Content/js/plugins/moment.min.js"></script>
     <script type="text/javascript" src="~/Content/js/custom/calendar.zh-cn.js"></script>
+    <script type="text/javascript" src="~/Content/layer/layer.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
@@ -260,7 +261,7 @@
                     btn: ['确定', '取消']
                 }, function () {
                     jQuery.post("/Student/Delete/" + id, function (data) {
-                        if (data == "1") {
+                        if (data.Status == "1") {
                             layer.alert('删除成功', {
                                 time: 2000
                             });
