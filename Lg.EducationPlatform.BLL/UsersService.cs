@@ -15,7 +15,7 @@ namespace Lg.EducationPlatform.BLL
         public UserDto GetUser(string userName)
         {
             var whereExp = PredicateBuilder.True<Users>();
-            whereExp.And(p => p.IsActive && !p.IsDeleted && p.UserName == userName);
+            whereExp = whereExp.And(p => p.IsActive && !p.IsDeleted && p.UserName == userName);
             var users = CurrentDAL.GetDataListBy(whereExp);
             var user = (from p in users
                        select new UserDto {
@@ -30,7 +30,7 @@ namespace Lg.EducationPlatform.BLL
         public List<ItemModel> GetTeacherItems()
         {
             var whereExp = PredicateBuilder.True<Users>();
-            whereExp.And(p => p.IsActive && !p.IsDeleted && p.RoleId == (int)UserRole.教师);
+            whereExp = whereExp.And(p => p.IsActive && !p.IsDeleted && p.RoleId == (int)UserRole.教师);
             var users = CurrentDAL.GetDataListBy(whereExp);
             var items = (from p in users
                         select new ItemModel

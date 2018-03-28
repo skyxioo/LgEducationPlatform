@@ -5,26 +5,31 @@
 @section headLink{
     <link rel="stylesheet" href="~/Content/css/style.datatable.css" type="text/css" />
     <style type="text/css">
-        #student_search {
-            padding: 0px 30px;
+        .ui-widget-header {
+            border-right: medium none;
+            border-top: 1px solid #D5D5D5;
+            font-weight: normal;
+            margin-top: -1px;
         }
-
-        #delstudent {
-            margin-left: 5px;
-        }
-
-        #student_search ul li {
-            width: auto;
+        .delaction {
+            border-radius: 4px;
             display: inline-block;
-            margin-bottom: 15px;
+            padding: 1px 4px;
+            text-decoration: none;
+            background: #da542e none repeat scroll 0 0;
+            color: #fff;
         }
-
-        #student_search label {
+        .publicaction {
+            border-radius: 4px;
             display: inline-block;
-            width: 100px;
-            text-align: right
+            padding: 1px 4px;
+            text-decoration: none;
+            background: #ffb849 none repeat scroll 0 0;
+            color: #fff;
         }
-
+        .table_title {
+            padding-left: 30px;
+        }
         .stu_table {
             padding: 0px 30px;
         }
@@ -40,21 +45,8 @@
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
-            jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
-            jQuery('#student,#stu_info').addClass('current');
+            jQuery('#teacher,#tea_info').addClass('current');
             jQuery('body').addClass('withvernav');
-            var dates = jQuery("#start_date, #end_date").datepicker({
-                dateFormat: 'yy-mm-dd',
-                onSelect: function (selectedDate) {
-                    var option = this.id == "start_date" ? "minDate" : "maxDate",
-                        instance = jQuery(this).data("datepicker"),
-                        date = jQuery.datepicker.parseDate(
-                            instance.settings.dateFormat ||
-                            jQuery.datepicker._defaults.dateFormat,
-                            selectedDate, instance.settings);
-                    dates.not(this).datepicker("option", option, date);
-                }
-            });
 
             jQuery('#archives-table').dataTable({
                 "oLanguage": {
@@ -77,22 +69,7 @@
                 //"bServerSide": false,  //第一种场景:服务端一次性取出所有数据,完全由客户端来处理这些数据.此时为false
                 "bServerSide": true,  //第二种场景:服务端处理分页后数据,客户端呈现,此时为true.但此时aoColumns要变,将'sName'换成mDataProp,同时自定义列也要有对应的数据
                 "sServerMethod": "POST",
-                "sAjaxSource": "/Student/GetStudents", //ajax Url地址
-                "fnServerData": function (sSource, aoData, fnCallback) {
-                    aoData.push({ "name": "realname", "value": jQuery("#realname").val() });
-                    aoData.push({ "name": "creator", "value": jQuery("#creator").val() });
-                    aoData.push({ "name": "status", "value": jQuery("#status").val() });
-                    aoData.push({ "name": "major_name", "value": jQuery("#major_name").val() });
-                    aoData.push({ "name": "start_date", "value": jQuery("#start_date").val() });
-                    aoData.push({ "name": "end_date", "value": jQuery("#end_date").val() });
-                    jQuery.ajax({
-                        "dataType": 'json',
-                        "type": "POST",
-                        "url": sSource,
-                        "data": aoData,
-                        "success": fnCallback
-                    });
-                },
+                "sAjaxSource": "/Teacher/GetTeachers", //ajax Url地址
                 "bProcessing": true,
                 "bPaginate": true,
                 "sPaginationType": "full_numbers",
@@ -100,62 +77,14 @@
                 'bFilter': false,
                 //'bsearch':true,
                 'bLengthChange': false,
-                'iDisplayLength': 10,  //每页显示10条记录
+                'iDisplayLength': 15,  //每页显示10条记录
                 'bAutoWidth': true,
                 "scrollX": true,
                 "aoColumns": [
-                    {
-                        "sWidth": "6%",
-                        "mDataProp": "SurName",
-                        "mRender": function (data, type, row) {
-                            return '<a href="/Student/Show/' + row.Id + '\">' + data + '</a>';
-                        }
-                    },
-                    {
-                        "sWidth": "6%",
-                        "mDataProp": "Sex",
-                        "mRender": function (data, type, row) {
-                            return data == 0 ? "女" : "男";
-                        }
-                    },
-                    { "sWidth": "6%", "mDataProp": "Period" },
-                    { "sWidth": "12%", "mDataProp": "MajorName" },
-                    {
-                        "sWidth": "10%", "mDataProp": "EducationalLevel",
-                        "mRender": function (data, type, row) {
-                            var value = "";
-                            switch (data) {
-                                case 0:
-                                    value = "无";
-                                    break;
-                                case 1:
-                                    value = "初中";
-                                    break;
-                                case 2:
-                                    value = "高中";
-                                    break;
-                                case 3:
-                                    value = "中专";
-                                    break;
-                                case 4:
-                                    value = "大专在读";
-                                    break;
-                                case 5:
-                                    value = "大专毕业";
-                                    break;
-                            }
-                            return value;
-                        }
-                    },
-                    {
-                        "sWidth": "10%", "mDataProp": "ExaminationLevel",
-                        "mRender": function (data, type, row) {
-                            var value = "本科";
-                            if (data == 1)
-                                value = "专科";
-                            return value;
-                        }
-                    },
+                    { "sWidth": "10%", "mDataProp": "UserName" },
+                    { "sWidth": "8%", "mDataProp": "RealName" },
+                    { "sWidth": "10%", "mDataProp": "Phone" },
+                    { "sWidth": "10%", "mDataProp": "Email" },
                     {
                         "sWidth": "8%", "mDataProp": "CreationTime",
                         "mRender": function (data, type, row) {
@@ -164,23 +93,32 @@
                     },
                     {
                         "sWidth": "8%",
-                        "mDataProp": "Status",
+                        "mDataProp": "IsActive",
                         "mRender": function (data, type, row) {
-                            var value = "已审";
+                            var value = "激活";
                             if (!data)
-                                value = "未审";
+                                value = "停用";
                             return value;
                         }
                     },
-                    { "sWidth": "15%", "mDataProp": "Remark" },
+                    {
+                        "sWidth": "8%",
+                        "mDataProp": "null",
+                        "mRender": function (data, type, row) {
+                            var actionstr = '<a id="publicarticle" class="publicaction"  target-id="' + row.Id + '" href="#">激 活</a>';
+                            if (row.IsActive)
+                                actionstr = '<a id="delarticle" class="delaction" target-id="' + row.Id + '" href="#">停 用</a>';
+                            return actionstr;
+                        }
+                    },
                     { //自定义列 : 真删除
                         "mDataProp": "null",
                         "sWidth": "6%",
                         "bSearchable": false,
                         "bStorable": false,
                         "mRender": function (data, type, row) {
-                            return row.Status ? '-' : '<a class="tip" href="/Student/Add/' + row.Id + '"><i class="icon-pencil"></i></a>&nbsp;&nbsp;' +
-                                '<a id="delstudent"  class="tip" target-id="' + row.Id + '" href="#"><i class="icon-remove"></i></a>';
+                            return row.Status ? '-' : '<a class="tip" href="/Teacher/Add/' + row.Id + '"><i class="icon-pencil"></i></a>&nbsp;&nbsp;' +
+                                '<a id="delteacher"  class="tip" target-id="' + row.Id + '" href="#"><i class="icon-remove"></i></a>';
                         }
                     }
                 ],
@@ -202,12 +140,48 @@
                 ]
             });
 
-            jQuery('#btn_search').click(function () {
-                jQuery('#archives-table').dataTable().fnDraw(false);
+            jQuery('#archives-table').on('click', 'a#delarticle', function (e) {
+                //异步软删除
+                e.preventDefault();
+
+                var curelement = jQuery(this);  //ajax 闭包
+                var id = curelement.attr('target-id');
+
+                jQuery.post("/Teacher/State/" + id + "?type=0", function (data) {
+                    if (data.Status == 1) {
+                        layer.alert('禁用成功', {
+                            time: 2000
+                        });
+                        //重新加载本页数据
+                        $('#archives-table').dataTable().fnDraw(false);
+                    } else {
+                        layer.alert('禁用失败', 8);
+                    }
+                });
+            });
+            
+            jQuery('#archives-table').on('click', 'a#publicarticle', function (e) {
+                //异步发布
+                e.preventDefault();
+
+                var curElement = jQuery(this);
+                var id = curElement.attr('target-id');
+
+                jQuery.post("/Teacher/State/" + id + "?type=1", function (data) {
+                    if (data.Status == 1) {
+                        layer.alert('激活成功', {
+                            time: 2000
+                        });
+                        //重新加载本页数据
+                        jQuery('#archives-table').dataTable().fnDraw(false);
+                    } else {
+                        layer.alert('激活失败', 8);
+                    }
+                });
             });
 
-            //4.0 真删
-            jQuery('#archives-table').on('click', 'a#delstudent', function (e) {
+            //4.0 删除
+            jQuery('#archives-table').on('click', 'a#delteacher', function (e) {
                 //异步删除(级联删除)
                 e.preventDefault();
 
@@ -218,7 +192,7 @@
                 layer.confirm("此删除操作不可逆，确定删除?", {
                     btn: ['确定', '取消']
                 }, function () {
-                    jQuery.post("/Student/Delete/" + id, function (data) {
+                    jQuery.post("/Teacher/Delete/" + id, function (data) {
                         if (data.Status == "1") {
                             layer.alert('删除成功', {
                                 time: 2000
@@ -235,34 +209,34 @@
 
             });
 
+            jQuery('.ui-widget-header').css({ "display":"none"});
         });
     </script>
 }
 
-@{ Html.RenderPartial("~/Views/Shared/_StudentMenu.cshtml"); }
+@{ Html.RenderPartial("~/Views/Shared/_TeacherMenu.cshtml"); }
 
     <div class="centercontent tables">
         <ul class="breadcrumbs">
             <li><a>首页</a></li>
             <li><a href="">教师管理</a></li>
         </ul>
-        <div class="contenttitle2">
-            <h3>教师列表</h3>
+        <div class="table_title">
+            <div class="contenttitle2">
+                <h3>教师列表</h3>
+            </div>
         </div>
-        <button id="addCategory" class="btn btn-info newbuild">添加分类</button>
         <div class="dataTables_wrapper stu_table">
             <table id="archives-table" class="stdtable table" cellspacing="0" cellpadding="0" border="0">
                 <thead>
                     <tr>
-                        <th align="center">姓名</th>
-                        <th>性别</th>
-                        <th>届别</th>
-                        <th>专业</th>
-                        <th>文化层次</th>
-                        <th>报考层次</th>
+                        <th align="center">登录名</th>
+                        <th>真实姓名</th>
+                        <th>手机号</th>
+                        <th>邮箱</th>
                         <th>创建日期</th>
-                        <th>审核状态</th>
-                        <th>备注</th>
+                        <th>状态</th>
+                        <th>操作</th>
                         <th>操作</th>
                     </tr>
                 </thead>

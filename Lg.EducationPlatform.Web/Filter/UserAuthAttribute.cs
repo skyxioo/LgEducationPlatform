@@ -1,12 +1,16 @@
 ﻿using Lg.EducationPlatform.Enum;
+using Lg.EducationPlatform.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Lg.EducationPlatform.Web
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class UserAuthAttribute : FilterAttribute, IAuthorizationFilter
     {
         /// <summary>
@@ -26,27 +30,18 @@ namespace Lg.EducationPlatform.Web
 
         public void OnAuthorization(AuthorizationContext filterContext)
         {
-            // 忽略可匿名访问的方法
-            if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), false).Any())
-            {
-                return;
-            }
-
-            // 检查用户登录
-            if (!System.Security.Authentication.IsLogin)
-            {
-                filterContext.Result = new RedirectResult(Common.NotAuthUrl());
-                //filterContext.Result = new RedirectResult(System.Configuration.ConfigurationManager.AppSettings["ssologin"]);
-                return;
-            }
-
+            HttpCookie cookie = filterContext.HttpContext.Request.Cookies["LgEduTicket"];
+            string ticketString = cookie.Value;
+            //解密ticket值
+            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(ticketString);
+            UserDto user = JsonConvert.DeserializeObject<UserDto>(ticket.UserData);
             //检查用权限
-            if ((AllowRole & Authentication.LoginUserInfo.Role) == UserRole.None)
+            if (AllowRole != UserRole.全部 && (int)AllowRole != user.RoleId)
             {
                 filterContext.Result = new ViewResult
                 {
                     ViewName = "_Error",
-                    ViewData = { { "errorMsg", Error ?? "您没有浏览该模块的权限" } }
+                    ViewData = { { "RoleId", user.RoleId } }
                 };
                 return;
             }

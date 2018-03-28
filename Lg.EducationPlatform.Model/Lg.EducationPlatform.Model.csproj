@@ -82,6 +82,8 @@
     <Compile Include="ViewModel\LoginUser.cs" />
     <Compile Include="ViewModel\StudentOutput.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
+    <Compile Include="ViewModel\TeacherOutput.cs" />
+    <Compile Include="ViewModel\TeacherViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

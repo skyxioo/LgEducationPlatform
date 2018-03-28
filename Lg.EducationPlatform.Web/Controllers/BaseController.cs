@@ -29,7 +29,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(ticketString);
                 name = ticket.Name;
                 if (!string.IsNullOrEmpty(name))
-                {
+                {  
                     UserDto user = JsonConvert.DeserializeObject<UserDto>(ticket.UserData);
                     ViewBag.AdminUser = name;
                     ViewBag.User = user;

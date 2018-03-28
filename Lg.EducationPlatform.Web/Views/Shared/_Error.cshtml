@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.RoleId = ViewData["RoleId"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="contentwrapper padding10">
+    <div class="errorwrapper error403">
+        <div class="errorcontent">
+            <h1>403 Forbidden Access</h1>
+            <h3>您没有权限访问当前页面.</h3>
+
+            <p>可能是以下原因导致</p>
+            <ul>
+                <li>您当前角色权限不够，管理员限制您访问此页面.</li>
+                <li>服务器无法获取到此页面.</li>
+                <li>您不是通过合法途径访问此页面.</li>
+            </ul>
+            <br />
+            <button class="stdbtn btn_black" onclick="history.back()">返回上一页</button> &nbsp;
+            <button onclick="location.href='/Home/Index'" class="stdbtn btn_orange">返回首页</button>
+        </div><!--errorcontent-->
+    </div><!--errorwrapper-->
+</div>
