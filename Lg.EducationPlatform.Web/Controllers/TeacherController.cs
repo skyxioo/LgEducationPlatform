@@ -162,7 +162,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 UserDto user = ViewBag.User as UserDto;
                 string type = Request.QueryString["type"];
                 Users teacher = new Users();
-                teacher.IsActive = bool.Parse(type);
+                teacher.IsActive = type == "1" ? true : false;
                 teacher.LastModificationTime = DateTime.Now;
                 teacher.LastModifierUserId = user.UserId;
                 var propertyNames = new string[] { "IsActive", "LastModificationTime", "LastModifierUserId" };

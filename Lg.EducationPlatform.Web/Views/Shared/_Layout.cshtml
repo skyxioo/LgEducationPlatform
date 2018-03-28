@@ -14,6 +14,20 @@
     <script type="text/javascript" src="/Content/js/plugins/jquery.flot.resize.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery.slimscroll.js"></script>
     <script type="text/javascript" src="/Content/js/custom/general.js"></script>
+    <script type="text/javascript" src="~/Content/layer/layer.js"></script>
+    <script type="text/javascript">
+        function openProfile () {
+            alert('bbbb');
+            layer.open({
+                type: 2,
+                title: 'layer mobile页',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['380px', '90%'],
+                content: '' //iframe的url
+            });
+        }
+    </script>
     @RenderSection("headScript", required: false)
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/Content/js/plugins/excanvas.min.js"></script><![endif]-->
     <!--[if IE 9]>
@@ -73,7 +87,7 @@
                         <h4>@ViewBag.AdminUser</h4>
                         <span class="email">个人信息管理</span>
                         <ul>
-                            <li><a href="accountsettings.html">账号设置</a></li>
+                            <li><a href="javascript:void(0);" onclick="openProfile();">账号设置</a></li>
                             <li><a href="/Account/Logout">退出</a></li>
                         </ul>
                     </div><!--userdata-->
