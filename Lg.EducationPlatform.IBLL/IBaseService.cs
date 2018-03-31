@@ -28,7 +28,7 @@ namespace Lg.EducationPlatform.IBLL
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns>受影响的行数</returns>
-        int Delete(int id);
+        int Delete(long id);
         #endregion
 
         #region 2.1 删除一个model
@@ -76,7 +76,7 @@ namespace Lg.EducationPlatform.IBLL
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns>如果未在上下文或数据源中找到该实体,则返回null</returns>
-        T GetEntity(int id);
+        T GetEntity(long id);
         #endregion
 
         #region 4.1 根据条件查询

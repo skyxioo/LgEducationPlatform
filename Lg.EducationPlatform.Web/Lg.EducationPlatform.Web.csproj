@@ -385,6 +385,8 @@
     <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Shared\_TeacherMenu.cshtml" />
     <Content Include="Views\Teacher\Add.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\Home\UserProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -51,7 +51,7 @@ namespace Lg.EducationPlatform.BLL
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns>受影响的行数</returns>
-        public int Delete(int id)
+        public int Delete(long id)
         {
             return CurrentDAL.Delete(id);
         }
@@ -114,7 +114,7 @@ namespace Lg.EducationPlatform.BLL
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns>如果未在上下文或数据源中找到该实体,则返回null</returns>
-        public T GetEntity(int id)
+        public T GetEntity(long id)
         {
             return CurrentDAL.GetEntity(id);
         }

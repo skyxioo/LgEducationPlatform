@@ -79,6 +79,7 @@
     <Compile Include="Users.cs">
       <DependentUpon>EduDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\EditUserViewModel.cs" />
     <Compile Include="ViewModel\LoginUser.cs" />
     <Compile Include="ViewModel\StudentOutput.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />

@@ -115,8 +115,9 @@ namespace Lg.EducationPlatform.Web.Controllers
         [HttpPost]
         public ActionResult ValidateUser(string username)
         {
+            UserDto userDto = ViewBag.User as UserDto;
             var user = _usersService.GetUser(username);
-            if (user == null)
+            if (user == null || (user != null && user.UserId == userDto.UserId))
                 return Json(true);
             else
                 return Json(false);
