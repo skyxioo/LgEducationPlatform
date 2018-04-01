@@ -22,7 +22,7 @@ namespace Lg.EducationPlatform.Common
         {
             //先给要加密的字符串加上前后缀
             //GetBytes()得到一个系统默认编码格式的字节数组
-            string sourcePwd = DateTime.Now.Year + strPwd + DateTime.Now.Month;
+            string sourcePwd = "cslg" + strPwd + "2018";
             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(sourcePwd);
 
             //实例化一个MD5对象

@@ -11,15 +11,18 @@
     <title>编辑用户信息</title>
     <link rel="stylesheet" href="/Content/css/style.default.css" type="text/css" />
     <link rel="stylesheet" href="/Content/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/uploadify/uploadify.css" />
     <style type="text/css">
         .sp {
-            display:inline-block;
+            display: inline-block;
             margin-left: 15px;
-            width:300px;
+            width: 300px;
         }
+
         input[type='password'] {
             padding: 8px 5px;
         }
+
         .label {
             float: none;
             text-align: right;
@@ -27,23 +30,26 @@
             display: inline-block;
             margin-bottom: 5px;
         }
+
         .formbtn {
             float: right;
             padding-right: 50px;
         }
-        .formbtntip{
-            color:red;
-            padding-right:15px;
+
+        .formbtntip {
+            color: red;
+            padding-right: 15px;
         }
     </style>
     <script type="text/javascript" src="/Content/js/plugins/jquery-1.7.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery.uniform.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/Content/uploadify/jquery.uploadify.min.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
-            var index = parent.layer.getFrameIndex(window.name); 
+            var index = parent.layer.getFrameIndex(window.name);
             jQuery('input:checkbox, input:radio, select.uniformselect, input:password').uniform();
 
             var id = jQuery('#Id').val();
@@ -116,6 +122,11 @@
             if (id > 0) {
                 jQuery("#Password").rules("remove");
             }
+
+            $('#file_upload').uploadify({
+                'swf'        : '@Url.Content("~/Scripts/uploadify-v3.1/uploadify.swf")',
+                'uploader'   : '/Home/Upload'
+            });
         });
 
         //自定义手机号验证
@@ -180,6 +191,7 @@
                 <span class="sp">
                     @Html.TextBoxFor(m => m.Email, new { @class = "longinput" })
                 </span>
+                <input id="file_upload" name="file_upload" type="file" />
             </p>
             <p class="stdformbutton formbtn">
                 @Html.HiddenFor(m => m.UserId)

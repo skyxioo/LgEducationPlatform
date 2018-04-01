@@ -1,9 +1,14 @@
 ﻿@model Lg.EducationPlatform.ViewModel.StudentViewModel
 
+@section headLink{
+    <link rel="stylesheet" type="text/css" href="~/Content/uploadify/uploadify.css" />
+}
+
 @section headScript{
     <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript" src="~/Content/js/custom/calendar.zh-cn.js"></script>
+    <script type="text/javascript" src="/Content/uploadify/jquery.uploadify.min.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
@@ -91,6 +96,23 @@
                     });
                 }
             });
+
+            jQuery('#idcard_upload').uploadify({
+                uploader: '/article/upload',            // 服务器处理地址
+                swf: '/Content/uploadify/uploadify.swf',
+                buttonText: "选择文件",                  //按钮文字
+                height: 34,                             //按钮高度
+                width: 82,                              //按钮宽度
+                fileTypeExts: "*.jpg;*.png;",           //允许的文件类型
+                fileTypeDesc: "请选择图片文件",            //文件说明   
+                formData: { "imgType": "normal" },      //提交给服务器端的参数
+                auto: true,                             //是否自动上传  
+                multi: false,//是否一次可以选中多个文件 
+                onUploadSuccess: function (file, data, response) {   //一个文件上传成功后的响应事件处理
+                    var data = $.parseJSON(data);
+                    alert(data.imgpath);
+                }
+            });
         });
 
         //自定义手机号验证
@@ -108,14 +130,17 @@
     <ul class="breadcrumbs">
         <li><a>首页</a></li>
         <li><a href="">学生管理</a></li>
-        @if (Model.Id > 0) {
+        @if (Model.Id > 0)
+        {
             <li>编辑学生</li>
-        } else {
+        }
+        else
+        {
             <li>添加学生</li>
         }
     </ul>
     <div class="contentwrapper">
-        <form id="addstudentform" class="stdform" method="post" action="">
+        <form id="addstudentform" class="stdform" method="post" enctype="multipart/form-data" action="">
             <div class="contenttitle2">
                 <h3>基本信息</h3>
             </div>
@@ -210,11 +235,8 @@
             <p>
                 <label>2寸蓝底免冠照</label>
                 <span class="field">
-                    <div class="uploader" id="uniform-undefined">
-                        <input name="filename" size="19" style="opacity: 0;" type="file">
-                        <span class="filename" style="-moz-user-select: none;">未选择任何文件</span>
-                        <span class="action" style="-moz-user-select: none;">选择文件</span>
-                    </div>
+                    <div id="queue"></div>
+                    <input id="idcard_upload" size="19" style="opacity: 0;" type="file" />
                 </span>
             </p>
             <p>
