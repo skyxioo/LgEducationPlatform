@@ -123,6 +123,7 @@
     <Content Include="Content\css\style.blueline.css" />
     <Content Include="Content\css\style.contrast.css" />
     <Content Include="Content\css\style.custombg.css" />
+    <Content Include="Content\css\style.datatable.css" />
     <Content Include="Content\css\style.default.css" />
     <Content Include="Content\css\style.greenline.css" />
     <Content Include="Content\css\style.ie8.css" />
@@ -197,6 +198,7 @@
     <Content Include="Content\images\icons\unstar.png" />
     <Content Include="Content\images\icons\username.png" />
     <Content Include="Content\images\icons\users.png" />
+    <Content Include="Content\images\icons\users.white.png" />
     <Content Include="Content\images\icons\widgets.png" />
     <Content Include="Content\images\important.gif" />
     <Content Include="Content\images\info.gif" />
@@ -224,6 +226,7 @@
     <Content Include="Content\images\loaders\loader9.gif" />
     <Content Include="Content\images\menucollapsed.png" />
     <Content Include="Content\images\next.png" />
+    <Content Include="Content\images\nopic.png" />
     <Content Include="Content\images\notifications.png" />
     <Content Include="Content\images\online.png" />
     <Content Include="Content\images\patternbg.png" />
@@ -297,7 +300,6 @@
     <Content Include="Content\js\custom\forms.js" />
     <Content Include="Content\js\custom\general.js" />
     <Content Include="Content\js\custom\index.js" />
-    <Content Include="Content\js\plugins\jquery-ui.min.js" />
     <Content Include="Content\js\custom\messages.js" />
     <Content Include="Content\js\custom\newsfeed.js" />
     <Content Include="Content\js\custom\productlist.js" />
@@ -313,7 +315,9 @@
     <Content Include="Content\js\plugins\fullcalendar.min.js" />
     <Content Include="Content\js\plugins\jquery-1.5.2.min.js" />
     <Content Include="Content\js\plugins\jquery-1.7.min.js" />
+    <Content Include="Content\js\plugins\jquery-1.8.1.min.js" />
     <Content Include="Content\js\plugins\jquery-ui-1.8.16.custom.min.js" />
+    <Content Include="Content\js\plugins\jquery-ui.min.js" />
     <Content Include="Content\js\plugins\jquery.alerts.js" />
     <Content Include="Content\js\plugins\jquery.autogrow-textarea.js" />
     <Content Include="Content\js\plugins\jquery.base64.js" />
@@ -342,11 +346,6 @@
     <Content Include="Content\layer\skin\default\loading-1.gif" />
     <Content Include="Content\layer\skin\default\loading-2.gif" />
     <Content Include="Content\layer\skin\layer.css" />
-    <Content Include="Content\uploadify\jquery.uploadify.js" />
-    <Content Include="Content\uploadify\jquery.uploadify.min.js" />
-    <Content Include="Content\uploadify\uploadify-cancel.png" />
-    <Content Include="Content\uploadify\uploadify.css" />
-    <Content Include="Content\uploadify\uploadify.swf" />
     <Content Include="Global.asax" />
     <Content Include="Template\学生信息表.xml" />
     <Content Include="Web.config" />
@@ -370,7 +369,6 @@
     <Content Include="log4net.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\css\style.datatable.css" />
     <Content Include="Content\font-awesome\css\Descr.WD3" />
     <Content Include="Content\font-awesome\font\Descr.WD3" />
     <Content Include="Content\font-awesome\font\fontawesome-webfont.eot" />

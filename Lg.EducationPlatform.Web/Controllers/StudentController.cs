@@ -60,9 +60,9 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Remark = s.Remark,
                 Status = s.Status,
                 TestFreeCondition = s.TestFreeCondition,
-                IdCardFrontPath = s.IdCardFrontPath,
-                IdCardBackPath = s.IdCardBackPath,
-                BareheadedPhotoPath = s.BareheadedPhotoPath
+                IdCardFrontPath = string.IsNullOrWhiteSpace(s.IdCardFrontPath) ? "/Content/images/nopic.png" : s.IdCardFrontPath,
+                IdCardBackPath = string.IsNullOrWhiteSpace(s.IdCardBackPath) ? "/Content/images/nopic.png" : s.IdCardBackPath,
+                BareheadedPhotoPath = string.IsNullOrWhiteSpace(s.BareheadedPhotoPath) ? "/Content/images/nopic.png" : s.BareheadedPhotoPath
             };
             return View(model);
         }
@@ -110,6 +110,9 @@ namespace Lg.EducationPlatform.Web.Controllers
                 model.Sex = student.Sex;
                 model.SurName = student.SurName;
                 model.TestFreeCondition = student.TestFreeCondition;
+                model.IdCardFrontPath = string.IsNullOrWhiteSpace(student.IdCardFrontPath) ? "/Content/images/nopic.png" : student.IdCardFrontPath;
+                model.IdCardBackPath = string.IsNullOrWhiteSpace(student.IdCardBackPath) ? "/Content/images/nopic.png" : student.IdCardBackPath;
+                model.BareheadedPhotoPath = string.IsNullOrWhiteSpace(student.BareheadedPhotoPath) ? "/Content/images/nopic.png" : student.BareheadedPhotoPath;
             }
 
             return View(model);
@@ -137,6 +140,38 @@ namespace Lg.EducationPlatform.Web.Controllers
                 SurName = model.SurName,
                 TestFreeCondition = model.TestFreeCondition
             };
+
+
+            // 文件上传后的保存路径
+            string filePath = Server.MapPath("~/Uploads/");
+            if (!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+
+            if (model.BareheadedPhoto != null)
+            { 
+                string fileName = Path.GetFileName(model.BareheadedPhoto.FileName);// 原始文件名称
+                string fileExtension = Path.GetExtension(fileName); // 文件扩展名
+                string saveName = Guid.NewGuid().ToString() + fileExtension; // 保存文件名称
+                model.BareheadedPhoto.SaveAs(filePath + saveName);
+                stu.BareheadedPhotoPath = "/Uploads/" + saveName;
+            }
+            if (model.IdCardFront != null)
+            {
+                string fileName = Path.GetFileName(model.IdCardFront.FileName);// 原始文件名称
+                string fileExtension = Path.GetExtension(fileName); // 文件扩展名
+                string saveName = Guid.NewGuid().ToString() + fileExtension; // 保存文件名称
+                model.IdCardFront.SaveAs(filePath + saveName);
+                stu.IdCardFrontPath = "/Uploads/" + saveName;
+            }
+            if (model.IdCardBack != null)
+            {
+                string fileName = Path.GetFileName(model.IdCardBack.FileName);// 原始文件名称
+                string fileExtension = Path.GetExtension(fileName); // 文件扩展名
+                string saveName = Guid.NewGuid().ToString() + fileExtension; // 保存文件名称
+                model.IdCardBack.SaveAs(filePath + saveName);
+                stu.IdCardBackPath = "/Uploads/" + saveName;
+            }
+
 
             int result = 0;
             if (model.Id > 0)//编辑

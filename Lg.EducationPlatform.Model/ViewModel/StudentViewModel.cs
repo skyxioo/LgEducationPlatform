@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Web;
 
 namespace Lg.EducationPlatform.ViewModel
 {
@@ -26,5 +22,8 @@ namespace Lg.EducationPlatform.ViewModel
         public string IdCardFrontPath { get; set; }
         public string IdCardBackPath { get; set; }
         public string BareheadedPhotoPath { get; set; }
+        public HttpPostedFileBase BareheadedPhoto { get; set; }
+        public HttpPostedFileBase IdCardFront { get; set; }
+        public HttpPostedFileBase IdCardBack { get; set; }
     }
 }

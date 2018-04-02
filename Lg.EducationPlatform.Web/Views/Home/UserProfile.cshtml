@@ -11,7 +11,6 @@
     <title>编辑用户信息</title>
     <link rel="stylesheet" href="/Content/css/style.default.css" type="text/css" />
     <link rel="stylesheet" href="/Content/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="/Content/uploadify/uploadify.css" />
     <style type="text/css">
         .sp {
             display: inline-block;
@@ -45,7 +44,6 @@
     <script type="text/javascript" src="/Content/js/plugins/jquery.uniform.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-    <script type="text/javascript" src="/Content/uploadify/jquery.uploadify.min.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
@@ -191,7 +189,6 @@
                 <span class="sp">
                     @Html.TextBoxFor(m => m.Email, new { @class = "longinput" })
                 </span>
-                <input id="file_upload" name="file_upload" type="file" />
             </p>
             <p class="stdformbutton formbtn">
                 @Html.HiddenFor(m => m.UserId)
