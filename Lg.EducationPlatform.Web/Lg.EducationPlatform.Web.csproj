@@ -342,6 +342,11 @@
     <Content Include="Content\layer\skin\default\loading-1.gif" />
     <Content Include="Content\layer\skin\default\loading-2.gif" />
     <Content Include="Content\layer\skin\layer.css" />
+    <Content Include="Content\uploadify\jquery.uploadify.js" />
+    <Content Include="Content\uploadify\jquery.uploadify.min.js" />
+    <Content Include="Content\uploadify\uploadify-cancel.png" />
+    <Content Include="Content\uploadify\uploadify.css" />
+    <Content Include="Content\uploadify\uploadify.swf" />
     <Content Include="Global.asax" />
     <Content Include="Template\学生信息表.xml" />
     <Content Include="Web.config" />
@@ -385,6 +390,8 @@
     <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Shared\_TeacherMenu.cshtml" />
     <Content Include="Views\Teacher\Add.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\Home\UserProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

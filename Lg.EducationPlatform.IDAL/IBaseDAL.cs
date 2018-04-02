@@ -19,7 +19,7 @@ namespace Lg.EducationPlatform.IDAL
         #endregion
 
         #region 2.1 根据id删除
-        int Delete(int id);
+        int Delete(long id);
         #endregion
 
         #region 2.2 根据model删除
@@ -39,7 +39,7 @@ namespace Lg.EducationPlatform.IDAL
         #endregion
 
         #region 6.0 根据主键id查询实体
-        T GetEntity(int id);
+        T GetEntity(long id);
         #endregion
 
         #region 6.0 根据条件查询

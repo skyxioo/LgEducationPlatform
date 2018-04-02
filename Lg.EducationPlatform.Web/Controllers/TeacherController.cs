@@ -115,8 +115,9 @@ namespace Lg.EducationPlatform.Web.Controllers
         [HttpPost]
         public ActionResult ValidateUser(string username)
         {
+            UserDto userDto = ViewBag.User as UserDto;
             var user = _usersService.GetUser(username);
-            if (user == null)
+            if (user == null || (user != null && user.UserId == userDto.UserId))
                 return Json(true);
             else
                 return Json(false);
@@ -162,7 +163,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 UserDto user = ViewBag.User as UserDto;
                 string type = Request.QueryString["type"];
                 Users teacher = new Users();
-                teacher.IsActive = bool.Parse(type);
+                teacher.IsActive = type == "1" ? true : false;
                 teacher.LastModificationTime = DateTime.Now;
                 teacher.LastModifierUserId = user.UserId;
                 var propertyNames = new string[] { "IsActive", "LastModificationTime", "LastModifierUserId" };

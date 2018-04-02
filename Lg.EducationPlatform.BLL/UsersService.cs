@@ -15,14 +15,15 @@ namespace Lg.EducationPlatform.BLL
         public UserDto GetUser(string userName)
         {
             var whereExp = PredicateBuilder.True<Users>();
-            whereExp = whereExp.And(p => p.IsActive && !p.IsDeleted && p.UserName == userName);
+            whereExp = whereExp.And(p => !p.IsDeleted && p.UserName == userName);
             var users = CurrentDAL.GetDataListBy(whereExp);
             var user = (from p in users
                        select new UserDto {
                            UserId = p.Id,
                            UserName = p.UserName,
                            PassWord = p.HashPassword,
-                           RoleId = p.RoleId
+                           RoleId = p.RoleId,
+                           IsActive = p.IsActive
                        }).FirstOrDefault();
             return user;
         }

@@ -58,6 +58,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Address = s.Address,
                 Phone = s.Phone,
                 Remark = s.Remark,
+                Status = s.Status,
                 TestFreeCondition = s.TestFreeCondition,
                 IdCardFrontPath = s.IdCardFrontPath,
                 IdCardBackPath = s.IdCardBackPath,
@@ -343,6 +344,37 @@ namespace Lg.EducationPlatform.Web.Controllers
                 {
                     Status = 0,
                     Message = "删除失败"
+                });
+            }
+        }
+
+        [UserAuth(AllowRole = Enum.UserRole.管理员)]
+        [HttpPost]
+        public ActionResult Audit(int id)
+        {
+            UserDto user = ViewBag.User as UserDto;
+            var student = _studentsService.GetEntity(id);
+            var newStu = new Students() {
+                Status = !student.Status,
+                LastModifierUserId = user.UserId,
+                LastModificationTime = DateTime.Now
+            };
+            var propertyNames = new string[] { "Status", "LastModifierUserId", "LastModificationTime" };
+            int result = _studentsService.UpdateBy(newStu, p => p.Id == id, propertyNames);
+            if (result > 0)
+            {
+                return Json(new
+                {
+                    Status = 1,
+                    Message = "修改成功"
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    Status = 0,
+                    Message = "修改失败"
                 });
             }
         }

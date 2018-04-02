@@ -34,7 +34,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 //之后才能进行Action操作
                 //该用户校验通过：写完cookie和sesion后跳转到首页
                var userDto =  _userService.GetUser(userModel.UserName);
-                if (userDto != null && userDto.PassWord == Security.StrToMD5(userModel.PassWord))
+                if (userDto != null && userDto.PassWord == Security.StrToMD5(userModel.PassWord) && userDto.IsActive)
                 {
                     ////写Session //跳转到首页 
                     //Session.Add("loginuser", userModel);

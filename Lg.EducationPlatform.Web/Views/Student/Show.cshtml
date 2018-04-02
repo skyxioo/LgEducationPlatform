@@ -18,12 +18,33 @@
 }
 
 @section headScript{
-    <script type="text/javascript" src="~/Content/layer/layer.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
             jQuery('#student,#stu_info').addClass('current');
             jQuery('body').addClass('withvernav');
+
+            var roleId = @ViewBag.RoleId;
+            if (roleId != 0)
+                jQuery('#btn_audit').css({ "display": "none"});
+            var status = jQuery('#Status').val();
+            if (status.toLowerCase() == "true") {
+                jQuery('#btn_audit').text("撤销审核");
+            }
+
+            jQuery('#btn_audit').click(function () {
+                var id = jQuery('#Id').val()
+                jQuery.post("/Student/Audit/" + id, function (data) {
+                    if (data.Status == "1") {
+                        layer.alert('操作成功', {
+                            time: 2000
+                        });
+                        location.href = "/Student/Index";
+                    } else if (data) {
+                        layer.alert('操作失败', 8);
+                    }
+                });
+            });
         });
     </script>
 }
@@ -146,7 +167,10 @@
 
         <p class="stdformbutton">
             <label>&nbsp;</label>
-            <button class="stdbtn btn_orange" onclick="javascript: history.go(-1);"><<返回学生管理</button>
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.Status)
+            <button class="stdbtn btn_orange" onclick="javascript: history.go(-1);"><<返回学生管理</button>&nbsp;&nbsp;
+            <button id="btn_audit" class="stdbtn btn_red" onclick="audit();">通过审核</button>
         </p>
     </div>
 </div>

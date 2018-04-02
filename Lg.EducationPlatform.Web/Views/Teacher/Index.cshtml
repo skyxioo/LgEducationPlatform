@@ -41,7 +41,6 @@
     <script type="text/javascript" src="~/Content/js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="~/Content/js/plugins/moment.min.js"></script>
     <script type="text/javascript" src="~/Content/js/custom/calendar.zh-cn.js"></script>
-    <script type="text/javascript" src="~/Content/layer/layer.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
@@ -95,7 +94,7 @@
                         "sWidth": "8%",
                         "mDataProp": "IsActive",
                         "mRender": function (data, type, row) {
-                            var value = "激活";
+                            var value = "可用";
                             if (!data)
                                 value = "停用";
                             return value;
@@ -153,7 +152,7 @@
                             time: 2000
                         });
                         //重新加载本页数据
-                        $('#archives-table').dataTable().fnDraw(false);
+                        jQuery('#archives-table').dataTable().fnDraw(false);
                     } else {
                         layer.alert('禁用失败', 8);
                     }
@@ -230,7 +229,7 @@
             <table id="archives-table" class="stdtable table" cellspacing="0" cellpadding="0" border="0">
                 <thead>
                     <tr>
-                        <th align="center">登录名</th>
+                        <th>登录名</th>
                         <th>真实姓名</th>
                         <th>手机号</th>
                         <th>邮箱</th>
