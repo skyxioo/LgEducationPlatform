@@ -43,6 +43,11 @@ namespace Lg.EducationPlatform.BLL
         {
             return CurrentDAL.Add(model);
         }
+
+        public int AddRange(IEnumerable<T> list)
+        {
+            return CurrentDAL.AddRange(list);
+        }
         #endregion
 
         #region 2.1 根据Id删除实体

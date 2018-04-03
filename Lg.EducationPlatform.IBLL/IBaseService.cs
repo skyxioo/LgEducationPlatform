@@ -20,6 +20,8 @@ namespace Lg.EducationPlatform.IBLL
         /// <param name="model">model对象</param>
         /// <returns>受影响的行数</returns>
         int Add(T model);
+
+        int AddRange(IEnumerable<T> list);
         #endregion
 
         #region 2.1 根据id删除

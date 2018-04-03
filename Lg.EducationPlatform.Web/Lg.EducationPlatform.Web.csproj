@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -328,6 +331,7 @@
     <Content Include="Content\js\plugins\jquery.flot.min.js" />
     <Content Include="Content\js\plugins\jquery.flot.pie.js" />
     <Content Include="Content\js\plugins\jquery.flot.resize.min.js" />
+    <Content Include="Content\js\plugins\jquery.form.js" />
     <Content Include="Content\js\plugins\jquery.jgrowl.js" />
     <Content Include="Content\js\plugins\jquery.slimscroll.js" />
     <Content Include="Content\js\plugins\jquery.smartWizard-2.0.min.js" />
@@ -390,6 +394,7 @@
     <Content Include="Views\Teacher\Add.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Home\UserProfile.cshtml" />
+    <Content Include="Views\Student\Import.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -400,6 +405,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Temp\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lg.EducationPlatform.BLL\Lg.EducationPlatform.BLL.csproj">

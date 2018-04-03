@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "长沙理工大学综合管理系统|导入学生";
+}
+
+@section headLink{
+    <style type="text/css">
+        .con{
+            padding-left: 20px;
+        }
+        .list {
+            overflow: hidden;
+            margin-bottom: 50px;
+            line-height: 21px;
+        }
+        .list li{
+            margin-bottom:10px;
+        }
+    </style>    
+}
+
+@section headScript{
+    <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript">
+        jQuery.noConflict();
+        jQuery(function () {
+            jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
+            jQuery('#student,#stu_import').addClass('current');
+            jQuery('body').addClass('withvernav');
+
+            jQuery("#importform").submit(function () {
+                var fileObj = document.getElementById("file_excel").files;
+                var params = new FormData();
+                if (fileObj.length > 0) {
+                    params.append("excel", fileObj[0]);
+                } else {
+                    layer.msg("请选择Excel文件", {
+                        closeBtn: 1,
+                        skin: 'layui-layer-molv',
+                        shift: 4,
+                        time: 2000
+                    });
+                    return false;
+                }
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "/Student/ImportXls",
+                    data: params,
+                    contentType: false,//必须false才会自动加上正确的Content-Type   
+                    processData: false,//必须false才会避开jQuery对 formdata 的默认处理 ，XMLHttpRequest会对 formdata 进行正确的处理
+                    success: function (data) {
+                        if (data.Status == "1") {
+                            layer.alert(data.Message, {
+                                time: 2000
+                            });
+                        } else if (data) {
+                            layer.alert(data.Message, 8);
+                        }
+                    },
+                    error: function (err) {
+                        layer.alert(err, {
+                            time: 2000
+                        });
+                    }
+                });
+                return false;
+            }); 
+        });
+    </script>
+}
+
+@{ Html.RenderPartial("~/Views/Shared/_StudentMenu.cshtml"); }
+
+<div class="centercontent">
+    <ul class="breadcrumbs">
+        <li><a>首页</a></li>
+        <li><a>导入学生</a></li>
+    </ul>
+    <div class="con">
+        <div class="contenttitle2">
+            <h3>导入说明</h3>
+        </div>
+        <ul class="list nomargin">
+            <li>
+                <div class="comment_authorimg"><img src="../../images/thumbs/avatar5.png" alt=""></div>
+                <div class="commentcontent">
+                    请先下载Excel模版，在表格中填写内容
+                </div><!--updatecontent-->
+            </li>
+            <li>
+                <div class="comment_authorimg"><img src="../../images/thumbs/avatar5.png" alt=""></div>
+                <div class="commentcontent">
+                    模板中的格式不能修改，以免导入失败。如：列头，下拉选择项
+                </div><!--updatecontent-->
+            </li>
+            <li>
+                <div class="comment_authorimg"><img src="../../images/thumbs/avatar5.png" alt=""></div>
+                <div class="commentcontent">
+                    模板中红色字体部分为必填项，不能为空，否则导入将失败
+                </div><!--updatecontent-->
+            </li>
+        </ul>
+        <form id="importform" class="stdform" method="post" enctype="multipart/form-data" action="">
+            <p>
+                <span class="field">
+                    <div class="uploader" id="uniform-undefined">
+                        <input name="file_excel" id="file_excel" size="19" accept=".xls,.xlsx" style="opacity: 0;" type="file" />
+                        <span class="filename" style="-moz-user-select: none;">未选择任何文件</span>
+                        <span class="action" style="-moz-user-select: none;">选择文件</span>
+                    </div>
+                </span>
+                <button class="submit radius2" style="margin-left:20px;">上传表格</button>
+            </p>
+        </form>
+    </div>
+</div>

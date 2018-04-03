@@ -21,7 +21,6 @@ namespace Lg.EducationPlatform.Model
         public byte ExaminationLevel { get; set; }
         public string MajorName { get; set; }
         public string Nationality { get; set; }
-        public string Birthday { get; set; }
         public string PoliticalStatus { get; set; }
         public byte EducationalLevel { get; set; }
         public string Address { get; set; }
@@ -38,6 +37,7 @@ namespace Lg.EducationPlatform.Model
         public Nullable<long> LastModifierUserId { get; set; }
         public Nullable<System.DateTime> LastModificationTime { get; set; }
         public bool Status { get; set; }
+        public string IdCard { get; set; }
     
         public virtual Users Users { get; set; }
         public virtual Users Users1 { get; set; }

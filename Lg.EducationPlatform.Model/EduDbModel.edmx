@@ -16,7 +16,7 @@
           <Property Name="ExaminationLevel" Type="tinyint" Nullable="false" />
           <Property Name="MajorName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Nationality" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="Birthday" Type="varchar" MaxLength="10" />
+          <Property Name="IdCard" Type="varchar" MaxLength="20" />
           <Property Name="PoliticalStatus" Type="nvarchar" MaxLength="20" />
           <Property Name="EducationalLevel" Type="tinyint" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
@@ -122,7 +122,6 @@
           <Property Name="ExaminationLevel" Type="Byte" Nullable="false" />
           <Property Name="MajorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Nationality" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Birthday" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="PoliticalStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="EducationalLevel" Type="Byte" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -141,6 +140,7 @@
           <NavigationProperty Name="Users" Relationship="Self.FK_Students_Users1" FromRole="Students" ToRole="Users" />
           <NavigationProperty Name="Users1" Relationship="Self.FK_Students_Users2" FromRole="Students" ToRole="Users" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="IdCard" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -228,6 +228,7 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="EduDb4LgModel.Students">
               <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="IdCard" ColumnName="IdCard" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SurName" ColumnName="SurName" />
@@ -236,7 +237,6 @@
                 <ScalarProperty Name="ExaminationLevel" ColumnName="ExaminationLevel" />
                 <ScalarProperty Name="MajorName" ColumnName="MajorName" />
                 <ScalarProperty Name="Nationality" ColumnName="Nationality" />
-                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
                 <ScalarProperty Name="PoliticalStatus" ColumnName="PoliticalStatus" />
                 <ScalarProperty Name="EducationalLevel" ColumnName="EducationalLevel" />
                 <ScalarProperty Name="Address" ColumnName="Address" />

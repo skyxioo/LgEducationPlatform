@@ -10,8 +10,10 @@ using Lg.EducationPlatform.WebHelper;
 using Lg.EducationPlatform.jqDataTableModel;
 using Lg.EducationPlatform.ViewModel;
 using System.Linq.Expressions;
+using System.Data;
 using System.Text;
 using System.IO;
+using Ionic.Zip;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {
@@ -41,6 +43,11 @@ namespace Lg.EducationPlatform.Web.Controllers
             return View();
         }
 
+        public ActionResult Import()
+        {
+            return View();
+        }
+
         public ActionResult Show(int id)
         {
             var s = _studentsService.GetEntity(id);
@@ -48,7 +55,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Id = s.Id,
                 SurName = s.SurName,
                 Sex = s.Sex,
-                Birthday = s.Birthday,
+                IdCard = s.IdCard,
                 Period = s.Period,
                 ExaminationLevel = s.ExaminationLevel,
                 MajorName = s.MajorName,
@@ -95,7 +102,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 var student = _studentsService.GetEntity(id.Value);
                 model.Address = student.Address;
                 model.BareheadedPhotoPath = student.BareheadedPhotoPath;
-                model.Birthday = student.Birthday;
+                model.IdCard = student.IdCard;
                 model.EducationalLevel = student.EducationalLevel;
                 model.ExaminationLevel = student.ExaminationLevel;
                 model.Id = student.Id;
@@ -119,13 +126,137 @@ namespace Lg.EducationPlatform.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(StudentViewModel model)
+        public ActionResult ImportXls()
+        {
+            var files = Request.Files;
+            if (files.Count == 0)
+            {
+                return Json(new
+                {
+                    Status = 0,
+                    Message = "上传文件为空，请选择要上传的excel文件"
+                });
+            }
+            else
+            {
+                UserDto user = ViewBag.User as UserDto;
+                string savePath = Server.MapPath("~/Temp/") + DateTime.Now.ToString("yyyyMMddhhmmssfff") + Path.GetExtension(files[0].FileName);
+                files[0].SaveAs(savePath);
+
+                string error = string.Empty;
+                string info = "";
+                ExcelHelper excelHelper = new ExcelHelper(savePath);
+                DataTable dt = excelHelper.ExcelToDataTable(out error);
+                if (string.IsNullOrEmpty(error))
+                {
+                    int idx = 2;
+                    List<Students> list = new List<Students>();
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        Students student = new Students();
+                        student.SurName = dr["姓名"].ToString();
+                        student.Sex = dr["性别"].ToString() == "女" ? (byte)0 : (byte)1;
+                        student.Nationality = dr["民族"].ToString();
+                        student.IdCard = dr["身份证号"].ToString();
+                        student.Phone = dr["手机"].ToString();
+                        student.Period = dr["届别"].ToString();
+                        student.PoliticalStatus = dr["政治面貌"].ToString();
+                        student.Address = dr["地址"].ToString();
+                        student.EducationalLevel = GetEducationalLevel(dr["文化层次"].ToString());
+                        student.ExaminationLevel = dr["报考层次"].ToString() == "专科" ? (byte)1 : (byte)2;
+                        student.MajorName = dr["专业"].ToString();
+                        student.TestFreeCondition = dr["免试条件"].ToString();
+                        student.Remark = dr["备注"].ToString();
+                        if (string.IsNullOrWhiteSpace(student.SurName) ||
+                            string.IsNullOrWhiteSpace(student.Nationality) ||
+                            string.IsNullOrWhiteSpace(student.IdCard) ||
+                            string.IsNullOrWhiteSpace(student.Phone) ||
+                            string.IsNullOrWhiteSpace(student.Period) ||
+                            string.IsNullOrWhiteSpace(student.PoliticalStatus) ||
+                            string.IsNullOrWhiteSpace(student.Address) ||
+                            string.IsNullOrWhiteSpace(student.MajorName))
+                        {
+                            info += "第" + idx + "行导入失败，必填项存在空值，请检查\r\n";
+                            continue;
+                        }
+                        else
+                            list.Add(student);
+                    }
+
+                    list.ForEach(p =>
+                    {
+                        p.CreatorUserId = user.UserId;
+                        p.CreationTime = DateTime.Now;
+                        p.Status = false;
+                        p.IsDeleted = false;
+                    });
+                    int result = _studentsService.AddRange(list);
+                    if (result > 0)
+                    {
+                        return Json(new
+                        {
+                            Status = 1,
+                            Message = "导入成功\r\n" + info
+                        });
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            Status = 0,
+                            Message = "导入失败"
+                        });
+                    }
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        Status = 0,
+                        Message = error
+                    });
+                }
+            }
+        }
+
+        private byte GetEducationalLevel(string education)
+        {
+            byte level = 0;
+            switch(education)
+            {
+                case "无":
+                    level = 0;
+                    break;
+                case "初中":
+                    level = 1;
+                    break;
+                case "高中":
+                    level = 2;
+                    break;
+                case "中专":
+                    level = 3;
+                    break;
+                case "大专在读":
+                    level = 4;
+                    break;
+                case "大专毕业":
+                    level = 5;
+                    break;
+                default:
+                    level = 0;
+                    break;
+            }
+            return level;
+        }
+
+        [HttpPost]
+        public JsonResult Add(StudentViewModel model)
         {
             UserDto user = ViewBag.User as UserDto;
             Students stu = new Students {
                 Address = model.Address,
                 BareheadedPhotoPath = model.BareheadedPhotoPath,
-                Birthday = model.Birthday,
+                IdCard = model.IdCard,
                 EducationalLevel = model.EducationalLevel,
                 ExaminationLevel = model.ExaminationLevel,
                 IdCardBackPath = model.IdCardBackPath,
@@ -176,27 +307,39 @@ namespace Lg.EducationPlatform.Web.Controllers
             int result = 0;
             if (model.Id > 0)//编辑
             {
-                stu.LastModificationTime = DateTime.Now;
-                stu.LastModifierUserId = user.UserId;
-                var propertyNames = model.GetType().GetProperties()
-                    .Where(p => p.Name != "Id")
-                    .Select(p => p.Name)
-                    .ToArray();
-                result = _studentsService.UpdateBy(stu, p => p.Id == model.Id, propertyNames);
-                if (result > 0)
+                var status = _studentsService.GetEntity(model.Id).Status;
+                if (!status)
                 {
-                    return Json(new
+                    stu.LastModificationTime = DateTime.Now;
+                    stu.LastModifierUserId = user.UserId;
+                    var propertyNames = model.GetType().GetProperties()
+                        .Where(p => p.Name != "Id")
+                        .Select(p => p.Name)
+                        .ToArray();
+                    result = _studentsService.UpdateBy(stu, p => p.Id == model.Id, propertyNames);
+                    if (result > 0)
                     {
-                        Status = 1,
-                        Message = "编辑成功"
-                    });
+                        return Json(new
+                        {
+                            Status = 1,
+                            Message = "编辑成功"
+                        });
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            Status = 0,
+                            Message = "编辑失败"
+                        });
+                    }
                 }
                 else
                 {
                     return Json(new
                     {
                         Status = 0,
-                        Message = "编辑失败"
+                        Message = "编辑失败，已审信息不允许修改"
                     });
                 }
             }
@@ -356,29 +499,63 @@ namespace Lg.EducationPlatform.Web.Controllers
             return File(Encoding.UTF8.GetBytes(template), "application/msexcel", "学生信息表.xls");
         }
 
-        public ActionResult Delete(int id)
+        public FileResult DownLoad()
         {
-            Students stu = new Students();
-            stu.IsDeleted = true;
-            stu.DeletionTime = DateTime.Now;
-            stu.LastModifierUserId = (ViewBag.User as UserDto).UserId;
-            stu.LastModificationTime = DateTime.Now;
-            var propertyNames = new string[] { "IsDeleted", "DeletionTime", "LastModifierUserId", "LastModificationTime" };
-            int result = _studentsService.UpdateBy(stu, p => p.Id == id, propertyNames);
-            if (result > 0)
+            Expression<Func<Students, bool>> expression = OperateHelper.Current.Session["Expression"] as Expression<Func<Students, bool>>;
+            var students = _studentsService.GetDataListBy(expression).ToList();
+            using (ZipFile zip = new ZipFile(System.Text.Encoding.Default))
             {
-                return Json(new
+                string basePath = Server.MapPath("~");
+                foreach (var stu in students)
                 {
-                    Status = 1,
-                    Message = "删除成功"
-                });
+                    if (!string.IsNullOrWhiteSpace(stu.BareheadedPhotoPath))
+                        zip.AddFile(basePath + stu.BareheadedPhotoPath, stu.SurName);
+                    if (!string.IsNullOrWhiteSpace(stu.IdCardBackPath))
+                        zip.AddFile(basePath + stu.IdCardBackPath, stu.SurName);
+                    if (!string.IsNullOrWhiteSpace(stu.IdCardFrontPath))
+                        zip.AddFile(basePath + stu.IdCardFrontPath, stu.SurName);
+                }
+                var savePath = Server.MapPath("~/Temp/"+DateTime.Now.ToString("yyyyMMddhhmmssfff")+".zip");
+                zip.Save(savePath);
+                return File(savePath, "application/zip", "图片.zip");
+            }
+        }
+
+        public ActionResult Delete(long id)
+        {
+            var status = _studentsService.GetEntity(id).Status;
+            if (!status)
+            {
+                Students stu = new Students();
+                stu.IsDeleted = true;
+                stu.DeletionTime = DateTime.Now;
+                stu.LastModifierUserId = (ViewBag.User as UserDto).UserId;
+                stu.LastModificationTime = DateTime.Now;
+                var propertyNames = new string[] { "IsDeleted", "DeletionTime", "LastModifierUserId", "LastModificationTime" };
+                int result = _studentsService.UpdateBy(stu, p => p.Id == id, propertyNames);
+                if (result > 0)
+                {
+                    return Json(new
+                    {
+                        Status = 1,
+                        Message = "删除成功"
+                    });
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        Status = 0,
+                        Message = "删除失败"
+                    });
+                }
             }
             else
             {
                 return Json(new
                 {
                     Status = 0,
-                    Message = "删除失败"
+                    Message = "删除失败，已审信息不允许删除"
                 });
             }
         }
