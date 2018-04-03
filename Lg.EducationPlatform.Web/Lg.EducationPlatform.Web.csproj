@@ -395,6 +395,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Home\UserProfile.cshtml" />
     <Content Include="Views\Student\Import.cshtml" />
+    <Content Include="Template\导入模板.xlsx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -28,6 +28,7 @@
             jQuery('body').addClass('withvernav');
 
             jQuery("#importform").submit(function () {
+                jQuery('#btn_submit').attr("disabled", true);
                 var fileObj = document.getElementById("file_excel").files;
                 var params = new FormData();
                 if (fileObj.length > 0) {
@@ -39,6 +40,7 @@
                         shift: 4,
                         time: 2000
                     });
+                    jQuery('#btn_submit').attr("disabled", false);
                     return false;
                 }
 
@@ -63,6 +65,7 @@
                         });
                     }
                 });
+                jQuery('#btn_submit').attr("disabled", false);
                 return false;
             }); 
         });
@@ -84,7 +87,7 @@
             <li>
                 <div class="comment_authorimg"><img src="../../images/thumbs/avatar5.png" alt=""></div>
                 <div class="commentcontent">
-                    请先下载Excel模版，在表格中填写内容
+                    请先下载<a href="~/Template/导入模板.xlsx" style="color:blue; text-decoration:underline;">Excel模版</a>，在表格中填写内容
                 </div><!--updatecontent-->
             </li>
             <li>
@@ -99,6 +102,12 @@
                     模板中红色字体部分为必填项，不能为空，否则导入将失败
                 </div><!--updatecontent-->
             </li>
+            <li>
+                <div class="comment_authorimg"><img src="../../images/thumbs/avatar5.png" alt=""></div>
+                <div class="commentcontent">
+                    每次导入的数据都将是新增，请勿重复导入
+                </div><!--updatecontent-->
+            </li>
         </ul>
         <form id="importform" class="stdform" method="post" enctype="multipart/form-data" action="">
             <p>
@@ -109,7 +118,7 @@
                         <span class="action" style="-moz-user-select: none;">选择文件</span>
                     </div>
                 </span>
-                <button class="submit radius2" style="margin-left:20px;">上传表格</button>
+                <button id="btn_submit" class="submit radius2" style="margin-left:20px;">上传表格</button>
             </p>
         </form>
     </div>

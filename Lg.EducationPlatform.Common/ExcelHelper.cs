@@ -109,7 +109,11 @@ namespace Lg.EducationPlatform.Common
                     try { workbook = new XSSFWorkbook(fs); } catch { error = "当前下载的Xls文档格式错误。"; }
                 else if (fileName.IndexOf(".xls") > 0) // 2003版本
                 {
-                    try { workbook = new HSSFWorkbook(fs); } catch { error = "当前下载的Xls文档格式错误。"; }
+                    try {
+                        workbook = new HSSFWorkbook(fs);
+                    } catch(Exception ex) {
+                        error = "当前下载的Xls文档格式错误。";
+                    }
                 }
 
                 if (sheetName != null)

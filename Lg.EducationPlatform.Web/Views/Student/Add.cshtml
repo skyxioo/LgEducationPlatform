@@ -42,8 +42,10 @@
                         required: true,
                         maxlength: 5
                     },
-                    Birthday: {
-                        required: true
+                    IdCard: {
+                        required: true,
+                        maxlength: 18,
+                        minlength: 18
                     },
                     Nationality: {
                         required: true,
@@ -70,8 +72,10 @@
                         required: "学生姓名不能为空",
                         maxlength: "您输入的姓名太长"
                     },
-                    Birthday: {
-                        required: "生日不能为空"
+                    IdCard: {
+                        required: "身份证号码不能为空",
+                        maxlength: "请填写18位的身份证号",
+                        minlength: "请填写18位的身份证号",
                     },
                     Nationality: {
                         required: "请输入民族",
