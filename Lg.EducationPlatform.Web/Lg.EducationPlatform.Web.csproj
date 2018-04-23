@@ -27,6 +27,7 @@
     </NuGetPackageImportStamp>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
@@ -79,6 +83,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -86,6 +93,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web.Razor">
@@ -111,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\index.css" />
     <Content Include="Content\css\plugins\bootstrap.css" />
     <Content Include="Content\css\plugins\colorbox.css" />
     <Content Include="Content\css\plugins\colorpicker.css" />
@@ -170,7 +181,14 @@
     <Content Include="Content\images\default\searchcancel.png" />
     <Content Include="Content\images\default\topheaderbg.png" />
     <Content Include="Content\images\default\userinfoarrow.png" />
+    <Content Include="Content\images\dp.png" />
     <Content Include="Content\images\help.gif" />
+    <Content Include="Content\images\ico01.png" />
+    <Content Include="Content\images\ico02.png" />
+    <Content Include="Content\images\ico03.png" />
+    <Content Include="Content\images\ico04.png" />
+    <Content Include="Content\images\ico05.png" />
+    <Content Include="Content\images\ico06.png" />
     <Content Include="Content\images\icons\64\analytics.png" />
     <Content Include="Content\images\icons\64\events.png" />
     <Content Include="Content\images\icons\64\images.png" />
@@ -255,6 +273,7 @@
     <Content Include="Content\images\spinner.png" />
     <Content Include="Content\images\stepline.png" />
     <Content Include="Content\images\steps.png" />
+    <Content Include="Content\images\sun.png" />
     <Content Include="Content\images\thead.png" />
     <Content Include="Content\images\thumbs\avatar.png" />
     <Content Include="Content\images\thumbs\avatar1.png" />
@@ -288,6 +307,7 @@
     <Content Include="Content\images\thumb\xsmall\thumb6.png" />
     <Content Include="Content\images\thumb\xsmall\thumb7.png" />
     <Content Include="Content\images\thumb\xsmall\thumb8.png" />
+    <Content Include="Content\images\time.png" />
     <Content Include="Content\images\titlebg.png" />
     <Content Include="Content\images\trash.png" />
     <Content Include="Content\images\uniform\bg-input-focus.png" />
@@ -355,6 +375,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />

@@ -54,6 +54,10 @@ namespace Lg.EducationPlatform.Web.Controllers
                     cookie.Expires = DateTime.Now.AddHours(2);  //cookie的过期时间
                     this.Response.Cookies.Add(cookie);
 
+                    Users user = new Users();
+                    user.LastLoginTime = DateTime.Now;
+                    _userService.UpdateBy(user, p => p.Id == userDto.UserId, "LastLoginTime");
+
                     return Json(new
                     {
                         Status = 1,

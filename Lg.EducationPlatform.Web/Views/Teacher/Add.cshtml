@@ -5,11 +5,11 @@
         input[type='password'] {
             padding: 8px 5px;
         }
-    </style>    
+    </style>
 }
 @section headScript{
-    <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+    @Scripts.Render("~/bundles/form")
+    @Scripts.Render("~/bundles/calendar")
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {

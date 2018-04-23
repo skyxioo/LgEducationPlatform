@@ -10,7 +10,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>长沙理工大学综合管理系统——登录</title>
-    <link rel="stylesheet" href="/Content/css/style.default.css" type="text/css" />
+    @Styles.Render("~/Content/css")
     <!--[if IE 9]>
         <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
     <![endif]-->
@@ -61,15 +61,9 @@
 
         </div><!--loginboxinner-->
     </div><!--loginbox-->
-
-    <script type="text/javascript" src="/Content/js/plugins/jquery-1.7.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.cookie.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.base64.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.uniform.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.validate.unobtrusive.js"></script>
-    <script type="text/javascript" src="/Content/js/custom/index.js"></script>
-    <script type="text/javascript" src="/Content/layer/layer.js"></script>
+    @Scripts.Render("~/bundles/plugins")
+    @Scripts.Render("~/bundles/form")
+    @Scripts.Render("~/bundles/unobtrusive")
+    @Scripts.Render("~/bundles/login")
 </body>
 </html>

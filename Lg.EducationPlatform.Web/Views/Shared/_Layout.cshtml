@@ -4,19 +4,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-    <link rel="stylesheet" href="/Content/css/style.default.css" type="text/css" />
-    <link rel="stylesheet" href="/Content/font-awesome/css/font-awesome.css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/plugins")
+    @Scripts.Render("~/bundles/index")
     @RenderSection("headLink", required: false)
-    <script type="text/javascript" src="~/Content/js/plugins/jquery-1.7.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.cookie.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.uniform.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.flot.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.flot.resize.min.js"></script>
-    <script type="text/javascript" src="/Content/js/plugins/jquery.slimscroll.js"></script>
-    <script type="text/javascript" src="/Content/js/custom/general.js"></script>
-    <script type="text/javascript" src="~/Content/layer/layer.js"></script>
     <script type="text/javascript">
-        function openProfile () {
+        function openProfile() {
             layer.open({
                 type: 2,
                 title: '个人信息编辑',
@@ -47,12 +40,12 @@
                 <h1 class="logo">长沙理工大学</h1>
                 <span class="slogan">综合管理系统</span>
 
-                <div class="search">
+                @*<div class="search">
                         <form action="" method="post">
                             <input type="text" name="keyword" id="keyword" value="请输入" />
                             <button class="submitbutton"></button>
                         </form>
-                    </div><!--search-->
+                    </div>*@<!--search-->
 
                 <br clear="all" />
 
@@ -100,11 +93,9 @@
                 <li id="home"><a href="/Home/Index"><span class="h h-flatscreen"></span>首页</a></li>
                 <li id="student"><a href="/Student/Index"><span class="h h-pencil"></span>学生管理</a></li>
                 @if (ViewBag.RoleId == 0)
-    {
-            <li id="teacher"><a href="/Teacher/Index"><span class="h h-users"></span>教师管理</a></li>
-}
-                <li><a href="javascript:void(0);"><span class="h h-message"></span>查看消息</a></li>
-                <li><a href="javascript:void(0);"><span class="h h-chart"></span>统计报表</a></li>
+                {
+                    <li id="teacher"><a href="/Teacher/Index"><span class="h h-users"></span>教师管理</a></li>
+                }
             </ul>
         </div><!--header-->
 

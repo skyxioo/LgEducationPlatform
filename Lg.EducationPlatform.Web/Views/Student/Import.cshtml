@@ -4,22 +4,24 @@
 
 @section headLink{
     <style type="text/css">
-        .con{
+        .con {
             padding-left: 20px;
         }
+
         .list {
             overflow: hidden;
             margin-bottom: 50px;
             line-height: 21px;
         }
-        .list li{
-            margin-bottom:10px;
-        }
-    </style>    
+
+            .list li {
+                margin-bottom: 10px;
+            }
+    </style>
 }
 
 @section headScript{
-    <script type="text/javascript" src="/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+    @Scripts.Render("~/bundles/form")
     <script type="text/javascript">
         jQuery.noConflict();
         jQuery(function () {
@@ -48,7 +50,7 @@
                     type: "POST",
                     url: "/Student/ImportXls",
                     data: params,
-                    contentType: false,//必须false才会自动加上正确的Content-Type   
+                    contentType: false,//必须false才会自动加上正确的Content-Type
                     processData: false,//必须false才会避开jQuery对 formdata 的默认处理 ，XMLHttpRequest会对 formdata 进行正确的处理
                     success: function (data) {
                         if (data.Status == "1") {
@@ -67,7 +69,7 @@
                 });
                 jQuery('#btn_submit').attr("disabled", false);
                 return false;
-            }); 
+            });
         });
     </script>
 }

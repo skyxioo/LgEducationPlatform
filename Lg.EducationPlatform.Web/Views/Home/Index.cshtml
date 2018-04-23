@@ -2,6 +2,10 @@
     ViewBag.Title = "长沙理工大学综合管理系统";
 }
 
+@section headLink{
+    <link type="text/css" rel="stylesheet" href="~/Content/css/index.css" /> 
+}
+
 @section headScript{
     <script type="text/javascript">
         jQuery.noConflict();
@@ -10,3 +14,56 @@
         });
     </script>
 }
+
+
+<div class="centercontent con">
+    <div class="welinfo">
+        <span><img src="/content/images/sun.png" alt="天气" /></span>
+        <b>@ViewBag.AdminUser</b>
+        @if (DateTime.Now.Hour < 8)
+    {
+        <b>早上好，欢迎使用信息管理系统</b>
+}
+else if (DateTime.Now.Hour >= 8 && DateTime.Now.Hour <= 12)
+{
+    <b>上午好，欢迎使用信息管理系统</b>
+}
+else if (DateTime.Now.Hour > 12 && DateTime.Now.Hour <= 18)
+{
+    <b>下午好，欢迎使用信息管理系统</b>
+}
+else
+{
+    <b>晚上好，欢迎使用信息管理系统</b>
+}
+    </div>
+
+    <div class="welinfo">
+        <span><img src="/content/images/time.png" alt="时间" /></span>
+        <i>您上次登录的时间：2013-10-09 15:22</i>
+    </div>
+
+    <div class="xline"></div>
+
+    <ul class="iconlist">
+        <li><img src="/content/images/ico02.png" /><p><a href="#">添加学生</a></p></li>
+        <li><img src="/content/images/ico03.png" /><p><a href="#">数据导出</a></p></li>
+        <li><img src="/content/images/ico04.png" /><p><a href="#">数据导入</a></p></li>
+        <li><img src="/content/images/ico05.png" /><p><a href="#">下载图片</a></p></li>
+        <li><img src="/content/images/ico06.png" /><p><a href="#">信息查询</a></p></li>
+    </ul>
+
+    <div class="xline"></div>
+    <div class="box"></div>
+
+    <div class="welinfo">
+        <span><img src="/content/images/dp.png" alt="提醒" /></span>
+        <b>长沙理工大学综合管理系统使用指南</b>
+    </div>
+
+    <ul class="infolist">
+        <li><span>您可以快速进行学生信息发布管理操作</span></li>
+        <li><span>您可以快速导入学生信息</span></li>
+        <li><span>您可以进行密码修改、账户设置等操作</span></li>
+    </ul>
+</div>
