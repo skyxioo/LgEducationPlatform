@@ -282,7 +282,7 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 
 .topheader { background: #34445e url(../images/default/topheaderbg.png); padding: 8px 10px; position: relative; border-bottom: 1px solid #303f59; }
 .topheader .left h1.logo { 
-	font-family: KaiTi, Arial, Helvetica, sans-serif; font-weight: normal; text-transform: uppercase; color: #fb9337;
+	font-family: KaiTi, Arial; font-weight: normal; text-transform: uppercase; color: #fb9337;
 	float: left; font-size: 30px; margin: 10px 0;
 }.topheader .left h1.logo a { color: #fb9337; }
 .topheader .left h1.logo span { color: #fff; }
@@ -421,9 +421,13 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 .headermenu li a span.h-speech { background: url(../images/icons/speech.white.png) no-repeat center center; }
 .headermenu li a span.h-message { background: url(../images/icons/message.white.png) no-repeat center center; }
 .headermenu li a span.h-chart { background: url(../images/icons/chart.white.png) no-repeat center center; }
-    .headermenu li a span.h-users {
-        background: url(../images/icons/users.white.png) no-repeat center center;
-    }
+.headermenu li a span.h-users { background: url(../images/icons/users.white.png) no-repeat center center;}
+.headermenu li a span.h-folder { background: url(../images/icons/folder.white.png) no-repeat center center;}
+.headermenu li a span.h-course { background: url(../images/icons/course.white.png) no-repeat center center; }
+.headermenu li a span.h-resource { background: url(../images/icons/resource.white.png) no-repeat center center; }
+.headermenu li a span.h-category { background: url(../images/icons/category.white.png) no-repeat center center; }
+.headermenu li a span.h-apply { background: url(../images/icons/apply.white.png) no-repeat center center; }
+.headermenu li a span.h-setting { background: url(../images/icons/setting.white.png) no-repeat center center; }
 .headermenu li a:hover { 
 	background: url(../images/default/bghover.png) no-repeat center bottom; -moz-box-shadow: inset 0 1px 0 #4f627e; 
 	-webkit-box-shadow: inset 0 1px 0 #4f627e; box-shadow: inset 0 1px 0 #4f627e;
