@@ -22,20 +22,20 @@
         <b>@ViewBag.AdminUser</b>
         @if (DateTime.Now.Hour < 8)
         {
-        <b>早上好，欢迎使用信息管理系统</b>
-}
-else if (DateTime.Now.Hour >= 8 && DateTime.Now.Hour <= 12)
-{
-    <b>上午好，欢迎使用信息管理系统</b>
-}
-else if (DateTime.Now.Hour > 12 && DateTime.Now.Hour <= 18)
-{
-    <b>下午好，欢迎使用信息管理系统</b>
-}
-else
-{
-    <b>晚上好，欢迎使用信息管理系统</b>
-}
+            <b>早上好，欢迎使用信息管理系统</b>
+        }
+        else if (DateTime.Now.Hour >= 8 && DateTime.Now.Hour <= 12)
+        {
+            <b>上午好，欢迎使用信息管理系统</b>
+        }
+        else if (DateTime.Now.Hour > 12 && DateTime.Now.Hour <= 18)
+        {
+            <b>下午好，欢迎使用信息管理系统</b>
+        }
+        else
+        {
+            <b>晚上好，欢迎使用信息管理系统</b>
+        }
     </div>
 
     <div class="welinfo">
