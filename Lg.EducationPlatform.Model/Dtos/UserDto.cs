@@ -11,6 +11,7 @@ namespace Lg.EducationPlatform.Model
         public long UserId { get; set; }
         public string UserName { get; set; }
         public string PassWord { get; set; }
+        public DateTime? LastLoginTime { get; set; }
         public int RoleId { get; set; }
         public bool IsActive { get; set; }
     }

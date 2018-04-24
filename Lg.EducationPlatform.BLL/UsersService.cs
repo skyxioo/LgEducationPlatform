@@ -23,6 +23,7 @@ namespace Lg.EducationPlatform.BLL
                            UserName = p.UserName,
                            PassWord = p.HashPassword,
                            RoleId = p.RoleId,
+                           LastLoginTime = p.LastLoginTime,
                            IsActive = p.IsActive
                        }).FirstOrDefault();
             return user;

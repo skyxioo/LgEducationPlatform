@@ -21,7 +21,7 @@
         <span><img src="/content/images/sun.png" alt="天气" /></span>
         <b>@ViewBag.AdminUser</b>
         @if (DateTime.Now.Hour < 8)
-    {
+        {
         <b>早上好，欢迎使用信息管理系统</b>
 }
 else if (DateTime.Now.Hour >= 8 && DateTime.Now.Hour <= 12)
@@ -40,7 +40,7 @@ else
 
     <div class="welinfo">
         <span><img src="/content/images/time.png" alt="时间" /></span>
-        <i>您上次登录的时间：2013-10-09 15:22</i>
+        <i>您上次登录的时间：@(ViewBag.User == null ? "" : ViewBag.User.LastLoginTime.ToString())</i>
     </div>
 
     <div class="xline"></div>

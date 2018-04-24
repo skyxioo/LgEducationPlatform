@@ -38,6 +38,9 @@ namespace Lg.EducationPlatform.Web.Controllers
                 {
                     ////写Session //跳转到首页 
                     //Session.Add("loginuser", userModel);
+                    Users user = new Users();
+                    user.LastLoginTime = DateTime.Now;
+                    _userService.UpdateBy(user, p => p.Id == userDto.UserId, "LastLoginTime");
 
                     userDto.PassWord = string.Empty;
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
@@ -54,9 +57,6 @@ namespace Lg.EducationPlatform.Web.Controllers
                     cookie.Expires = DateTime.Now.AddHours(2);  //cookie的过期时间
                     this.Response.Cookies.Add(cookie);
 
-                    Users user = new Users();
-                    user.LastLoginTime = DateTime.Now;
-                    _userService.UpdateBy(user, p => p.Id == userDto.UserId, "LastLoginTime");
 
                     return Json(new
                     {
