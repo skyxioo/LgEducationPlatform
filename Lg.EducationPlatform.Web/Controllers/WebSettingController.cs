@@ -27,10 +27,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             else
                 period = period + "秋季";
             model.Period = period;
-
-            //WebSettings startDateSetting = _webSettingsService.GetWebSettingByKey(_open_start_date);
-            //WebSettings endDateSetting = _webSettingsService.GetWebSettingByKey(_open_end_date);
-            //WebSettings endDateSetting = _webSettingsService.GetWebSettingByKey(_open_end_date);
+            
             List<string> keys = new List<string> { _open_start_date, _open_end_date, _current_period };
             List<WebSettings> list = _webSettingsService.GetListByKeys(keys).ToList();
             WebSettings startDateSetting = list.Where(p => p.ConfigKey == _open_start_date).FirstOrDefault();
@@ -95,7 +92,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 periodSetting.ConfigKey = _current_period;
                 periodSetting.ConfigValue = model.Period;
                 periodSetting.CreationTime = DateTime.Now;
-                _webSettingsService.Add(endDateSetting, false);
+                _webSettingsService.Add(periodSetting, false);
             }
             else
             {

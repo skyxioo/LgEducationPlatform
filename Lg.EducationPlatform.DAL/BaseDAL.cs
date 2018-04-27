@@ -28,18 +28,32 @@ namespace Lg.EducationPlatform.DAL
         /// <returns>受影响的行数</returns>
         public int Add(T model, bool autoSave = true)
         {
-            dbContext.Set<T>().Add(model);
-            if (autoSave)
-                return dbContext.SaveChanges();
+            try
+            {
+                dbContext.Set<T>().Add(model);
+                if (autoSave)
+                    return dbContext.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                
+            }
 
             return -1;
         }
 
         public int AddRange(IEnumerable<T> list, bool autoSave = true)
         {
-            dbContext.Set<T>().AddRange(list);
-            if (autoSave)
-                return dbContext.SaveChanges();
+            try
+            {
+                dbContext.Set<T>().AddRange(list);
+                if (autoSave)
+                    return dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             return -1;
         }
@@ -53,12 +67,19 @@ namespace Lg.EducationPlatform.DAL
         /// <returns>受影响的行数</returns>
         public int Delete(long id, bool autoSave = true)
         {
-            T model = dbContext.Set<T>().Find(id);
-            DbEntityEntry<T> entry = dbContext.Entry<T>(model);
-            entry.State = EntityState.Deleted;
+            try
+            {
+                T model = dbContext.Set<T>().Find(id);
+                DbEntityEntry<T> entry = dbContext.Entry<T>(model);
+                entry.State = EntityState.Deleted;
 
-            if (autoSave)
-                return dbContext.SaveChanges();
+                if (autoSave)
+                    return dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             return -1;
         }
@@ -73,10 +94,16 @@ namespace Lg.EducationPlatform.DAL
         /// <returns>受影响的行数</returns>
         public int Delete(T model, bool autoSave = true)
         {
-            dbContext.Set<T>().Remove(model);
+            try
+            {
+                dbContext.Set<T>().Remove(model);
+                if (autoSave)
+                    return dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
 
-            if (autoSave)
-                return dbContext.SaveChanges();
+            }
 
             return -1;
         }
@@ -90,14 +117,18 @@ namespace Lg.EducationPlatform.DAL
         /// <returns></returns>
         public int DeleteBy(System.Linq.Expressions.Expression<Func<T, bool>> whereExp, bool autoSave = true)
         {
-            var batch = dbContext.Set<T>().Where(whereExp);
-            //batch.ForEach(p => {
-            //    _dbContext.Set<T>().Remove(p);
-            //});
-            dbContext.Set<T>().RemoveRange(batch);
+            try
+            {
+                var batch = dbContext.Set<T>().Where(whereExp);
+                dbContext.Set<T>().RemoveRange(batch);
 
-            if (autoSave)
-                return dbContext.SaveChanges();
+                if (autoSave)
+                    return dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             return -1;
         }
@@ -113,16 +144,23 @@ namespace Lg.EducationPlatform.DAL
         /// <returns></returns>
         public int Update(T model, bool autoSave = true, params string[] propertyNames)
         {
-            DbEntityEntry<T> entry = dbContext.Entry<T>(model);
-            entry.State = EntityState.Unchanged;
-
-            foreach (string pperty in propertyNames)
+            try
             {
-                entry.Property(pperty).IsModified = true;
-            }
+                DbEntityEntry<T> entry = dbContext.Entry<T>(model);
+                entry.State = EntityState.Unchanged;
 
-            if (autoSave)
-                return dbContext.SaveChanges();
+                foreach (string pperty in propertyNames)
+                {
+                    entry.Property(pperty).IsModified = true;
+                }
+
+                if (autoSave)
+                    return dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             return -1;
         }
@@ -138,6 +176,8 @@ namespace Lg.EducationPlatform.DAL
         /// <returns></returns>
         public int UpdateBy(T model, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, bool autoSave = true, params string[] PropertyNames)
         {
+            try
+            { 
             List<T> listUpdating = dbContext.Set<T>().Where(whereLambda).ToList();
             Type t = typeof(T);
             List<PropertyInfo> proInfos = t.GetProperties(BindingFlags.Instance | BindingFlags.Public).ToList();
@@ -165,6 +205,11 @@ namespace Lg.EducationPlatform.DAL
 
             if(autoSave)
                 return dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             return -1;
         }

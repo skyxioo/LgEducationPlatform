@@ -19,8 +19,13 @@ namespace Lg.EducationPlatform.Web.Controllers
 {
     public class StudentController : BaseController
     {
+        private const string OPEN_START_DATE_KEY = "SYSTEM_OPEN_START_DATE";
+        private const string OPEN_END_DATE_KEY = "SYSTEM_OPEN_END_DATE";
+        private const string PERIOD_KEY = "SYSTEM_CURRENT_PERIOD";
         private IUsersService _userService = OperateHelper.Current._serviceSession.UsersService;
         private IStudentsService _studentsService = OperateHelper.Current._serviceSession.StudentsService;
+        private IWebSettingsService _webSettingsService = OperateHelper.Current._serviceSession.WebSettingsService;
+
         // GET: Student
         public ActionResult Index()
         {
@@ -95,6 +100,7 @@ namespace Lg.EducationPlatform.Web.Controllers
 
             ViewBag.Title = "长沙理工大学综合管理系统|学生管理|添加";
             StudentViewModel model = new StudentViewModel();
+
             if(id != null && id.Value > 0)
             {
                 ViewBag.Title = "长沙理工大学综合管理系统|学生管理|编辑";
@@ -120,6 +126,43 @@ namespace Lg.EducationPlatform.Web.Controllers
                 model.IdCardFrontPath = string.IsNullOrWhiteSpace(student.IdCardFrontPath) ? "/Content/images/nopic.png" : student.IdCardFrontPath;
                 model.IdCardBackPath = string.IsNullOrWhiteSpace(student.IdCardBackPath) ? "/Content/images/nopic.png" : student.IdCardBackPath;
                 model.BareheadedPhotoPath = string.IsNullOrWhiteSpace(student.BareheadedPhotoPath) ? "/Content/images/nopic.png" : student.BareheadedPhotoPath;
+            }
+            else
+            {
+                List<string> keys = new List<string> { OPEN_START_DATE_KEY, OPEN_END_DATE_KEY, PERIOD_KEY };
+                List<WebSettings> list = _webSettingsService.GetListByKeys(keys).ToList();
+                WebSettings startDateSetting = list.Where(p => p.ConfigKey == OPEN_START_DATE_KEY).FirstOrDefault();
+                WebSettings endDateSetting = list.Where(p => p.ConfigKey == OPEN_END_DATE_KEY).FirstOrDefault();
+                WebSettings periodSetting = list.Where(p => p.ConfigKey == PERIOD_KEY).FirstOrDefault();
+
+                if (periodSetting != null)
+                {
+                    model.Period = periodSetting.ConfigValue;
+                }
+                else
+                {
+                    var period = DateTime.Now.Year.ToString();
+                    if (DateTime.Now.Month <= 6)
+                        period = period + "春季";
+                    else
+                        period = period + "秋季";
+                    model.Period = period;
+                }
+
+                int opened = 1;
+                try
+                {
+                    if (DateTime.Parse(startDateSetting.ConfigValue) < DateTime.Now && DateTime.Now < DateTime.Parse(endDateSetting.ConfigValue))
+                        opened = 1;
+                    else
+                        opened = 0;
+                }
+                catch(Exception ex)
+                {
+                    LoggerHelper.Error("开放学生信息注册起始时间格式有误");
+                }
+                ViewBag.Opened = opened;
+                TempData["Opened"] = opened;
             }
 
             return View(model);
@@ -252,6 +295,30 @@ namespace Lg.EducationPlatform.Web.Controllers
         [HttpPost]
         public JsonResult Add(StudentViewModel model)
         {
+            if (model.Id == 0)
+            {
+                object opened = TempData["Opened"];
+                if (opened == null)
+                {
+                    return Json(new
+                    {
+                        Status = 0,
+                        Message = "页面已过期，请重新进入本页面"
+                    });
+                }
+                else
+                {
+                    if(opened.ToString() == "0")
+                    {
+                        return Json(new
+                        {
+                            Status = 0,
+                            Message = "开放注册时间已过，不允许添加学生信息"
+                        });
+                    }
+                }
+            }
+
             UserDto user = ViewBag.User as UserDto;
             Students stu = new Students {
                 Address = model.Address,

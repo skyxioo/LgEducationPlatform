@@ -39,16 +39,25 @@
             });
 
             jQuery('#btn_audit').click(function () {
-                var id = jQuery('#Id').val()
-                jQuery.post("/Student/Audit/" + id, function (data) {
-                    if (data.Status == "1") {
-                        layer.alert('操作成功', {
-                            time: 2000
-                        });
-                        location.href = "/Student/Index";
-                    } else if (data) {
-                        layer.alert('操作失败', 8);
-                    }
+            //    var id = jQuery('#Id').val()
+            //    jQuery.post("/Student/Audit/" + id, function (data) {
+            //        if (data.Status == "1") {
+            //            layer.alert('操作成功', {
+            //                time: 2000
+            //            });
+            //            location.href = "/Student/Index";
+            //        } else if (data) {
+            //            layer.alert('操作失败', 8);
+            //        }
+            //    });
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['420px', '240px'], //宽高
+                    content: jQuery('.layer_notice')//, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    //cancel: function () {
+                    //    layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+                    //}
                 });
             });
         });
@@ -207,7 +216,7 @@
             @Html.HiddenFor(m => m.Id)
             @Html.HiddenFor(m => m.Status)
             <button class="stdbtn btn_orange" onclick="javascript: history.go(-1);"><<返回学生管理</button>&nbsp;&nbsp;
-            <button id="btn_audit" class="stdbtn btn_red" onclick="audit();">通过审核</button>
+            <button id="btn_audit" class="stdbtn btn_red" onclick="openAudit();">通过审核</button>
         </p>
     </div>
 </div>
@@ -217,3 +226,5 @@
         <img id="bigimg" style="border:5px solid #fff;" src="" />
     </div>
 </div>  
+
+<div class="layer_notice">ddddddddddddd</div>

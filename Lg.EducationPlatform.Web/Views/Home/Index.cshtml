@@ -40,7 +40,7 @@
 
     <div class="welinfo">
         <span><img src="/content/images/time.png" alt="时间" /></span>
-        <i>您上次登录的时间：@(ViewBag.User == null ? "" : ViewBag.User.LastLoginTime.ToString())</i>
+        <i>您上次登录的时间：@(ViewBag.User == null || ViewBag.User.LastLoginTime == null ? "" : ViewBag.User.LastLoginTime.ToString())</i>
     </div>
 
     <div class="xline"></div>

@@ -5,6 +5,11 @@
             display: none;
             margin-left: 20px;
         }
+        #tips{
+            font-weight:bold;
+            color:red;
+            padding-left:100px;
+        }
     </style>
 }
 
@@ -16,18 +21,21 @@
         jQuery(function () {
             jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
 
+
             var id = jQuery('#Id').val();
             id > 0 ? jQuery('#student,#stu_info').addClass('current') : jQuery('#student,#stu_add').addClass('current');
             if (id > 0) {
                 jQuery('#pic').show();
                 jQuery('#btn_return').show();
+            } else {                
+                var opened = @ViewBag.Opened;
+                if (opened == 0) {
+                    jQuery("input").attr("disabled", "disabled");
+                    jQuery(".submit").hide();
+                    jQuery("#tips").show();
+                }
             }
             jQuery('body').addClass('withvernav');
-            jQuery('#Birthday').datepicker({
-                dateFormat: 'yy-mm-dd',
-                changeMonth: true,
-                changeYear: true
-            });
 
             jQuery(".pimg").click(function () {
                 var _this = jQuery(this);//将当前的pimg元素作为_this传入函数
@@ -198,6 +206,9 @@
         <form id="addstudentform" class="stdform" method="post" enctype="multipart/form-data" action="">
             <div class="contenttitle2">
                 <h3>基本信息</h3>
+            </div>
+            <div id="tips" style="display:none;">
+                注意，请在开放注册时间内添加，当前时间不允许操作！
             </div>
             <p>
                 <label>姓名</label>
