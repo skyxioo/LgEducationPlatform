@@ -1,5 +1,5 @@
 ﻿
- using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +21,15 @@ namespace Lg.EducationPlatform.DAL
     }
 
 	public partial class UsersDAL : BaseDAL<Users>, IUsersDAL
+    {
+	    public override void SetDbContext()
+		{
+			 dbContext = new EduDb4LgEntities();
+			 dbContext.Configuration.ValidateOnSaveEnabled = false;
+		}
+    }
+
+	public partial class WebSettingsDAL : BaseDAL<WebSettings>, IWebSettingsDAL
     {
 	    public override void SetDbContext()
 		{

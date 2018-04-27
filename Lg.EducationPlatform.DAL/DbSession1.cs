@@ -54,6 +54,23 @@ namespace Lg.EducationPlatform.DAL
 		}
 		#endregion
 
+		#region 03 数据接口 WebSettingsDAL
+		private IWebSettingsDAL _WebSettingsDAL;
+		public IWebSettingsDAL WebSettingsDAL
+		{
+			get
+			{
+				if(_WebSettingsDAL == null)
+					_WebSettingsDAL = new WebSettingsDAL();
+				return _WebSettingsDAL;
+			}
+			set
+			{
+				_WebSettingsDAL = value;
+			}
+		}
+		#endregion
+
     }
 
 }

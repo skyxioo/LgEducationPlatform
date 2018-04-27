@@ -70,7 +70,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             propertyNames.Add("LastModificationTime");
             propertyNames.Add("LastModifierUserId");
 
-            result = _usersService.UpdateBy(user, p => p.Id == model.UserId, propertyNames.ToArray());
+            result = _usersService.UpdateBy(user, p => p.Id == model.UserId, true, propertyNames.ToArray());
             if (result > 0)
             {
                 return Json(new

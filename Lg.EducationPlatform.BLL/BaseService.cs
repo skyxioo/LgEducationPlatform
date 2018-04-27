@@ -39,12 +39,12 @@ namespace Lg.EducationPlatform.BLL
         /// </summary>
         /// <param name="model">新增对象</param>
         /// <returns>受影响的行数</returns>
-        public int Add(T model)
+        public int Add(T model, bool autoSave = true)
         {
             return CurrentDAL.Add(model);
         }
 
-        public int AddRange(IEnumerable<T> list)
+        public int AddRange(IEnumerable<T> list, bool autoSave = true)
         {
             return CurrentDAL.AddRange(list);
         }
@@ -56,7 +56,7 @@ namespace Lg.EducationPlatform.BLL
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns>受影响的行数</returns>
-        public int Delete(long id)
+        public int Delete(long id, bool autoSave = true)
         {
             return CurrentDAL.Delete(id);
         }
@@ -68,7 +68,7 @@ namespace Lg.EducationPlatform.BLL
         /// </summary>
         /// <param name="model">用户需要构造一个model，此model一定在数据库中存在</param>
         /// <returns>受影响的行数</returns>
-        public int Delete(T model)
+        public int Delete(T model, bool autoSave = true)
         {
             return CurrentDAL.Delete(model);
         }
@@ -80,7 +80,7 @@ namespace Lg.EducationPlatform.BLL
         /// </summary>
         /// <param name="delCondition">删除条件</param>
         /// <returns></returns>
-        public int DeleteBy(System.Linq.Expressions.Expression<Func<T, bool>> delCondition)
+        public int DeleteBy(System.Linq.Expressions.Expression<Func<T, bool>> delCondition, bool autoSave = true)
         {
             return CurrentDAL.DeleteBy(delCondition);
         }
@@ -93,9 +93,9 @@ namespace Lg.EducationPlatform.BLL
         /// <param name="model">要修改成的实体</param>
         /// <param name="propertyNames">属性名称数组</param>
         /// <returns></returns>
-        public int Update(T model, params string[] propertyNames)
+        public int Update(T model, bool autoSave = true, params string[] propertyNames)
         {
-            return CurrentDAL.Update(model, propertyNames);
+            return CurrentDAL.Update(model, autoSave, propertyNames);
         }
         #endregion
 
@@ -107,9 +107,9 @@ namespace Lg.EducationPlatform.BLL
         /// <param name="whereLambda">查询条件;根据它查询出要进行修改的实体集合，并将它们改为参数model</param>
         /// <param name="PropertyNames">要修改的属性名称数组</param>
         /// <returns></returns>
-        public int UpdateBy(T model, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, params string[] PropertyNames)
+        public int UpdateBy(T model, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, bool autoSave = true, params string[] PropertyNames)
         {
-            return CurrentDAL.UpdateBy(model, whereLambda, PropertyNames);
+            return CurrentDAL.UpdateBy(model, whereLambda, autoSave, PropertyNames);
         }
         #endregion
 
@@ -168,5 +168,9 @@ namespace Lg.EducationPlatform.BLL
         }
         #endregion
 
+        public int SaveChange()
+        {
+            return CurrentDAL.SaveChange();
+        }
     }
 }

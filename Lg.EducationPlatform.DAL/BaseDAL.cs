@@ -26,17 +26,22 @@ namespace Lg.EducationPlatform.DAL
         /// </summary>
         /// <param name="model">model对象</param>
         /// <returns>受影响的行数</returns>
-        public int Add(T model)
+        public int Add(T model, bool autoSave = true)
         {
             dbContext.Set<T>().Add(model);
+            if (autoSave)
+                return dbContext.SaveChanges();
 
-            return dbContext.SaveChanges();
+            return -1;
         }
 
-        public int AddRange(IEnumerable<T> list)
+        public int AddRange(IEnumerable<T> list, bool autoSave = true)
         {
             dbContext.Set<T>().AddRange(list);
-            return dbContext.SaveChanges();
+            if (autoSave)
+                return dbContext.SaveChanges();
+
+            return -1;
         }
         #endregion
 
@@ -46,13 +51,16 @@ namespace Lg.EducationPlatform.DAL
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns>受影响的行数</returns>
-        public int Delete(long id)
+        public int Delete(long id, bool autoSave = true)
         {
             T model = dbContext.Set<T>().Find(id);
             DbEntityEntry<T> entry = dbContext.Entry<T>(model);
             entry.State = EntityState.Deleted;
 
-            return dbContext.SaveChanges();
+            if (autoSave)
+                return dbContext.SaveChanges();
+
+            return -1;
         }
         #endregion
 
@@ -63,11 +71,14 @@ namespace Lg.EducationPlatform.DAL
         /// </summary>
         /// <param name="model">此model必须是当前的dbContext查出来的，因此本删除方法不实用</param>
         /// <returns>受影响的行数</returns>
-        public int Delete(T model)
+        public int Delete(T model, bool autoSave = true)
         {
             dbContext.Set<T>().Remove(model);
 
-            return dbContext.SaveChanges();
+            if (autoSave)
+                return dbContext.SaveChanges();
+
+            return -1;
         }
         #endregion
 
@@ -77,14 +88,18 @@ namespace Lg.EducationPlatform.DAL
         /// </summary>
         /// <param name="delCondition">删除条件</param>
         /// <returns></returns>
-        public int DeleteBy(System.Linq.Expressions.Expression<Func<T, bool>> whereExp)
+        public int DeleteBy(System.Linq.Expressions.Expression<Func<T, bool>> whereExp, bool autoSave = true)
         {
             var batch = dbContext.Set<T>().Where(whereExp);
             //batch.ForEach(p => {
             //    _dbContext.Set<T>().Remove(p);
             //});
             dbContext.Set<T>().RemoveRange(batch);
-            return dbContext.SaveChanges();
+
+            if (autoSave)
+                return dbContext.SaveChanges();
+
+            return -1;
         }
         #endregion
 
@@ -96,10 +111,9 @@ namespace Lg.EducationPlatform.DAL
         /// <param name="model">new一个要修改成的实体,主键必须存在于数据库</param>
         /// <param name="propertyNames">要修改的属性名称数组</param>
         /// <returns></returns>
-        public int Update(T model, params string[] propertyNames)
+        public int Update(T model, bool autoSave = true, params string[] propertyNames)
         {
             DbEntityEntry<T> entry = dbContext.Entry<T>(model);
-
             entry.State = EntityState.Unchanged;
 
             foreach (string pperty in propertyNames)
@@ -107,7 +121,10 @@ namespace Lg.EducationPlatform.DAL
                 entry.Property(pperty).IsModified = true;
             }
 
-            return dbContext.SaveChanges();
+            if (autoSave)
+                return dbContext.SaveChanges();
+
+            return -1;
         }
         #endregion
 
@@ -119,7 +136,7 @@ namespace Lg.EducationPlatform.DAL
         /// <param name="whereLambda">查询条件;根据它查询出要进行修改的实体集合，并将它们的值改为参数model</param>
         /// <param name="PropertyNames">要修改的属性名称数组</param>
         /// <returns></returns>
-        public int UpdateBy(T model, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, params string[] PropertyNames)
+        public int UpdateBy(T model, System.Linq.Expressions.Expression<Func<T, bool>> whereLambda, bool autoSave = true, params string[] PropertyNames)
         {
             List<T> listUpdating = dbContext.Set<T>().Where(whereLambda).ToList();
             Type t = typeof(T);
@@ -138,15 +155,18 @@ namespace Lg.EducationPlatform.DAL
                 if (dictPros.ContainsKey(proName))
                 {
                     PropertyInfo proInfo = dictPros[proName];
-                    object newValue = proInfo.GetValue(model, null);
+                    object newValue = proInfo.GetValue(model);
                     foreach (T item in listUpdating)
                     {
-                        proInfo.SetValue(item, newValue, null);
+                        proInfo.SetValue(item, newValue);
                     }
                 }
             }
 
-            return dbContext.SaveChanges();
+            if(autoSave)
+                return dbContext.SaveChanges();
+
+            return -1;
         }
         #endregion
 
@@ -226,5 +246,10 @@ namespace Lg.EducationPlatform.DAL
             }
         }
         #endregion
+
+        public int SaveChange()
+        {
+            return dbContext.SaveChanges();
+        }
     }
 }

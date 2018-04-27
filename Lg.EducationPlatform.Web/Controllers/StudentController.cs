@@ -316,7 +316,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                         .Where(p => p.Name != "Id")
                         .Select(p => p.Name)
                         .ToArray();
-                    result = _studentsService.UpdateBy(stu, p => p.Id == model.Id, propertyNames);
+                    result = _studentsService.UpdateBy(stu, p => p.Id == model.Id, true, propertyNames);
                     if (result > 0)
                     {
                         return Json(new
@@ -369,7 +369,7 @@ namespace Lg.EducationPlatform.Web.Controllers
         }
         
         [HttpPost]
-        public ActionResult GetStudents(jqDataTableParameter tableParam, string realname, string creator, string status, string start_date, string end_date, string major_name)
+        public ActionResult GetStudents(jqDataTableParameter tableParam, string realname, string creator, string status, string period, string major_name)
         {
             UserDto user = ViewBag.User as UserDto;
 
@@ -393,11 +393,9 @@ namespace Lg.EducationPlatform.Web.Controllers
             //专业名称
             if (!string.IsNullOrEmpty(major_name))
                 whereExp = whereExp.And(p => p.MajorName == major_name);
-            //创建时间
-            if (!string.IsNullOrEmpty(start_date))
-                whereExp = whereExp.And(p => p.CreationTime >= DateTime.Parse(start_date));
-            if (!string.IsNullOrEmpty(end_date))
-                whereExp = whereExp.And(p => p.CreationTime <= DateTime.Parse(end_date));
+            //届别
+            if (!string.IsNullOrEmpty(period))
+                whereExp = whereExp.And(p => p.Period.Contains(period));
 
             OperateHelper.Current.Session["Expression"] = whereExp;
             #endregion
@@ -532,7 +530,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 stu.LastModifierUserId = (ViewBag.User as UserDto).UserId;
                 stu.LastModificationTime = DateTime.Now;
                 var propertyNames = new string[] { "IsDeleted", "DeletionTime", "LastModifierUserId", "LastModificationTime" };
-                int result = _studentsService.UpdateBy(stu, p => p.Id == id, propertyNames);
+                int result = _studentsService.UpdateBy(stu, p => p.Id == id, true, propertyNames);
                 if (result > 0)
                 {
                     return Json(new
@@ -572,7 +570,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 LastModificationTime = DateTime.Now
             };
             var propertyNames = new string[] { "Status", "LastModifierUserId", "LastModificationTime" };
-            int result = _studentsService.UpdateBy(newStu, p => p.Id == id, propertyNames);
+            int result = _studentsService.UpdateBy(newStu, p => p.Id == id, true, propertyNames);
             if (result > 0)
             {
                 return Json(new

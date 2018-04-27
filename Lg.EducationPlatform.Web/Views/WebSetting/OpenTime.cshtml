@@ -1,0 +1,95 @@
+﻿@model Lg.EducationPlatform.ViewModel.WebSettingViewModel
+
+@section headScript{
+    @Scripts.Render("~/bundles/form")
+    @Scripts.Render("~/bundles/calendar")
+    <script type="text/javascript">
+        jQuery.noConflict();
+        jQuery(function () {
+            jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
+
+            jQuery('body').addClass('withvernav');
+            jQuery('#set_open').addClass('current')
+            jQuery('#OpenStartDate,#OpenEndDate').datetimepicker({
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'hh:00:00',
+                showMinute: false
+            });
+
+            jQuery("#opentimeform").validate({
+                rules: {
+                    OpenStartDate: {
+                        required: true
+                    },
+                    OpenEndDate: {
+                        required: true
+                    },
+                    Period: {
+                        required: true,
+                        maxlength: 50
+                    }
+                },
+                messages: {
+                    OpenStartDate: {
+                        required: "开始时间不能为空"
+                    },
+                    OpenEndDate: {
+                        required: "结束时间不能为空"
+                    },
+                    Period: {
+                        required: "当前届别不能为空",
+                        maxlength: "您输入的届别太长"
+                    }
+                },
+                submitHandler: function (form) {
+                    jQuery(form).ajaxSubmit({
+                        url: '/WebSetting/OpenTime',
+                        type: "post",
+                        success: function (data) {
+                            layer.alert(data.Message);
+                        },
+                        error: function (error) { layer.alert(error); }
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+@{ Html.RenderPartial("~/Views/Shared/_SettingMenu.cshtml"); }
+
+<div class="centercontent">
+    <ul class="breadcrumbs">
+        <li><a>首页</a></li>
+        <li><a>系统设置</a></li>
+        <li>开放时间</li>
+    </ul>
+    <div class="contentwrapper">
+        <form id="opentimeform" class="stdform" method="post" action="">
+            <div class="contenttitle2">
+                <h3>开放注册设置</h3>
+            </div>
+            <p>
+                <label>开始时间</label>
+                <span class="field">
+                    @Html.TextBoxFor(m => m.OpenStartDate)
+                </span>
+            </p>
+            <p>
+                <label>结束时间</label>
+                <span class="field">
+                    @Html.TextBoxFor(m => m.OpenEndDate)
+                </span>
+            </p>
+            <p>
+                <label>当前届别</label>
+                <span class="field">
+                    @Html.TextBoxFor(m => m.Period, new { @class = "smallinput" })
+                </span>
+            </p>
+            <p class="stdformbutton">
+                <button class="submit radius2">保存信息</button>
+            </p>
+        </form>
+    </div>
+</div>

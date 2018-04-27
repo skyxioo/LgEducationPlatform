@@ -10,6 +10,7 @@ namespace Lg.EducationPlatform.IDAL
     {
 		IStudentsDAL StudentsDAL{get;set;}
 		IUsersDAL UsersDAL{get;set;}
+		IWebSettingsDAL WebSettingsDAL{get;set;}
     }
 
 }

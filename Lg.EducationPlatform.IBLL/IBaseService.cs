@@ -19,9 +19,9 @@ namespace Lg.EducationPlatform.IBLL
         /// </summary>
         /// <param name="model">model对象</param>
         /// <returns>受影响的行数</returns>
-        int Add(T model);
+        int Add(T model, bool autoSave = true);
 
-        int AddRange(IEnumerable<T> list);
+        int AddRange(IEnumerable<T> list, bool autoSave = true);
         #endregion
 
         #region 2.1 根据id删除
@@ -30,7 +30,7 @@ namespace Lg.EducationPlatform.IBLL
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns>受影响的行数</returns>
-        int Delete(long id);
+        int Delete(long id, bool autoSave = true);
         #endregion
 
         #region 2.1 删除一个model
@@ -39,7 +39,7 @@ namespace Lg.EducationPlatform.IBLL
         /// </summary>
         /// <param name="model">用户需要构造一个model，此model一定在数据库中存在</param>
         /// <returns>受影响的行数</returns>
-        int Delete(T model);
+        int Delete(T model, bool autoSave = true);
         #endregion
 
         #region 2.2 根据条件删除
@@ -48,7 +48,7 @@ namespace Lg.EducationPlatform.IBLL
         /// </summary>
         /// <param name="delCondition">删除条件</param>
         /// <returns>受影响的行数</returns>
-        int DeleteBy(System.Linq.Expressions.Expression<Func<T, bool>> delCondition);
+        int DeleteBy(System.Linq.Expressions.Expression<Func<T, bool>> delCondition, bool autoSave = true);
         #endregion
 
         #region 3.1 修改某一个实体
@@ -58,7 +58,7 @@ namespace Lg.EducationPlatform.IBLL
         /// <param name="model">手动new一个要修改成的实体,该model的id必须存在</param>
         /// <param name="propertyNames">要修改的属性名称数组</param>
         /// <returns>受影响的行数</returns>
-        int Update(T model, params string[] propertyNames);
+        int Update(T model, bool autoSave = true, params string[] propertyNames);
         #endregion
 
         #region 3.2  按条件修改
@@ -69,7 +69,7 @@ namespace Lg.EducationPlatform.IBLL
         /// <param name="whereLambda">查询条件;根据它查询出要进行修改的实体集合，并将它们的值改为参数model</param>
         /// <param name="PropertyNames">要修改的属性名称数组</param>
         /// <returns>受影响的行数</returns>
-        int UpdateBy(T model, Expression<Func<T, bool>> whereLambda, params string[] PropertyNames);
+        int UpdateBy(T model, Expression<Func<T, bool>> whereLambda, bool autoSave = true, params string[] PropertyNames);
         #endregion
 
         #region 6.0 根据主键id查询实体
@@ -114,5 +114,7 @@ namespace Lg.EducationPlatform.IBLL
         /// <returns>List集合</returns>
         IQueryable<T> GetPagedList<TKey>(int displayStart, int pageSize, Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderLambda, bool isAsc);
         #endregion
+
+        int SaveChange();
     }
 }

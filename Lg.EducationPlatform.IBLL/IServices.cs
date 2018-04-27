@@ -20,5 +20,9 @@ namespace Lg.EducationPlatform.IBLL
     {
     }
 
+	public partial interface IWebSettingsService : IBaseService<WebSettings>
+    {
+    }
+
 
 }

@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="ServiceSession.cs" />
     <Compile Include="UsersService.cs" />
+    <Compile Include="WebSettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lg.EducationPlatform.Common\Lg.EducationPlatform.Common.csproj">

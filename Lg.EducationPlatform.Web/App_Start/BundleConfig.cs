@@ -33,6 +33,8 @@ namespace Lg.EducationPlatform.Web
 
             bundles.Add(new ScriptBundle("~/bundles/calendar").Include(
                        "~/Content/js/plugins/moment.min.js",
+                       "~/Content/js/plugins/jquery-ui-timepicker-addon.js",
+                       "~/Content/js/plugins/jquery-ui-timepicker-zh-CN.js",
                        "~/Content/js/custom/calendar.zh-cn.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/table").Include(

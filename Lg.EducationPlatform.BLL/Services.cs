@@ -27,5 +27,13 @@ namespace Lg.EducationPlatform.BLL
 		}
     }
 
+	public partial class WebSettingsService : BaseService<WebSettings>,  IWebSettingsService
+    {
+		public override void SetDAL()
+		{
+			CurrentDAL = CurrentDbSession.WebSettingsDAL;
+		}
+    }
+
 
 }

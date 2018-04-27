@@ -43,6 +43,23 @@ namespace Lg.EducationPlatform.BLL
 		}
 		#endregion
 
+		#region 03 业务接口 IWebSettingsService (实际为类 依赖接口)
+		IWebSettingsService _WebSettingsService;
+		public IWebSettingsService WebSettingsService
+		{
+			get
+			{
+				if(_WebSettingsService == null)
+					_WebSettingsService = new WebSettingsService();
+				return _WebSettingsService;
+			}
+			set
+			{
+				_WebSettingsService = value;
+			}
+		}
+		#endregion
+
     }
 
 }

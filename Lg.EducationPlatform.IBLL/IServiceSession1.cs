@@ -10,6 +10,7 @@ namespace Lg.EducationPlatform.IBLL
     {
 		IStudentsService StudentsService{get;set;}
 		IUsersService UsersService{get;set;}
+		IWebSettingsService WebSettingsService{get;set;}
     }
 
 }

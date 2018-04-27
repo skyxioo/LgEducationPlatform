@@ -69,7 +69,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                     .Where(p => p.Name != "Id")
                     .Select(p => p.Name)
                     .ToArray();
-                result = _usersService.UpdateBy(teacher, p => p.Id == model.Id, propertyNames);
+                result = _usersService.UpdateBy(teacher, p => p.Id == model.Id, true, propertyNames);
                 if (result > 0)
                 {
                     return Json(new
@@ -167,7 +167,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 teacher.LastModificationTime = DateTime.Now;
                 teacher.LastModifierUserId = user.UserId;
                 var propertyNames = new string[] { "IsActive", "LastModificationTime", "LastModifierUserId" };
-                int result = _usersService.UpdateBy(teacher, p => p.Id == id, propertyNames);
+                int result = _usersService.UpdateBy(teacher, p => p.Id == id, true, propertyNames);
                 if (result > 0)
                 {
                     return Json(new
@@ -204,7 +204,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             teacher.LastModifierUserId = (ViewBag.User as UserDto).UserId;
             teacher.LastModificationTime = DateTime.Now;
             var propertyNames = new string[] { "IsDeleted", "DeletionTime", "LastModifierUserId", "LastModificationTime" };
-            int result = _usersService.UpdateBy(teacher, p => p.Id == id, propertyNames);
+            int result = _usersService.UpdateBy(teacher, p => p.Id == id, true, propertyNames);
             if (result > 0)
             {
                 return Json(new

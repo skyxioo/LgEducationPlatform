@@ -55,6 +55,16 @@
           <Property Name="LastModifierUserId" Type="bigint" />
           <Property Name="LastModificationTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="WebSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConfigKey" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConfigValue" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="LastModificationTime" Type="datetime" />
+        </EntityType>
         <Association Name="FK_Students_Users1">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
@@ -94,6 +104,7 @@
         <EntityContainer Name="EduDb4LgModelStoreContainer">
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebSettings" EntityType="Self.WebSettings" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Students_Users1" Association="Self.FK_Students_Users1">
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
@@ -218,7 +229,18 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Users1" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="WebSettings" EntityType="EduDb4LgModel.WebSettings" />
         </EntityContainer>
+        <EntityType Name="WebSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigKey" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModificationTime" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -274,6 +296,17 @@
                 <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
                 <ScalarProperty Name="LastModifierUserId" ColumnName="LastModifierUserId" />
                 <ScalarProperty Name="LastModificationTime" ColumnName="LastModificationTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebSettings">
+            <EntityTypeMapping TypeName="EduDb4LgModel.WebSettings">
+              <MappingFragment StoreEntitySet="WebSettings">
+                <ScalarProperty Name="LastModificationTime" ColumnName="LastModificationTime" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
+                <ScalarProperty Name="ConfigKey" ColumnName="ConfigKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

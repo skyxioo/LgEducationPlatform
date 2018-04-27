@@ -86,6 +86,10 @@
     <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="ViewModel\TeacherOutput.cs" />
     <Compile Include="ViewModel\TeacherViewModel.cs" />
+    <Compile Include="ViewModel\WebSettingViewModel.cs" />
+    <Compile Include="WebSettings.cs">
+      <DependentUpon>EduDbModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

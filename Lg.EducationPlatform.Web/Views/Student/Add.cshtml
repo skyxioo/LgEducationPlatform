@@ -232,8 +232,9 @@
             </p>
             <p>
                 <label>届别</label>
-                <span class="field">
-                    @Html.TextBoxFor(m => m.Period, new { @class = "smallinput" })
+                <span class="field">&nbsp;
+                    @Model.Period
+                    @Html.HiddenFor(m => m.Period)
                 </span>
             </p>
 

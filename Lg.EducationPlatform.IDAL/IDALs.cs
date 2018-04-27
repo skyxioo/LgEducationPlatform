@@ -20,5 +20,9 @@ namespace Lg.EducationPlatform.IDAL
     {
     }
 
+	public partial interface IWebSettingsDAL : IBaseDAL<WebSettings>
+    {
+    }
+
 
 }

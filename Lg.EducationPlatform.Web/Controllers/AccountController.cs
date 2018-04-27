@@ -40,7 +40,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                     //Session.Add("loginuser", userModel);
                     Users user = new Users();
                     user.LastLoginTime = DateTime.Now;
-                    _userService.UpdateBy(user, p => p.Id == userDto.UserId, "LastLoginTime");
+                    _userService.UpdateBy(user, p => p.Id == userDto.UserId, true, "LastLoginTime");
 
                     userDto.PassWord = string.Empty;
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(

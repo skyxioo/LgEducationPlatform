@@ -10,6 +10,7 @@
         <AssociationConnector Association="EduDb4LgModel.FK_Students_Users1" ManuallyRouted="false" />
         <AssociationConnector Association="EduDb4LgModel.FK_Students_Users2" ManuallyRouted="false" />
         <AssociationConnector Association="EduDb4LgModel.FK_Users_Users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EduDb4LgModel.WebSettings" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

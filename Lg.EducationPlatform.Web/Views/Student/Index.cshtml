@@ -21,7 +21,7 @@
 
         #student_search label {
             display: inline-block;
-            width: 100px;
+            width: 80px;
             text-align: right
         }
 
@@ -41,18 +41,18 @@
             jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
             jQuery('#student,#stu_info').addClass('current');
             jQuery('body').addClass('withvernav');
-            var dates = jQuery("#start_date, #end_date").datepicker({
-                dateFormat: 'yy-mm-dd',
-                onSelect: function (selectedDate) {
-                    var option = this.id == "start_date" ? "minDate" : "maxDate",
-                        instance = jQuery(this).data("datepicker"),
-                        date = jQuery.datepicker.parseDate(
-                            instance.settings.dateFormat ||
-                            jQuery.datepicker._defaults.dateFormat,
-                            selectedDate, instance.settings);
-                    dates.not(this).datepicker("option", option, date);
-                }
-            });
+            //var dates = jQuery("#start_date, #end_date").datepicker({
+            //    dateFormat: 'yy-mm-dd',
+            //    onSelect: function (selectedDate) {
+            //        var option = this.id == "start_date" ? "minDate" : "maxDate",
+            //            instance = jQuery(this).data("datepicker"),
+            //            date = jQuery.datepicker.parseDate(
+            //                instance.settings.dateFormat ||
+            //                jQuery.datepicker._defaults.dateFormat,
+            //                selectedDate, instance.settings);
+            //        dates.not(this).datepicker("option", option, date);
+            //    }
+            //});
 
             jQuery('#archives-table').dataTable({
                 "oLanguage": {
@@ -81,8 +81,7 @@
                     aoData.push({ "name": "creator", "value": jQuery("#creator").val() });
                     aoData.push({ "name": "status", "value": jQuery("#status").val() });
                     aoData.push({ "name": "major_name", "value": jQuery("#major_name").val() });
-                    aoData.push({ "name": "start_date", "value": jQuery("#start_date").val() });
-                    aoData.push({ "name": "end_date", "value": jQuery("#end_date").val() });
+                    aoData.push({ "name": "period", "value": jQuery("#period").val() });
                     jQuery.ajax({
                         "dataType": 'json',
                         "type": "POST",
@@ -110,41 +109,15 @@
                         }
                     },
                     {
-                        "sWidth": "6%",
+                        "sWidth": "5%",
                         "mDataProp": "Sex",
                         "mRender": function (data, type, row) {
                             return data == 0 ? "女" : "男";
                         }
                     },
-                    { "sWidth": "6%", "mDataProp": "Period" },
+                    { "sWidth": "6%", "mDataProp": "Nationality" },
                     { "sWidth": "12%", "mDataProp": "MajorName" },
-                    {
-                        "sWidth": "10%", "mDataProp": "EducationalLevel",
-                        "mRender": function (data, type, row) {
-                            var value = "";
-                            switch (data) {
-                                case 0:
-                                    value = "无";
-                                    break;
-                                case 1:
-                                    value = "初中";
-                                    break;
-                                case 2:
-                                    value = "高中";
-                                    break;
-                                case 3:
-                                    value = "中专";
-                                    break;
-                                case 4:
-                                    value = "大专在读";
-                                    break;
-                                case 5:
-                                    value = "大专毕业";
-                                    break;
-                            }
-                            return value;
-                        }
-                    },
+                    { "sWidth": "15%", "mDataProp": "IdCard" },
                     {
                         "sWidth": "10%", "mDataProp": "ExaminationLevel",
                         "mRender": function (data, type, row) {
@@ -155,22 +128,20 @@
                         }
                     },
                     {
-                        "sWidth": "8%", "mDataProp": "CreationTime",
-                        "mRender": function (data, type, row) {
-                            return moment(data).format("YYYY-MM-DD");
-                        }
-                    },
-                    {
                         "sWidth": "8%",
                         "mDataProp": "Status",
                         "mRender": function (data, type, row) {
-                            var value = "已审";
-                            if (!data)
-                                value = "未审";
+                            var value = "";
+                            if (data == "1")
+                                value = "已注册";
+                            else if (data == "2")
+                                value = "退学"
+                            else
+                                value = "未确认";
                             return value;
                         }
                     },
-                    { "sWidth": "15%", "mDataProp": "Remark" },
+                    { "sWidth": "10%", "mDataProp": "Period" },
                     { //自定义列 : 真删除
                         "mDataProp": "null",
                         "sWidth": "6%",
@@ -301,7 +272,17 @@
             </li>
             <li>
                 <p>
-                    <label>创建人&nbsp;&nbsp;</label>
+                    <label>专业班级&nbsp;&nbsp;</label>
+                    <span class="field"><input type="text" id="major_name" class="smallinput" /></span>
+                </p>
+            </li>
+            <li>
+                <label>届别&nbsp;&nbsp;</label>
+                <span class="field"><input type="text" id="period" class="smallinput" /></span>
+            </li>
+            <li>
+                <p>
+                    <label>助学单位&nbsp;&nbsp;</label>
                     <span class="field">
                         @Html.DropDownList("creator", ViewBag.UserList as IEnumerable<SelectListItem>, new { @class = "uniformselect" })
                     </span>
@@ -312,32 +293,18 @@
                 <span class="field">
                     <select id="status" class="uniformselect">
                         <option value="">全部</option>
-                        <option value="1">已审</option>
-                        <option value="0">未审</option>
+                        <option value="0">未确认</option>
+                        <option value="1">已注册</option>
+                        <option value="2">退学</option>
                     </select>
                 </span>
             </li>
         </ul>
-        <ul>
-            <li>
-                <p>
-                    <label>专业名称&nbsp;&nbsp;</label>
-                    <span class="field"><input type="text" id="major_name" class="smallinput" /></span>
-                </p>
-            </li>
-            <li>
-                <label>创建日期&nbsp;&nbsp;</label>
-                <span class="field">
-                    <input type="text" id="start_date" class="width100" /> -
-                    <input type="text" id="end_date" class="width100" />
-                </span>
-            </li>
-            <li style="padding-left:30px;">
-                <a id="btn_search" href="javascript:void(0);" class="btn btn_orange btn_search radius50"><span>查询</span></a>&nbsp;&nbsp;
-                <a id="btn_export" href="@Url.Action("Export","Student")" class="btn btn_archive radius50"><span>导出表格</span></a>&nbsp;&nbsp;
-                <a id="btn_down" href="@Url.Action("DownLoad", "Student")" class="btn btn_link radius50"><span>下载图片</span></a>
-            </li>
-        </ul>
+        <div style="text-align:right; margin-bottom: 15px;">
+            <a id="btn_search" href="javascript:void(0);" class="btn btn_orange btn_search radius50"><span>查询</span></a>&nbsp;&nbsp;
+            <a id="btn_export" href="@Url.Action("Export","Student")" class="btn btn_archive radius50"><span>导出表格</span></a>&nbsp;&nbsp;
+            <a id="btn_down" href="@Url.Action("DownLoad", "Student")" class="btn btn_link radius50"><span>下载图片</span></a>
+        </div>
     </form>
     <div class="dataTables_wrapper stu_table">
         <table id="archives-table" class="stdtable table" cellspacing="0" cellpadding="0" border="0">
@@ -345,13 +312,12 @@
                 <tr>
                     <th align="center">姓名</th>
                     <th>性别</th>
-                    <th>届别</th>
+                    <th>民族</th>
                     <th>专业</th>
-                    <th>文化层次</th>
+                    <th>身份证号</th>
                     <th>报考层次</th>
-                    <th>创建日期</th>
                     <th>审核状态</th>
-                    <th>备注</th>
+                    <th>届别</th>
                     <th>操作</th>
                 </tr>
             </thead>

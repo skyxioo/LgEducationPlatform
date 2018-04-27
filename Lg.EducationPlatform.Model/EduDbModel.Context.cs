@@ -27,5 +27,6 @@ namespace Lg.EducationPlatform.Model
     
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<WebSettings> WebSettings { get; set; }
     }
 }
