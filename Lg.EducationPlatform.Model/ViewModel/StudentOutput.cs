@@ -11,6 +11,7 @@ namespace Lg.EducationPlatform.ViewModel
         public long Id { get; set; }
         public string SurName { get; set; }
         public byte Sex { get; set; }
+        public string IdCard { get; set; }
         public string Period { get; set; }
         public byte ExaminationLevel { get; set; }
         public string MajorName { get; set; }
@@ -21,6 +22,6 @@ namespace Lg.EducationPlatform.ViewModel
         public string Remark { get; set; }
         public string Creator { get; set; }
         public DateTime CreationTime { get; set; }
-        public bool Status { get; set; }
+        public byte Status { get; set; }
     }
 }

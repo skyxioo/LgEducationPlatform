@@ -32,7 +32,7 @@ namespace Lg.EducationPlatform.DAL
             {
                 dbContext.Set<T>().Add(model);
                 if (autoSave)
-                    return dbContext.SaveChanges();
+                    return SaveChanges();
             }
             catch(Exception ex)
             {
@@ -48,7 +48,7 @@ namespace Lg.EducationPlatform.DAL
             {
                 dbContext.Set<T>().AddRange(list);
                 if (autoSave)
-                    return dbContext.SaveChanges();
+                    return SaveChanges();
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace Lg.EducationPlatform.DAL
                 entry.State = EntityState.Deleted;
 
                 if (autoSave)
-                    return dbContext.SaveChanges();
+                    return SaveChanges();
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace Lg.EducationPlatform.DAL
             {
                 dbContext.Set<T>().Remove(model);
                 if (autoSave)
-                    return dbContext.SaveChanges();
+                    return SaveChanges();
             }
             catch (Exception ex)
             {
@@ -123,7 +123,7 @@ namespace Lg.EducationPlatform.DAL
                 dbContext.Set<T>().RemoveRange(batch);
 
                 if (autoSave)
-                    return dbContext.SaveChanges();
+                    return SaveChanges();
             }
             catch (Exception ex)
             {
@@ -155,7 +155,7 @@ namespace Lg.EducationPlatform.DAL
                 }
 
                 if (autoSave)
-                    return dbContext.SaveChanges();
+                    return SaveChanges();
             }
             catch (Exception ex)
             {
@@ -204,7 +204,7 @@ namespace Lg.EducationPlatform.DAL
             }
 
             if(autoSave)
-                return dbContext.SaveChanges();
+                return SaveChanges();
             }
             catch (Exception ex)
             {
@@ -292,9 +292,16 @@ namespace Lg.EducationPlatform.DAL
         }
         #endregion
 
-        public int SaveChange()
+        public int SaveChanges()
         {
-            return dbContext.SaveChanges();
+            try
+            {
+                return dbContext.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                return -1;
+            }
         }
     }
 }

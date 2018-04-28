@@ -168,9 +168,9 @@ namespace Lg.EducationPlatform.BLL
         }
         #endregion
 
-        public int SaveChange()
+        public int SaveChanges()
         {
-            return CurrentDAL.SaveChange();
+            return CurrentDAL.SaveChanges();
         }
     }
 }

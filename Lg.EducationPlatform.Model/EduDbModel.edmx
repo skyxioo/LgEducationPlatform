@@ -22,7 +22,7 @@
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
           <Property Name="Phone" Type="char" MaxLength="11" Nullable="false" />
           <Property Name="TestFreeCondition" Type="nvarchar" MaxLength="100" />
-          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="200" />
           <Property Name="IdCardFrontPath" Type="nvarchar" MaxLength="120" />
           <Property Name="IdCardBackPath" Type="nvarchar" MaxLength="120" />
@@ -150,7 +150,7 @@
           <Property Name="LastModificationTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Students_Users1" FromRole="Students" ToRole="Users" />
           <NavigationProperty Name="Users1" Relationship="Self.FK_Students_Users2" FromRole="Students" ToRole="Users" />
-          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="IdCard" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Users">

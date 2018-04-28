@@ -52,7 +52,7 @@ namespace Lg.EducationPlatform.Web.Controllers
         [HttpPost]
         public ActionResult OpenTime(WebSettingViewModel model)
         {
-            var property = "ConfigValue";
+            var propertys = new string[] { "ConfigValue", "LastModificationTime" };
             WebSettings startDateSetting = _webSettingsService.GetWebSettingByKey(_open_start_date);            
             if (startDateSetting == null)
             {
@@ -66,7 +66,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             {
                 startDateSetting.ConfigValue = model.OpenStartDate;
                 startDateSetting.LastModificationTime = DateTime.Now;
-                _webSettingsService.Update(startDateSetting, false, property);
+                _webSettingsService.Update(startDateSetting, false, propertys);
             }
 
             WebSettings endDateSetting = _webSettingsService.GetWebSettingByKey(_open_end_date);
@@ -82,7 +82,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             {
                 endDateSetting.ConfigValue = model.OpenEndDate;
                 endDateSetting.LastModificationTime = DateTime.Now;
-                _webSettingsService.Update(endDateSetting, false, property);
+                _webSettingsService.Update(endDateSetting, false, propertys);
             }
 
             WebSettings periodSetting = _webSettingsService.GetWebSettingByKey(_current_period);
@@ -98,10 +98,10 @@ namespace Lg.EducationPlatform.Web.Controllers
             {
                 periodSetting.ConfigValue = model.Period;
                 periodSetting.LastModificationTime = DateTime.Now;
-                _webSettingsService.Update(periodSetting, false, property);
+                _webSettingsService.Update(periodSetting, false, propertys);
             }
 
-            int result = _webSettingsService.SaveChange();
+            int result = _webSettingsService.SaveChanges();
             if (result > 0)
             {
                 return Json(new

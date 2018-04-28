@@ -36,6 +36,7 @@
     @Scripts.Render("~/bundles/table")
     @Scripts.Render("~/bundles/calendar")
     <script type="text/javascript">
+        var roleId = @ViewBag.RoleId;
         jQuery.noConflict();
         jQuery(function () {
             jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
@@ -148,7 +149,7 @@
                         "bSearchable": false,
                         "bStorable": false,
                         "mRender": function (data, type, row) {
-                            return row.Status ? '-' : '<a class="tip" href="/Student/Add/' + row.Id + '"><i class="icon-pencil"></i></a>&nbsp;&nbsp;' +
+                            return row.Status > 0 && roleId > 0 ? '-' : '<a class="tip" href="/Student/Add/' + row.Id + '"><i class="icon-pencil"></i></a>&nbsp;&nbsp;' +
                                 '<a id="delstudent"  class="tip" target-id="' + row.Id + '" href="#"><i class="icon-remove"></i></a>';
                         }
                     }

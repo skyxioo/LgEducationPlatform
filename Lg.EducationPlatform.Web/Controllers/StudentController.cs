@@ -14,6 +14,7 @@ using System.Data;
 using System.Text;
 using System.IO;
 using Ionic.Zip;
+using Lg.EducationPlatform.Enum;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {
@@ -230,7 +231,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                     {
                         p.CreatorUserId = user.UserId;
                         p.CreationTime = DateTime.Now;
-                        p.Status = false;
+                        p.Status = 0;
                         p.IsDeleted = false;
                     });
                     int result = _studentsService.AddRange(list);
@@ -374,8 +375,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             int result = 0;
             if (model.Id > 0)//编辑
             {
-                var status = _studentsService.GetEntity(model.Id).Status;
-                if (!status)
+                if (ViewBag.RoleId == (int)UserRole.管理员 || _studentsService.GetEntity(model.Id).Status == 0)
                 {
                     stu.LastModificationTime = DateTime.Now;
                     stu.LastModifierUserId = user.UserId;
@@ -456,7 +456,10 @@ namespace Lg.EducationPlatform.Web.Controllers
                 whereExp = whereExp.And(p => p.SurName == realname.Trim());
             //审核状态
             if (!string.IsNullOrEmpty(status))
-                whereExp = whereExp.And(p => p.Status == bool.Parse(status));
+            {
+                var s = byte.Parse(status);
+                whereExp = whereExp.And(p => p.Status == s);
+            }
             //专业名称
             if (!string.IsNullOrEmpty(major_name))
                 whereExp = whereExp.And(p => p.MajorName == major_name);
@@ -480,6 +483,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                        {
                            Id = s.Id,
                            SurName = s.SurName,
+                           IdCard = s.IdCard,
                            Sex = s.Sex,
                            Period = s.Period,
                            ExaminationLevel = s.ExaminationLevel,
@@ -589,7 +593,7 @@ namespace Lg.EducationPlatform.Web.Controllers
         public ActionResult Delete(long id)
         {
             var status = _studentsService.GetEntity(id).Status;
-            if (!status)
+            if (status == 0)
             {
                 Students stu = new Students();
                 stu.IsDeleted = true;
@@ -629,10 +633,11 @@ namespace Lg.EducationPlatform.Web.Controllers
         [HttpPost]
         public ActionResult Audit(int id)
         {
+            byte status = byte.Parse(Request.Form["status"]);
             UserDto user = ViewBag.User as UserDto;
             var student = _studentsService.GetEntity(id);
             var newStu = new Students() {
-                Status = !student.Status,
+                Status = status,
                 LastModifierUserId = user.UserId,
                 LastModificationTime = DateTime.Now
             };

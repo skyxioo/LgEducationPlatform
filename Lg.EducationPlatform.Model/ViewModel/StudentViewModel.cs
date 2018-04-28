@@ -16,7 +16,7 @@ namespace Lg.EducationPlatform.ViewModel
         public byte EducationalLevel { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
-        public bool Status { get; set; }
+        public byte Status { get; set; }
         public string TestFreeCondition { get; set; }
         public string Remark { get; set; }
         public string IdCardFrontPath { get; set; }

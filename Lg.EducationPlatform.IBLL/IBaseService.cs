@@ -115,6 +115,6 @@ namespace Lg.EducationPlatform.IBLL
         IQueryable<T> GetPagedList<TKey>(int displayStart, int pageSize, Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderLambda, bool isAsc);
         #endregion
 
-        int SaveChange();
+        int SaveChanges();
     }
 }
