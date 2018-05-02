@@ -96,7 +96,9 @@ namespace Lg.EducationPlatform.DAL
         {
             try
             {
-                dbContext.Set<T>().Remove(model);
+                //dbContext.Set<T>().Remove(model);
+                DbEntityEntry<T> entry = dbContext.Entry<T>(model);
+                entry.State = EntityState.Deleted;
                 if (autoSave)
                     return SaveChanges();
             }
@@ -234,7 +236,7 @@ namespace Lg.EducationPlatform.DAL
         /// <param name="whereLambda">查询表达式</param>
         public IQueryable<T> GetDataListBy(System.Linq.Expressions.Expression<Func<T, bool>> whereLambda)
         {
-            return dbContext.Set<T>().AsExpandable().Where(whereLambda);
+            return dbContext.Set<T>().AsNoTracking().AsExpandable().Where(whereLambda);
         }
         #endregion
 

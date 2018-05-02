@@ -8,6 +8,7 @@
     @Scripts.Render("~/bundles/plugins")
     @Scripts.Render("~/bundles/index")
     @RenderSection("headLink", required: false)
+    @RenderSection("headScript", required: false)
     <script type="text/javascript">
         function openProfile() {
             layer.open({
@@ -23,7 +24,6 @@
             layer.alert('抱歉，您还未开通该功能权限！');
         }
     </script>
-    @RenderSection("headScript", required: false)
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/Content/js/plugins/excanvas.min.js"></script><![endif]-->
     <!--[if IE 9]>
         <link rel="stylesheet" media="screen" href="/Content/css/style.ie9.css"/>
@@ -106,7 +106,7 @@
                 <li><a href="javascript:void(0);" onclick="tip();"><span class="h h-message"></span>消息管理</a></li>
                 <li><a href="javascript:void(0);" onclick="tip();"><span class="h h-folder"></span>教务文件</a></li>
                 <li><a href="javascript:void(0);" onclick="tip();"><span class="h h-chart"></span>统计报表</a></li>
-                <li><a href="/WebSetting/OpenTime"><span class="h h-setting"></span>系统设置</a></li>
+                <li id="settings"><a href="/WebSetting/OpenTime"><span class="h h-setting"></span>系统设置</a></li>
             </ul>
         </div><!--header-->
 

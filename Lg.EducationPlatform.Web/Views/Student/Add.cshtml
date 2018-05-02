@@ -22,12 +22,12 @@
             jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
 
 
-            var id = jQuery('#Id').val();
+           var id = jQuery('#Id').val();
             id > 0 ? jQuery('#student,#stu_info').addClass('current') : jQuery('#student,#stu_add').addClass('current');
-            if (id > 0) {
+             if (id > 0) {
                 jQuery('#pic').show();
                 jQuery('#btn_return').show();
-            } else {                
+            } else {
                 var opened = @ViewBag.Opened;
                 if (opened == 0) {
                     jQuery("input").attr("disabled", "disabled");
@@ -102,40 +102,65 @@
                         required: "专业名称不能为空",
                         maxlength: "专业名称太长了"
                     }
-                },
-                submitHandler: function (form) {
-                    jQuery(form).ajaxSubmit({
-                        url: '/Student/Add',
-                        type: "post",
-                        success: function (data) {
-                            if (data.Status == "1") {
-                                layer.confirm(data.Message, {
-                                    btn: ['学生信息', '继续操作']
-                                }, function () {
-                                    window.location.href = "/Student/Index";
-                                }, function () {
-                                    window.location.href = '/Student/Add/' + id;
-                                });
-                            } else {
-                                layer.alert(data.Message);
-                            }
-                        },
-                        error: function (error) { layer.alert(error); }
-                    });
-                    //jQuery.post("/Student/Add", jQuery(form).serialize(), function (data) {
-                    //    if (data.Status == "1") {
-                    //        layer.confirm(data.Message, {
-                    //            btn: ['学生信息', '继续操作']
-                    //        }, function () {
-                    //            window.location.href = "/Student/Index";
-                    //        }, function () {
-                    //            window.location.href = '/Student/Add/' + id;
-                    //        });
-                    //    } else {
-                    //        layer.alert(data.Message);
-                    //    }
-                    //});
-                }
+                }//,
+                //submitHandler: function (form) {
+                //    jQuery(form).ajaxSubmit({
+                //        url: '/Student/Add',
+                //        type: "post",
+                //        dataType: "json",
+                //        success: function (data) {
+                //            if (data.Status == "1") {
+                //                layer.confirm(data.Message, {
+                //                    btn: ['学生信息', '继续操作']
+                //                }, function () {
+                //                    window.location.href = "/Student/Index";
+                //                }, function () {
+                //                    window.location.href = '/Student/Add/' + id;
+                //                });
+                //            } else {
+                //                layer.alert(data.Message);
+                //            }
+                //        },
+                //        error: function (error) { layer.alert(error); }
+                //    });
+                //    //jQuery.post("/Student/Add", jQuery(form).serialize(), function (data) {
+                //    //    if (data.Status == "1") {
+                //    //        layer.confirm(data.Message, {
+                //    //            btn: ['学生信息', '继续操作']
+                //    //        }, function () {
+                //    //            window.location.href = "/Student/Index";
+                //    //        }, function () {
+                //    //            window.location.href = '/Student/Add/' + id;
+                //    //        });
+                //    //    } else {
+                //    //        layer.alert(data.Message);
+                //    //    }
+                //    //});
+                //}
+            });
+
+            jQuery('#addstudentform').on('submit', function (e) {
+                e.preventDefault();
+                jQuery(this).ajaxSubmit({
+                    url: '/Student/Add',
+                    type: "post",
+                    dataType: "json",
+                    success: function (data, status) {
+                        if (data.Status == "1") {
+                            layer.confirm(data.Message, {
+                                btn: ['学生信息', '继续操作']
+                            }, function () {
+                                window.location.href = "/Student/Index";
+                            }, function () {
+                                window.location.href = '/Student/Add/' + id;
+                            });
+                        } else {
+                            layer.alert(data.Message);
+                        }
+                    },
+                    error: function (error) { layer.alert(error); }
+                });
+                return false;
             });
         });
 
@@ -184,6 +209,7 @@
                 jQuery(this).fadeOut("fast");
             });
         }
+
     </script>
 }
 

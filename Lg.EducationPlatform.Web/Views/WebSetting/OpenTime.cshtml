@@ -9,7 +9,7 @@
             jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
 
             jQuery('body').addClass('withvernav');
-            jQuery('#set_open').addClass('current')
+            jQuery('#set_open,#settings').addClass('current')
             var dates = jQuery('#OpenStartDate,#OpenEndDate').datetimepicker({
                 dateFormat: 'yy-mm-dd',
                 timeFormat: 'HH:00:00',
@@ -49,18 +49,29 @@
                         required: "当前届别不能为空",
                         maxlength: "您输入的届别太长"
                     }
-                },
-                submitHandler: function (form) {
-                    jQuery(form).ajaxSubmit({
-                        url: '/WebSetting/OpenTime',
-                        type: "post",
-                        success: function (data) {
-                            layer.alert(data.Message);
-                        },
-                        error: function (error) { layer.alert(error); }
-                    });
+                }//,
+                //submitHandler: function (form) {
+                //    jQuery(form).ajaxSubmit({
+                //        url: '/WebSetting/OpenTime',
+                //        type: "post",
+                //        success: function (data) {
+                //            layer.alert(data.Message);
+                //        },
+                //        error: function (error) { layer.alert(error); }
+                //    });
+                //}
+            });
+        });
+
+        jQuery(document).on('submit', '#opentimeform', function () {
+            jQuery.post("/WebSetting/OpenTime", jQuery(this).serialize(), function (data) {
+                if (data) {
+                    layer.alert(data.Message);
+                } else {
+                    layer.alert("服务器发生错误，请稍后再试……");
                 }
             });
+            return false;
         });
     </script>
 }

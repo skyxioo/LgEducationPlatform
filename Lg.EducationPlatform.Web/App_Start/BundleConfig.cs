@@ -19,10 +19,9 @@ namespace Lg.EducationPlatform.Web
                         "~/Content/layer/layer.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/form").Include(
-                        "~/Content/js/plugins/jquery.validate.min.js",
                         "~/Content/js/plugins/jquery.form.js",
-                        "~/Content/js/plugins/jquery.uniform.min.js",
-                        "~/Content/js/plugins/jquery-ui-1.8.16.custom.min.js"));
+                        "~/Content/js/plugins/jquery.validate.min.js",
+                        "~/Content/js/plugins/jquery.uniform.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/unobtrusive").Include(
                        "~/Content/js/plugins/jquery.validate.unobtrusive.js"));
@@ -32,6 +31,7 @@ namespace Lg.EducationPlatform.Web
                        "~/Content/js/custom/index.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/calendar").Include(
+                        "~/Content/js/plugins/jquery-ui-1.8.16.custom.min.js",
                        "~/Content/js/plugins/moment.min.js",
                        "~/Content/js/plugins/jquery-ui-timepicker-addon.js",
                        "~/Content/js/plugins/jquery-ui-timepicker-zh-CN.js",

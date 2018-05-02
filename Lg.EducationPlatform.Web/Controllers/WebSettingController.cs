@@ -53,7 +53,7 @@ namespace Lg.EducationPlatform.Web.Controllers
         public ActionResult OpenTime(WebSettingViewModel model)
         {
             var propertys = new string[] { "ConfigValue", "LastModificationTime" };
-            WebSettings startDateSetting = _webSettingsService.GetWebSettingByKey(_open_start_date);            
+            WebSettings startDateSetting = _webSettingsService.GetWebSettingByKey(_open_start_date);
             if (startDateSetting == null)
             {
                 startDateSetting = new WebSettings();

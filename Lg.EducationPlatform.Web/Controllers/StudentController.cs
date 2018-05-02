@@ -100,6 +100,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             ViewBag.ExamLevelItemList = examItems;
 
             ViewBag.Title = "长沙理工大学综合管理系统|学生管理|添加";
+            ViewBag.Opened = 0;
             StudentViewModel model = new StudentViewModel();
 
             if(id != null && id.Value > 0)
@@ -449,7 +450,10 @@ namespace Lg.EducationPlatform.Web.Controllers
             else
             {
                 if (!string.IsNullOrEmpty(creator))
-                    whereExp = whereExp.And(p => p.CreatorUserId == int.Parse(creator));
+                {
+                    var userId = int.Parse(creator);
+                    whereExp = whereExp.And(p => p.CreatorUserId == userId);
+                }
             }
             //学生姓名
             if (!string.IsNullOrEmpty(realname))

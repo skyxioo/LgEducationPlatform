@@ -41,12 +41,12 @@ namespace Lg.EducationPlatform.BLL
         /// <returns>受影响的行数</returns>
         public int Add(T model, bool autoSave = true)
         {
-            return CurrentDAL.Add(model);
+            return CurrentDAL.Add(model, autoSave);
         }
 
         public int AddRange(IEnumerable<T> list, bool autoSave = true)
         {
-            return CurrentDAL.AddRange(list);
+            return CurrentDAL.AddRange(list, autoSave);
         }
         #endregion
 
@@ -70,7 +70,7 @@ namespace Lg.EducationPlatform.BLL
         /// <returns>受影响的行数</returns>
         public int Delete(T model, bool autoSave = true)
         {
-            return CurrentDAL.Delete(model);
+            return CurrentDAL.Delete(model, autoSave);
         }
         #endregion
 
@@ -82,7 +82,7 @@ namespace Lg.EducationPlatform.BLL
         /// <returns></returns>
         public int DeleteBy(System.Linq.Expressions.Expression<Func<T, bool>> delCondition, bool autoSave = true)
         {
-            return CurrentDAL.DeleteBy(delCondition);
+            return CurrentDAL.DeleteBy(delCondition, autoSave);
         }
         #endregion
 
