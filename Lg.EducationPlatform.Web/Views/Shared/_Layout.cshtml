@@ -106,7 +106,10 @@
                 <li><a href="javascript:void(0);" onclick="tip();"><span class="h h-message"></span>消息管理</a></li>
                 <li><a href="javascript:void(0);" onclick="tip();"><span class="h h-folder"></span>教务文件</a></li>
                 <li><a href="javascript:void(0);" onclick="tip();"><span class="h h-chart"></span>统计报表</a></li>
+                @if (ViewBag.RoleId == 0)
+                {
                 <li id="settings"><a href="/WebSetting/OpenTime"><span class="h h-setting"></span>系统设置</a></li>
+                }
             </ul>
         </div><!--header-->
 

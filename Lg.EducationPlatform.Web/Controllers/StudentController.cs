@@ -94,13 +94,21 @@ namespace Lg.EducationPlatform.Web.Controllers
             List<SelectListItem> examItems = new List<SelectListItem>
             {
                 new SelectListItem{ Text = "专科", Value = "1" },
-                new SelectListItem{ Text = "本科", Value = "2", Selected = true }
+                new SelectListItem{ Text = "专升本", Value = "2", Selected = true }
+            };
+            List<SelectListItem> majorItems = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "交通土建工程", Value = "交通土建工程" },
+                new SelectListItem { Text = "工程财务管理", Value = "工程财务管理" },
+                new SelectListItem { Text = "汽车运用工程", Value = "汽车运用工程" }
             };
             ViewBag.EduLevelItemList = eduItems;
             ViewBag.ExamLevelItemList = examItems;
+            ViewBag.MajorItemList = majorItems;
 
             ViewBag.Title = "长沙理工大学综合管理系统|学生管理|添加";
             ViewBag.Opened = 0;
+            ViewBag.EndDate = "";
             StudentViewModel model = new StudentViewModel();
 
             if(id != null && id.Value > 0)
@@ -143,7 +151,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 }
                 else
                 {
-                    var period = DateTime.Now.Year.ToString();
+                    var period = DateTime.Now.ToString("yyyy");
                     if (DateTime.Now.Month <= 6)
                         period = period + "春季";
                     else
@@ -155,7 +163,10 @@ namespace Lg.EducationPlatform.Web.Controllers
                 try
                 {
                     if (DateTime.Parse(startDateSetting.ConfigValue) < DateTime.Now && DateTime.Now < DateTime.Parse(endDateSetting.ConfigValue))
+                    {
                         opened = 1;
+                        ViewBag.EndDate = endDateSetting.ConfigValue;
+                    }
                     else
                         opened = 0;
                 }
@@ -437,7 +448,7 @@ namespace Lg.EducationPlatform.Web.Controllers
         }
         
         [HttpPost]
-        public ActionResult GetStudents(jqDataTableParameter tableParam, string realname, string creator, string status, string period, string major_name)
+        public ActionResult GetStudents(jqDataTableParameter tableParam, string realname, string creator, string status, string period, string major_name, string examination_level)
         {
             UserDto user = ViewBag.User as UserDto;
 
@@ -470,6 +481,12 @@ namespace Lg.EducationPlatform.Web.Controllers
             //届别
             if (!string.IsNullOrEmpty(period))
                 whereExp = whereExp.And(p => p.Period.Contains(period));
+            //报考层次
+            if (!string.IsNullOrEmpty(examination_level))
+            {
+                var level = int.Parse(examination_level);
+                whereExp = whereExp.And(p => p.ExaminationLevel == level);
+            }
 
             OperateHelper.Current.Session["Expression"] = whereExp;
             #endregion

@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {
+    [UserAuth(AllowRole = Enum.UserRole.管理员)]
     public class WebSettingController : BaseController
     {
         private const string _open_start_date = "SYSTEM_OPEN_START_DATE";
@@ -21,7 +22,7 @@ namespace Lg.EducationPlatform.Web.Controllers
         public ActionResult OpenTime()
         {
             WebSettingViewModel model = new WebSettingViewModel();
-            var period = DateTime.Now.Year.ToString();
+            var period = DateTime.Now.ToString("yyyy");
             if (DateTime.Now.Month <= 6)
                 period = period + "春季";
             else

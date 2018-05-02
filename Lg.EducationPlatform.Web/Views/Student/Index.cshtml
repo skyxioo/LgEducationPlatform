@@ -81,8 +81,9 @@
                     aoData.push({ "name": "realname", "value": jQuery("#realname").val() });
                     aoData.push({ "name": "creator", "value": jQuery("#creator").val() });
                     aoData.push({ "name": "status", "value": jQuery("#status").val() });
-                    aoData.push({ "name": "major_name", "value": jQuery("#major_name").val() });
+                    aoData.push({ "name": "major_name", "value": jQuery("#major_name").val() }); 
                     aoData.push({ "name": "period", "value": jQuery("#period").val() });
+                    aoData.push({ "name": "examination_level", "value": jQuery("#examination_level").val() });
                     jQuery.ajax({
                         "dataType": 'json',
                         "type": "POST",
@@ -273,13 +274,34 @@
             </li>
             <li>
                 <p>
-                    <label>专业班级&nbsp;&nbsp;</label>
-                    <span class="field"><input type="text" id="major_name" class="smallinput" /></span>
+                    <label>届别&nbsp;&nbsp;</label>
+                    <span class="field"><input type="text" id="period" class="smallinput" /></span>
                 </p>
             </li>
             <li>
-                <label>届别&nbsp;&nbsp;</label>
-                <span class="field"><input type="text" id="period" class="smallinput" /></span>
+                <p>
+                    <label>专业班级&nbsp;&nbsp;</label>
+                    <span class="field">
+                        <select id="major_name" class="uniformselect">
+                            <option value="">全部</option>
+                            <option value="交通土建工程">交通土建工程</option>
+                            <option value="工程财务管理">工程财务管理</option>
+                            <option value="汽车运用工程">汽车运用工程</option>
+                        </select>
+                    </span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <label>报考层次&nbsp;&nbsp;</label>
+                    <span class="field">
+                        <select id="examination_level" class="uniformselect">
+                            <option value="">全部</option>
+                            <option value="1">专科</option>
+                            <option value="2">专升本</option>
+                        </select>
+                    </span>
+                </p>
             </li>
             <li>
                 <p>
@@ -290,15 +312,17 @@
                 </p>
             </li>
             <li>
-                <label>审核状态&nbsp;&nbsp;</label>
-                <span class="field">
-                    <select id="status" class="uniformselect">
-                        <option value="">全部</option>
-                        <option value="0">未确认</option>
-                        <option value="1">已注册</option>
-                        <option value="2">退学</option>
-                    </select>
-                </span>
+                <p>
+                    <label>审核状态&nbsp;&nbsp;</label>
+                    <span class="field">
+                        <select id="status" class="uniformselect">
+                            <option value="">全部</option>
+                            <option value="0">未确认</option>
+                            <option value="1">已注册</option>
+                            <option value="2">退学</option>
+                        </select>
+                    </span>
+                </p>
             </li>
         </ul>
         <div style="text-align:right; margin-bottom: 15px;">
