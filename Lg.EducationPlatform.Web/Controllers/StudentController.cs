@@ -537,44 +537,47 @@ namespace Lg.EducationPlatform.Web.Controllers
             foreach (var stu in students)
             {
                 rowIndex++;
-                builder.Append("<Row ss: Height = \"40\">");
-                builder.Append("    <Cell ss: StyleID = \"s56\">");
+
+                builder.Append("<Row ss: Height = \"34\">");
+                builder.Append("    <Cell ss: StyleID = \"s55\">");
                 builder.Append("       <Data ss: Type = \"Number\">").Append(rowIndex).Append("</Data>");
                 builder.Append("    </Cell >");
-                builder.Append("    <Cell ss: StyleID = \"s57\">");
+                builder.Append("    <Cell ss: StyleID = \"s56\">");
                 builder.Append("        <Data ss: Type = \"String\">").Append(stu.SurName).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s57\">");
+                builder.Append("    <Cell ss: StyleID = \"s56\">");
                 builder.Append("        <Data ss: Type = \"String\">").Append(stu.Sex == 0 ? "女" : "男").Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s56\">");
+                builder.Append("    <Cell ss: StyleID = \"s55\">");
                 builder.Append("        <Data ss: Type = \"String\">").Append(stu.Nationality).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s58\">");
-                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Phone).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s57\">");
+                builder.Append("        <Data ss: Type = \"String\" x:Ticked = \"1\">").Append(stu.IdCard).Append("</Data>");
+                builder.Append("    </Cell>");
+                builder.Append("    <Cell ss: StyleID = \"s57\">");
+                builder.Append("        <Data ss: Type = \"String\" x:Ticked = \"1\">").Append(stu.MajorName).Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s58\">");
-                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Period).Append("</Data>");
+                builder.Append("        <Data ss: Type = \"String\" x: Ticked = \"1\">").Append(stu.ExaminationLevel == 1 ? "专科" : "专升本").Append("</Data>");
                 builder.Append("    </Cell>");
                 builder.Append("    <Cell ss: StyleID = \"s59\">");
-                builder.Append("        <Data ss: Type = \"String\">").Append(stu.PoliticalStatus).Append("</Data>");
-                builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s60\">");
                 builder.Append("        <Data ss: Type = \"String\">").Append(stu.Address).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s60\">");
-                builder.Append("        <Data ss: Type = \"String\">").Append(stu.EducationalLevel).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s55\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Phone).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s64\">");
-                builder.Append("        <Data ss: Type = \"String\" x: Ticked = \"1\">").Append(stu.ExaminationLevel).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s55\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Users.RealName).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s60\">");
-                builder.Append("        <Data ss: Type = \"String\">").Append(stu.MajorName).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s61\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.CreationTime.ToString("yyyy/MM/dd")).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s65\">");
-                builder.Append("        <Data ss: Type = \"String\">").Append(stu.TestFreeCondition).Append("</Data>");
+                builder.Append("    <Cell ss: StyleID = \"s55\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(stu.Period).Append("</Data>");
                 builder.Append("    </Cell>");
-                builder.Append("    <Cell ss: StyleID = \"s56\" />");
+                builder.Append("    <Cell ss: StyleID = \"s56\">");
+                builder.Append("        <Data ss: Type = \"String\">").Append(GetStatus(stu.Status)).Append("</Data>");
+                builder.Append("    </Cell>");
                 builder.Append("</Row>");
             }
 
@@ -587,6 +590,21 @@ namespace Lg.EducationPlatform.Web.Controllers
             }
             template = template.Replace("{content}", builder.ToString());
             return File(Encoding.UTF8.GetBytes(template), "application/msexcel", "学生信息表.xls");
+        }
+
+        private string GetStatus(int status)
+        {
+            string result = "未确认";
+            switch(status)
+            {
+                case 1:
+                    result = "已注册";
+                    break;
+                case 2:
+                    result = "退学";
+                    break;
+            }
+            return result;
         }
 
         public FileResult DownLoad()
