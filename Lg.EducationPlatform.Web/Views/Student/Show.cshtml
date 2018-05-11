@@ -158,7 +158,7 @@
         <p>
             <label>性别：</label>
             <span class="field">
-                @Model.Sex
+                @(Model.Sex == 0 ? "女" : "男")
             </span>
         </p>
         <p>
@@ -204,14 +204,14 @@
         <p>
             <label>文化层次：</label>
             <span class="field">
-
+                @Model.EducationalLevelStr
             </span>
         </p>
 
         <p>
             <label>报考层次：</label>
             <span class="field">
-
+                @Model.ExaminationLevelStr
             </span>
         </p>
 

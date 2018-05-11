@@ -9,11 +9,13 @@ namespace Lg.EducationPlatform.ViewModel
         public byte Sex { get; set; }
         public string Period { get; set; }
         public byte ExaminationLevel { get; set; }
+        public string ExaminationLevelStr { get; set; }
         public string MajorName { get; set; }
         public string Nationality { get; set; }
         public string IdCard { get; set; }
         public string PoliticalStatus { get; set; }
         public byte EducationalLevel { get; set; }
+        public string EducationalLevelStr { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
         public byte Status { get; set; }
