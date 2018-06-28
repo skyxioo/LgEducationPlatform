@@ -16,17 +16,18 @@
           <Property Name="ExaminationLevel" Type="tinyint" Nullable="false" />
           <Property Name="MajorName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Nationality" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Birthplace" Type="nvarchar" MaxLength="50" />
           <Property Name="IdCard" Type="varchar" MaxLength="20" />
           <Property Name="PoliticalStatus" Type="nvarchar" MaxLength="20" />
           <Property Name="EducationalLevel" Type="tinyint" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
           <Property Name="Phone" Type="char" MaxLength="11" Nullable="false" />
           <Property Name="TestFreeCondition" Type="nvarchar" MaxLength="100" />
-          <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="200" />
           <Property Name="IdCardFrontPath" Type="nvarchar" MaxLength="120" />
           <Property Name="IdCardBackPath" Type="nvarchar" MaxLength="120" />
           <Property Name="BareheadedPhotoPath" Type="nvarchar" MaxLength="120" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletionTime" Type="datetime" />
           <Property Name="CreatorUserId" Type="bigint" Nullable="false" />
@@ -51,7 +52,7 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletionTime" Type="datetime" />
           <Property Name="CreatorUserId" Type="bigint" />
-          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" />
           <Property Name="LastModifierUserId" Type="bigint" />
           <Property Name="LastModificationTime" Type="datetime" />
         </EntityType>
@@ -152,6 +153,7 @@
           <NavigationProperty Name="Users1" Relationship="Self.FK_Students_Users2" FromRole="Students" ToRole="Users" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="IdCard" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Birthplace" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -170,7 +172,7 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletionTime" Type="DateTime" Precision="3" />
           <Property Name="CreatorUserId" Type="Int64" />
-          <Property Name="CreationTime" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="CreationTime" Type="DateTime" Precision="3" />
           <Property Name="LastModifierUserId" Type="Int64" />
           <Property Name="LastModificationTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Students_Users1" FromRole="Users" ToRole="Students" />
@@ -250,6 +252,7 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="EduDb4LgModel.Students">
               <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="Birthplace" ColumnName="Birthplace" />
                 <ScalarProperty Name="IdCard" ColumnName="IdCard" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

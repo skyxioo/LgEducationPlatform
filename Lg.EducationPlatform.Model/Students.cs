@@ -38,6 +38,7 @@ namespace Lg.EducationPlatform.Model
         public Nullable<System.DateTime> LastModificationTime { get; set; }
         public byte Status { get; set; }
         public string IdCard { get; set; }
+        public string Birthplace { get; set; }
     
         public virtual Users Users { get; set; }
         public virtual Users Users1 { get; set; }

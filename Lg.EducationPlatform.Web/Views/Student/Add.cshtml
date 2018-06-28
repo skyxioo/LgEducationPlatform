@@ -62,6 +62,10 @@
                         required: true,
                         maxlength: 8
                     },
+                    Birthplace: {
+                        required: true,
+                        maxlength: 30
+                    },
                     Phone: {
                         required: true,
                         minlength: 11,
@@ -87,6 +91,10 @@
                         required: "身份证号码不能为空",
                         maxlength: "请填写18位的身份证号",
                         minlength: "请填写18位的身份证号",
+                    },
+                    Birthplace: {
+                        required: "籍贯不能为空",
+                        maxlength: "您输入的籍贯过长，不能超过50个字符"
                     },
                     Nationality: {
                         required: "请输入民族",
@@ -298,6 +306,12 @@
                 </span>
             </p>
             <p>
+                <label>籍贯</label>
+                <span class="field">
+                    @Html.TextBoxFor(m => m.Birthplace, new { @class = "smallinput" })
+                </span>
+            </p>
+            <p>
                 <label>手机</label>
                 <span class="field">
                     @Html.TextBoxFor(m => m.Phone, new { @class = "smallinput" })
@@ -305,7 +319,8 @@
             </p>
             <p>
                 <label>届别</label>
-                <span class="field">&nbsp;
+                <span class="field">
+                    &nbsp;
                     @Model.Period
                     @Html.HiddenFor(m => m.Period)
                 </span>

@@ -337,6 +337,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Address = model.Address,
                 BareheadedPhotoPath = model.BareheadedPhotoPath,
                 IdCard = model.IdCard,
+                
                 EducationalLevel = model.EducationalLevel,
                 ExaminationLevel = model.ExaminationLevel,
                 IdCardBackPath = model.IdCardBackPath,
@@ -448,7 +449,7 @@ namespace Lg.EducationPlatform.Web.Controllers
         }
         
         [HttpPost]
-        public ActionResult GetStudents(jqDataTableParameter tableParam, string realname, string creator, string status, string period, string major_name, string examination_level)
+        public ActionResult GetStudents(jqDataTableParameter tableParam, string realname, string idcard, string creator, string status, string period, string major_name, string examination_level)
         {
             UserDto user = ViewBag.User as UserDto;
 
@@ -467,8 +468,11 @@ namespace Lg.EducationPlatform.Web.Controllers
                 }
             }
             //学生姓名
-            if (!string.IsNullOrEmpty(realname))
+            if (!string.IsNullOrWhiteSpace(realname))
                 whereExp = whereExp.And(p => p.SurName == realname.Trim());
+            //身份证号
+            if (!string.IsNullOrWhiteSpace(idcard))
+                whereExp = whereExp.And(p => p.IdCard == idcard.Trim());
             //审核状态
             if (!string.IsNullOrEmpty(status))
             {
@@ -479,8 +483,8 @@ namespace Lg.EducationPlatform.Web.Controllers
             if (!string.IsNullOrEmpty(major_name))
                 whereExp = whereExp.And(p => p.MajorName == major_name);
             //届别
-            if (!string.IsNullOrEmpty(period))
-                whereExp = whereExp.And(p => p.Period.Contains(period));
+            if (!string.IsNullOrWhiteSpace(period))
+                whereExp = whereExp.And(p => p.Period.Contains(period.Trim()));
             //报考层次
             if (!string.IsNullOrEmpty(examination_level))
             {

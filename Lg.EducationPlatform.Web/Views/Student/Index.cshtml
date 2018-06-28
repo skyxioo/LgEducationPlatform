@@ -79,6 +79,7 @@
                 "sAjaxSource": "/Student/GetStudents", //ajax Url地址
                 "fnServerData": function (sSource, aoData, fnCallback) {
                     aoData.push({ "name": "realname", "value": jQuery("#realname").val() });
+                    aoData.push({ "name": "idcard", "value": jQuery("#idcard").val() });
                     aoData.push({ "name": "creator", "value": jQuery("#creator").val() });
                     aoData.push({ "name": "status", "value": jQuery("#status").val() });
                     aoData.push({ "name": "major_name", "value": jQuery("#major_name").val() }); 
@@ -269,6 +270,14 @@
                     <label>学生姓名&nbsp;&nbsp;</label>
                     <span class="field">
                         <input type="text" id="realname" class="smallinput" />
+                    </span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <label>身份证号&nbsp;&nbsp;</label>
+                    <span class="field">
+                        <input type="text" id="idcard" class="smallinput" />
                     </span>
                 </p>
             </li>
