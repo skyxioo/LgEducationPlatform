@@ -413,13 +413,13 @@
           <Data ss:Type="String">联系方式</Data>
         </Cell>
         <Cell ss:StyleID="s60">
-          <Data ss:Type="String">归属站点</Data>
+          <Data ss:Type="String">助学点</Data>
         </Cell>
         <Cell ss:StyleID="s60">
           <Data ss:Type="String">报名时间</Data>
         </Cell>
         <Cell ss:StyleID="s60">
-          <Data ss:Type="String">年级</Data>
+          <Data ss:Type="String">届别</Data>
         </Cell>
         <Cell ss:StyleID="s60">
           <Data ss:Type="String">审核状态</Data>

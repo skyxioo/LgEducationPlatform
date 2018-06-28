@@ -15,6 +15,9 @@ using System.Text;
 using System.IO;
 using Ionic.Zip;
 using Lg.EducationPlatform.Enum;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {
@@ -71,6 +74,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Address = s.Address,
                 Phone = s.Phone,
                 Remark = s.Remark,
+                Birthplace = s.Birthplace,
                 Status = s.Status,
                 //TestFreeCondition = s.TestFreeCondition,
                 IdCardFrontPath = string.IsNullOrWhiteSpace(s.IdCardFrontPath) ? "/Content/images/nopic.png" : s.IdCardFrontPath,
@@ -132,6 +136,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 model.Remark = student.Remark;
                 model.Sex = student.Sex;
                 model.SurName = student.SurName;
+                model.Birthplace = student.Birthplace;
                 //model.TestFreeCondition = student.TestFreeCondition;
                 model.IdCardFrontPath = string.IsNullOrWhiteSpace(student.IdCardFrontPath) ? "/Content/images/nopic.png" : student.IdCardFrontPath;
                 model.IdCardBackPath = string.IsNullOrWhiteSpace(student.IdCardBackPath) ? "/Content/images/nopic.png" : student.IdCardBackPath;
@@ -211,35 +216,45 @@ namespace Lg.EducationPlatform.Web.Controllers
                     List<Students> list = new List<Students>();
                     foreach (DataRow dr in dt.Rows)
                     {
-                        Students student = new Students();
-                        student.SurName = dr["姓名"].ToString();
-                        student.Sex = dr["性别"].ToString() == "女" ? (byte)0 : (byte)1;
-                        student.Nationality = dr["民族"].ToString();
-                        student.IdCard = dr["身份证号"].ToString();
-                        student.Phone = dr["手机"].ToString();
-                        student.Period = periodSetting.ConfigValue;
-                        student.PoliticalStatus = dr["政治面貌"].ToString();
-                        student.Address = dr["地址"].ToString();
-                        student.EducationalLevel = GetEducationalLevel(dr["文化层次"].ToString());
-                        student.ExaminationLevel = dr["报考层次"].ToString() == "专科" ? (byte)1 : (byte)2;
-                        student.MajorName = dr["专业"].ToString();
-                        student.TestFreeCondition = dr["免试条件"].ToString();
-                        student.Remark = dr["备注"].ToString();
-                        if (string.IsNullOrWhiteSpace(student.SurName) ||
-                            string.IsNullOrWhiteSpace(student.Nationality) ||
-                            string.IsNullOrWhiteSpace(student.IdCard) ||
-                            string.IsNullOrWhiteSpace(student.Phone) ||
-                            string.IsNullOrWhiteSpace(student.PoliticalStatus) ||
-                            string.IsNullOrWhiteSpace(student.Address) ||
-                            string.IsNullOrWhiteSpace(student.MajorName) ||
-                            student.IdCard.Length != 18 ||
-                            student.Phone.Length != 11)
+                        try
                         {
-                            info += "第" + idx + "行导入失败，必填项存在空值或身份证、手机号输入有误，请检查\r\n";
-                            continue;
+                            Students student = new Students();
+                            student.SurName = dr["姓名"].ToString();
+                            student.Sex = dr["性别"].ToString() == "女" ? (byte)0 : (byte)1;
+                            student.Nationality = dr["民族"].ToString();
+                            student.IdCard = dr["身份证号"].ToString();
+                            student.Phone = dr["手机"].ToString();
+                            student.Period = periodSetting.ConfigValue;
+                            student.PoliticalStatus = dr["政治面貌"].ToString();
+                            student.Address = dr["地址"].ToString();
+                            student.EducationalLevel = GetEducationalLevel(dr["文化层次"].ToString());
+                            student.ExaminationLevel = dr["报考层次"].ToString() == "专科" ? (byte)1 : (byte)2;
+                            student.MajorName = dr["专业"].ToString();
+                            student.Birthplace = dr["籍贯"].ToString();
+                            student.Remark = dr["备注"].ToString();
+                            if (string.IsNullOrWhiteSpace(student.SurName) ||
+                                string.IsNullOrWhiteSpace(student.Nationality) ||
+                                string.IsNullOrWhiteSpace(student.Birthplace) ||
+                                string.IsNullOrWhiteSpace(student.IdCard) ||
+                                string.IsNullOrWhiteSpace(student.Phone) ||
+                                string.IsNullOrWhiteSpace(student.PoliticalStatus) ||
+                                string.IsNullOrWhiteSpace(student.Address) ||
+                                string.IsNullOrWhiteSpace(student.MajorName) ||
+                                student.IdCard.Length != 18 ||
+                                student.Phone.Length != 11)
+                            {
+                                info += "第" + idx + "行导入失败，必填项存在空值或身份证、手机号输入有误，请检查\r\n";
+                                continue;
+                            }
+                            else
+                                list.Add(student);
                         }
-                        else
-                            list.Add(student);
+                        catch (Exception ex)
+                        {
+                            LoggerHelper.Error("导入的Excel格式错误", ex);
+                            info = "导入的Excel格式错误";
+                            break;
+                        }
                     }
 
                     list.ForEach(p =>
@@ -249,23 +264,26 @@ namespace Lg.EducationPlatform.Web.Controllers
                         p.Status = 0;
                         p.IsDeleted = false;
                     });
-                    int result = _studentsService.AddRange(list);
-                    if (result > 0)
+
+                    if (list.Count > 0)
                     {
-                        return Json(new
+                        int result = _studentsService.AddRange(list);
+                        if (result > 0)
                         {
-                            Status = 1,
-                            Message = "导入成功\r\n" + info
-                        });
+                            return Json(new
+                            {
+                                Status = 1,
+                                Message = "导入成功\r\n" + info
+                            });
+                        }
                     }
-                    else
+
+
+                    return Json(new
                     {
-                        return Json(new
-                        {
-                            Status = 0,
-                            Message = "导入失败"
-                        });
-                    }
+                        Status = 0,
+                        Message = "导入失败\r\n" + info
+                    });
                 }
                 else
                 {
@@ -367,7 +385,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Address = model.Address,
                 BareheadedPhotoPath = model.BareheadedPhotoPath,
                 IdCard = model.IdCard,
-                
+                Birthplace = model.Birthplace,
                 EducationalLevel = model.EducationalLevel,
                 ExaminationLevel = model.ExaminationLevel,
                 IdCardBackPath = model.IdCardBackPath,
@@ -421,11 +439,19 @@ namespace Lg.EducationPlatform.Web.Controllers
                 {
                     stu.LastModificationTime = DateTime.Now;
                     stu.LastModifierUserId = user.UserId;
+                    //需要修改的字段
                     var propertyNames = model.GetType().GetProperties()
                         .Where(p => p.Name != "Id")
                         .Select(p => p.Name)
-                        .ToArray();
-                    result = _studentsService.UpdateBy(stu, p => p.Id == model.Id, true, propertyNames);
+                        .ToList();
+                    if (model.BareheadedPhoto == null)
+                        propertyNames.Remove("BareheadedPhotoPath");
+                    if (model.IdCardFront == null)
+                        propertyNames.Remove("IdCardFrontPath");
+                    if (model.IdCardBack == null)
+                        propertyNames.Remove("IdCardBackPath");
+
+                    result = _studentsService.UpdateBy(stu, p => p.Id == model.Id, true, propertyNames.ToArray());
                     if (result > 0)
                     {
                         return Json(new
@@ -656,10 +682,19 @@ namespace Lg.EducationPlatform.Web.Controllers
                     if (!string.IsNullOrWhiteSpace(stu.IdCardFrontPath))
                         zip.AddFile(basePath + stu.IdCardFrontPath, stu.SurName);
                 }
-                var savePath = Server.MapPath("~/Temp/"+DateTime.Now.ToString("yyyyMMddhhmmssfff")+".zip");
+                var savePath = Server.MapPath("~/Temp/"+DateTime.Now.ToString("yyyyMMddHHmmssfff")+".zip");
                 zip.Save(savePath);
                 return File(savePath, "application/zip", "图片.zip");
             }
+        }
+
+        public FileResult DownloadPdf(long id)
+        {
+            var student = _studentsService.GetEntity(id);
+            //文件临时存储路径
+            string filePath = AppDomain.CurrentDomain.BaseDirectory + "/Temp/" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".pdf";
+            BaomingHtml(filePath, student);
+            return File(filePath, "application/pdf", student.SurName + "的报名表.pdf");
         }
 
         public ActionResult Delete(long id)
@@ -731,6 +766,138 @@ namespace Lg.EducationPlatform.Web.Controllers
                     Message = "修改失败"
                 });
             }
+        }
+
+        /// <summary>
+        /// html转pdf
+        /// </summary>
+        /// <param name="filePath">文件存储路径</param>
+        private void BaomingHtml(string filePath, Students student)
+        {
+            //获得已拼接好的
+            StringBuilder sb = PdfHtml(student);
+            Document document = new Document();
+            //设置页面大小是A4纸大小
+            //document.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
+            //创建文档
+            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+            //指定文件預設開檔時的縮放為100%
+            //PdfDestination pdfDest = new PdfDestination(PdfDestination.XYZ, 0, document.PageSize.Height, 1f);
+            document.Open();
+
+            byte[] data = Encoding.UTF8.GetBytes(sb.ToString());//字串轉成byte[]
+            MemoryStream msInput = new MemoryStream(data);
+
+            //使用XMLWorkerHelper把Html parse到PDF檔裡
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, msInput, null, Encoding.UTF8, new UnicodeFontFactory());
+
+            document.Close();
+        }
+
+        private StringBuilder PdfHtml(Students student)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("<center><h2>高等教育自学考试长沙理工大学（海南）报名登记表</h2></center>");
+            sb.Append("<table><tr><td>报名点：010180 长沙市 芙蓉区 长沙理工大学继续教育学院高新助学站 </td></tr></table>");
+            sb.Append("<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:0 auto;\">");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"width: 11%; height: 50px; line-height: 50px; text-align: center;border-left:0.5px solid #000;border-top:0.5px solid #000;font-size: 12pt;\" >姓名</td>");
+            sb.Append("         <td style=\"width: 15%;border-left:0.5px solid #000;border-top:0.5px solid #000; font-size:11pt; text-align: center;\" >");
+            sb.Append(              student.SurName);
+            sb.Append("         </td>");
+            sb.Append("         <td style=\"width: 10%;text-align: center;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;font-size: 12pt;\" >性别</td>");
+            sb.Append("         <td style=\"width: 14%;border-left:0.5px solid #000;border-top:0.5px solid #000; font-size:11pt; text-align: center;\" >");
+            sb.Append(              student.Sex == 0 ? "女" : "男");
+            sb.Append("         </td>");
+            sb.Append("         <td style=\"width: 11%;text-align: center;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;font-size: 12pt;\" >民族</td>");
+            sb.Append("         <td style=\"width: 16%;border-left:0.5px solid #000;border-top:0.5px solid #000; font-size:11pt; text-align: center;\" >");
+            sb.Append(              student.Nationality);
+            sb.Append("         </td>");
+            sb.Append("         <td rowspan=\"4\" style=\"width: 23%;text-align: center;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;border-right: 0.5px solid #000;\">");
+            if(!string.IsNullOrWhiteSpace(student.BareheadedPhotoPath))
+                sb.Append("         <img src=\"" + AppDomain.CurrentDomain.BaseDirectory + student.BareheadedPhotoPath + "\" height=\"196px\" />");
+            sb.Append("         </td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"height: 50px; line-height: 50px; text-align: center;border-top:0.5px solid #000; border-left:0.5px solid #000;\" >出生日期</td>");
+            sb.Append("         <td style=\"border-top:0.5px solid #000; border-left:0.5px solid #000; font-size:11pt; text-align: center;\" >").Append(student.IdCard.Substring(6, 4) + "-" + student.IdCard.Substring(10, 2) + "-" + student.IdCard.Substring(12, 2)).Append("</td>");
+            sb.Append("         <td style=\"text-align: center;vertical-align: middle;border-top:0.5px solid #000; border-left:0.5px solid #000;\" >籍贯</td>");
+            sb.Append("         <td style=\"border-top:0.5px solid #000; border-left:0.5px solid #000; font-size:11pt; text-align: center;\" >").Append(student.Birthplace).Append("</td>");
+            sb.Append("         <td style=\"text-align: center;vertical-align: middle;border-top:0.5px solid #000; border-left:0.5px solid #000;\" >政治面貌</td>");
+            sb.Append("         <td style=\"border-left:0.5px solid #000;border-top:0.5px solid #000; font-size:11pt; text-align: center;\" >").Append(student.PoliticalStatus).Append("</td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"height: 50px; line-height: 50px; text-align: center;border-left:0.5px solid #000;border-top:0.5px solid #000;\" >证件类型</td>");
+            sb.Append("         <td style=\"text-align: center;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;\" >身份证</td>");
+            sb.Append("         <td style=\"text-align: center;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;\" >证件 <br /> 号码 </td>");
+            sb.Append("         <td colspan=\"3\" style=\"border-left:0.5px solid #000;border-top:0.5px solid #000; font-size:11pt; text-align: center;\" >").Append(student.IdCard).Append("</td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"height: 50px; line-height: 50px; text-align: center;border-left:0.5px solid #000;border-top:0.5px solid #000;\" >文化程度</td>");
+            sb.Append("         <td style=\"border-left:0.5px solid #000;border-top:0.5px solid #000; font-size:11pt; text-align: center;\" >").Append(GetEducationalLevel(student.EducationalLevel)).Append("</td>");
+            sb.Append("         <td style=\"text-align: center;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;\">报考<br /> 层次</td>");
+            if (student.ExaminationLevel == 1)
+            {
+                sb.Append("     <td style=\"text-align: right;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;font-size:11pt;\" >");
+                sb.Append("         <img src=\"" + AppDomain.CurrentDomain.BaseDirectory + @"/Content/images/checkbox.png" + "\" width=\"14px\" height=\"14px\" /> 专科");
+                sb.Append("     </td>");
+                sb.Append("     <td colspan=\"2\" style=\"text-align: center;vertical-align: middle;border-top:0.5px solid #000;font-size:11pt;\" >");
+                sb.Append("         <img src=\"" + AppDomain.CurrentDomain.BaseDirectory + @"/Content/images/checkboxline.png" + "\" width=\"14px\" height=\"14px\" /> 专升本");
+                sb.Append("     </td>");
+            }
+            else
+            {
+                sb.Append("     <td style=\"text-align: right;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;font-size:11pt;\" >");
+                sb.Append("         <img src=\"" + AppDomain.CurrentDomain.BaseDirectory + @"/Content/images/checkboxline.png" + "\" width=\"14px\" height=\"14px\" /> 专科");
+                sb.Append("     </td>");
+                sb.Append("     <td colspan=\"2\" style=\"text-align: center;vertical-align: middle;border-top:0.5px solid #000;font-size:11pt;\" >");
+                sb.Append("         <img src=\"" + AppDomain.CurrentDomain.BaseDirectory + @"/Content/images/checkbox.png" + "\" width=\"14px\" height=\"14px\" /> 专升本");
+                sb.Append("     </td>");
+            }
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"height: 50px; line-height: 50px; text-align: center;border-left:0.5px solid #000;border-top:0.5px solid #000;\" >报考专业</td>");
+            sb.Append("         <td colspan=\"3\" style=\"border-left:0.5px solid #000;border-top:0.5px solid #000; font-size:11pt; text-align: center;\" >").Append(student.MajorName).Append("</td>");
+            sb.Append("         <td style=\"text-align: center;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;\" >联系电话</td>");
+            sb.Append("         <td colspan=\"2\" style=\"border-left:0.5px solid #000;border-top:0.5px solid #000;border-right:0.5px solid #000; font-size:11pt; text-align: center;\" >").Append(student.Phone).Append("</td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td colspan=\"7\" style=\"border-left:0.5px solid #000;border-top:0.5px solid #000; border-right: 0.5px solid #000; font-size:11pt;\" >");
+            sb.Append("             <br /><div style=\"text-align: center; height:20px;line-height: 20px;\">诚信承诺书</div>");
+            sb.Append("             <p style=\"line-height: 20px; margin-left:10px;\" >&nbsp;&nbsp;本人知悉学院高等继续教育相关政策，未通过中介，自愿报名参加学习，按照学院规定缴纳报名费、学费、报考费和其它规定费用，保证入学后认真学习，积极作业，诚信考试，任何考试中不找人替考、舞弊，遵守考试纪律，如有违反，甘愿接受学校一切处理。");
+            sb.Append("             <br /> &nbsp;&nbsp;本人提供真实有效有身份证、毕业证等证明材料，如有任何不实之处所造成的一切后果由本人自己承担，助学站点和学校不承担任何责任。</p>");
+            sb.Append("             <p style=\"text-align: right; margin-right: 200px; margin-top: 15px; \" >承诺人签字：</p>");
+            sb.Append("             <p style=\"text-align: right; margin: 15px 100px; 20px 0px \" >2018年&nbsp;月&nbsp;日 </p>");
+            sb.Append("         </td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td colspan=\"4\" style=\"height: 240px;text-align: center;vertical-align: middle; border-left:0.5px solid #000;border-top:0.5px solid #000;\" >");
+            if (!string.IsNullOrWhiteSpace(student.IdCardFrontPath))
+                sb.Append("         <img src=\"" + AppDomain.CurrentDomain.BaseDirectory + student.IdCardFrontPath + "\" />");
+            sb.Append("         </td>");
+            sb.Append("         <td colspan=\"3\" style=\"text-align: center;vertical-align: middle; border-left:0.5px solid #000;border-top:0.5px solid #000; border-right: 0.5px solid #000;\" >");
+            if (!string.IsNullOrWhiteSpace(student.IdCardBackPath))
+                sb.Append("         <img src=\"" + AppDomain.CurrentDomain.BaseDirectory + student.IdCardBackPath + "\" />");
+            sb.Append("         </td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"text-align: center;vertical-align: middle;border-left:0.5px solid #000;border-top:0.5px solid #000;border-bottom:0.5px solid #000;\" > 注意 <br /> 事项 </td>");
+            sb.Append("         <td colspan=\"6\" style=\"border:0.5px solid #000;font-size:11pt;\">");
+            sb.Append("             <br />");
+            sb.Append("             <ol style=\"margin-bottom: 20px;\">");
+            sb.Append("                 <li> 本人对以上报名信息记录的真实性做了仔细核对，确认无误。如存在错误虚假信息或资格造假而影响正常参加考试与毕业，概由本人负责。 </li>");
+            sb.Append("                 <li> 2018年自学考试时间：4月、10月中旬；函授考试时间：10月中下旬。请提前安排好时间准备参加考试，外地考生请提前安排好住宿，考前请项准备好各自的考前准备工作，以免影响考试。 </li>");
+            sb.Append("                 <li> 打印纸张为A4纸张，不得折叠损坏，保持页面整洁。由招考部门统一送省教育考试院扫描，此表存档到学员毕业。</li>");
+            sb.Append("             </ol>");
+            sb.Append("         </td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td colspan=\"7\" style=\"text-align: right; font-size:9pt; height: 20px; \"> 中国高等教育学生信息网（学信网）http://www.chsi.com.cn</td>");
+            sb.Append("     </tr>");
+            sb.Append("</table>");
+
+            return sb;
         }
     }
 }
