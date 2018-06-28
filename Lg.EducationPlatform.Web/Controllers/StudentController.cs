@@ -63,11 +63,11 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Sex = s.Sex,
                 IdCard = s.IdCard,
                 Period = s.Period,
-                ExaminationLevel = s.ExaminationLevel,
+                ExaminationLevelStr = GetEducationalLevel(s.ExaminationLevel),
                 MajorName = s.MajorName,
                 Nationality = s.Nationality,
                 PoliticalStatus = s.PoliticalStatus,
-                EducationalLevel = s.EducationalLevel,
+                EducationalLevelStr = s.EducationalLevel == 1 ? "专科" : "专升本",
                 Address = s.Address,
                 Phone = s.Phone,
                 Remark = s.Remark,
@@ -205,6 +205,8 @@ namespace Lg.EducationPlatform.Web.Controllers
                 DataTable dt = excelHelper.ExcelToDataTable(out error);
                 if (string.IsNullOrEmpty(error))
                 {
+                    WebSettings periodSetting = _webSettingsService.GetWebSettingByKey(PERIOD_KEY);
+
                     int idx = 2;
                     List<Students> list = new List<Students>();
                     foreach (DataRow dr in dt.Rows)
@@ -215,7 +217,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                         student.Nationality = dr["民族"].ToString();
                         student.IdCard = dr["身份证号"].ToString();
                         student.Phone = dr["手机"].ToString();
-                        student.Period = dr["届别"].ToString();
+                        student.Period = periodSetting.ConfigValue;
                         student.PoliticalStatus = dr["政治面貌"].ToString();
                         student.Address = dr["地址"].ToString();
                         student.EducationalLevel = GetEducationalLevel(dr["文化层次"].ToString());
@@ -227,12 +229,13 @@ namespace Lg.EducationPlatform.Web.Controllers
                             string.IsNullOrWhiteSpace(student.Nationality) ||
                             string.IsNullOrWhiteSpace(student.IdCard) ||
                             string.IsNullOrWhiteSpace(student.Phone) ||
-                            string.IsNullOrWhiteSpace(student.Period) ||
                             string.IsNullOrWhiteSpace(student.PoliticalStatus) ||
                             string.IsNullOrWhiteSpace(student.Address) ||
-                            string.IsNullOrWhiteSpace(student.MajorName))
+                            string.IsNullOrWhiteSpace(student.MajorName) ||
+                            student.IdCard.Length != 18 ||
+                            student.Phone.Length != 11)
                         {
-                            info += "第" + idx + "行导入失败，必填项存在空值，请检查\r\n";
+                            info += "第" + idx + "行导入失败，必填项存在空值或身份证、手机号输入有误，请检查\r\n";
                             continue;
                         }
                         else
@@ -300,6 +303,33 @@ namespace Lg.EducationPlatform.Web.Controllers
                     break;
                 default:
                     level = 0;
+                    break;
+            }
+            return level;
+        }
+
+        private string GetEducationalLevel(byte education)
+        {
+            var level = "无";
+            switch (education)
+            {
+                case 0:
+                    level = "无";
+                    break;
+                case 1:
+                    level = "初中";
+                    break;
+                case 2:
+                    level = "高中";
+                    break;
+                case 3:
+                    level = "中专";
+                    break;
+                case 4:
+                    level = "大专在读";
+                    break;
+                case 5:
+                    level = "大专毕业";
                     break;
             }
             return level;
