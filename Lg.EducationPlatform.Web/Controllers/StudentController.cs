@@ -72,7 +72,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Phone = s.Phone,
                 Remark = s.Remark,
                 Status = s.Status,
-                TestFreeCondition = s.TestFreeCondition,
+                //TestFreeCondition = s.TestFreeCondition,
                 IdCardFrontPath = string.IsNullOrWhiteSpace(s.IdCardFrontPath) ? "/Content/images/nopic.png" : s.IdCardFrontPath,
                 IdCardBackPath = string.IsNullOrWhiteSpace(s.IdCardBackPath) ? "/Content/images/nopic.png" : s.IdCardBackPath,
                 BareheadedPhotoPath = string.IsNullOrWhiteSpace(s.BareheadedPhotoPath) ? "/Content/images/nopic.png" : s.BareheadedPhotoPath
@@ -132,7 +132,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 model.Remark = student.Remark;
                 model.Sex = student.Sex;
                 model.SurName = student.SurName;
-                model.TestFreeCondition = student.TestFreeCondition;
+                //model.TestFreeCondition = student.TestFreeCondition;
                 model.IdCardFrontPath = string.IsNullOrWhiteSpace(student.IdCardFrontPath) ? "/Content/images/nopic.png" : student.IdCardFrontPath;
                 model.IdCardBackPath = string.IsNullOrWhiteSpace(student.IdCardBackPath) ? "/Content/images/nopic.png" : student.IdCardBackPath;
                 model.BareheadedPhotoPath = string.IsNullOrWhiteSpace(student.BareheadedPhotoPath) ? "/Content/images/nopic.png" : student.BareheadedPhotoPath;
@@ -379,8 +379,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 PoliticalStatus = model.PoliticalStatus,
                 Remark = model.Remark,
                 Sex = model.Sex,
-                SurName = model.SurName,
-                TestFreeCondition = model.TestFreeCondition
+                SurName = model.SurName
             };
 
 

@@ -20,7 +20,7 @@ namespace Lg.EducationPlatform.ViewModel
         public string Address { get; set; }
         public string Phone { get; set; }
         public byte Status { get; set; }
-        public string TestFreeCondition { get; set; }
+        //public string TestFreeCondition { get; set; }
         public string Remark { get; set; }
         public string IdCardFrontPath { get; set; }
         public string IdCardBackPath { get; set; }

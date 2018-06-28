@@ -35,7 +35,7 @@ namespace Lg.EducationPlatform.Model
         public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> DeletionTime { get; set; }
         public Nullable<long> CreatorUserId { get; set; }
-        public Nullable<System.DateTime> CreationTime { get; set; }
+        public System.DateTime CreationTime { get; set; }
         public Nullable<long> LastModifierUserId { get; set; }
         public Nullable<System.DateTime> LastModificationTime { get; set; }
     
