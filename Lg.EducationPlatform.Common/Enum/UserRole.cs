@@ -9,8 +9,9 @@ namespace Lg.EducationPlatform.Enum
     public enum UserRole
     {
         全部 = -1,
-        管理员 = 0,
+        超级管理员 = 0,
         教师 = 1,
-        学生 = 2
+        学生 = 2,
+        管理员 = 3
     }
 }

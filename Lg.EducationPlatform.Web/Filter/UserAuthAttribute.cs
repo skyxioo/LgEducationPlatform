@@ -36,7 +36,7 @@ namespace Lg.EducationPlatform.Web
             FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(ticketString);
             UserDto user = JsonConvert.DeserializeObject<UserDto>(ticket.UserData);
             //检查用权限
-            if (AllowRole != UserRole.全部 && (int)AllowRole != user.RoleId)
+            if (AllowRole != UserRole.全部 && user.RoleId != (int)UserRole.超级管理员 && (int)AllowRole != user.RoleId)
             {
                 filterContext.Result = new ViewResult
                 {

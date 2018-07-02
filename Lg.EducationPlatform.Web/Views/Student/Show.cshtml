@@ -25,6 +25,13 @@
             text-align:right;
             padding-right:30px;
         }
+        .stdtable tbody tr:first-child td {
+            border-top: 1px solid #ddd;
+        }
+        .stdtable tbody tr td:nth-child(odd) {
+            background-color: #f7f7f7;
+            text-align: center;
+        }
     </style>
 }
 
@@ -39,7 +46,7 @@
             jQuery('body').addClass('withvernav');
 
             var roleId = @ViewBag.RoleId;
-            if (roleId != 0)
+            if (roleId != 0 || roleId != 3)
                 jQuery('#btn_audit').css({ "display": "none"});
             //var status = jQuery('#Status').val();
             //if (status.toLowerCase() == "true") {
@@ -149,7 +156,37 @@
         <div class="contenttitle2">
             <h3>基本信息</h3>
         </div>
-        <p>
+        <div style="width:80%; margin: 0 auto;">
+            <table id="archives-table" class="stdtable table" cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                    <tr>
+                        <td>姓名</td>
+                        <td>@Model.SurName</td>
+                        <td>性别</td>
+                        <td>@(Model.Sex == 0 ? "女" : "男")</td>
+                        <td>身份证号</td>
+                        <td>@Model.IdCard</td>
+                    </tr>
+                    <tr>
+                        <td>籍贯</td>
+                        <td>@Model.Birthplace</td>
+                        <td>民族</td>
+                        <td>@Model.Nationality</td>
+                        <td>手机</td>
+                        <td>@Model.Phone</td>
+                    </tr>
+                    <tr>
+                        <td>届别</td>
+                        <td>@Model.Period</td>
+                        <td>政治面貌</td>
+                        <td>@Model.PoliticalStatus</td>
+                        <td>地址</td>
+                        <td>@Model.Address</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @*<p>
             <label>姓名：</label>
             <span class="field">
                 @Model.SurName
@@ -203,11 +240,29 @@
             <span class="field">
                 @Model.Address
             </span>
-        </p>
+        </p>*@
         <div class="contenttitle2">
             <h3>报考信息</h3>
         </div>
-        <p>
+        <div style="width:80%; margin: 0 auto;">
+            <table id="archives-table" class="stdtable table" cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                    <tr>
+                        <td>文化层次</td>
+                        <td>@Model.EducationalLevelStr</td>
+                        <td>报考层次</td>
+                        <td>@Model.ExaminationLevelStr</td>
+                        <td>专业</td>
+                        <td>@Model.MajorName</td>
+                    </tr>
+                    <tr>
+                        <td>备注</td>
+                        <td colspan="5">@Model.Remark</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @*<p>
             <label>文化层次：</label>
             <span class="field">
                 @Model.EducationalLevelStr
@@ -232,7 +287,7 @@
             <span class="field">
                 @Model.Remark
             </span>
-        </p>
+        </p>*@
         <div class="contenttitle2">
             <h3>其他信息</h3>
         </div>

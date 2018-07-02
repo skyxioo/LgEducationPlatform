@@ -34,7 +34,7 @@ namespace Lg.EducationPlatform.Web.Controllers
         public ActionResult Index()
         {
             UserDto user = ViewBag.User as UserDto;
-            if (user.RoleId == 0)
+            if (user.RoleId == (int)UserRole.管理员 || user.RoleId == (int)UserRole.超级管理员)
             {
                 var list = _userService.GetTeacherItems();
                 list.Insert(0, new ItemModel { Text = "全部", Value = "" });
@@ -66,11 +66,11 @@ namespace Lg.EducationPlatform.Web.Controllers
                 Sex = s.Sex,
                 IdCard = s.IdCard,
                 Period = s.Period,
-                ExaminationLevelStr = GetEducationalLevel(s.ExaminationLevel),
+                ExaminationLevelStr = s.ExaminationLevel == 1 ? "专科" : "专升本",                
                 MajorName = s.MajorName,
                 Nationality = s.Nationality,
                 PoliticalStatus = s.PoliticalStatus,
-                EducationalLevelStr = s.EducationalLevel == 1 ? "专科" : "专升本",
+                EducationalLevelStr = GetEducationalLevel(s.EducationalLevel),
                 Address = s.Address,
                 Phone = s.Phone,
                 Remark = s.Remark,
@@ -512,7 +512,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             var whereExp = PredicateBuilder.True<Students>();
             whereExp = whereExp.And(p => !p.IsDeleted);
             //创建人
-            if (ViewBag.RoleId != 0)
+            if (ViewBag.RoleId != (int)UserRole.超级管理员 && ViewBag.RoleId != (int)UserRole.管理员)
                 whereExp = whereExp.And(p => p.CreatorUserId == user.UserId);
             else
             {
@@ -648,7 +648,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                 template = reader.ReadToEnd();
             }
             template = template.Replace("{content}", builder.ToString());
-            return File(Encoding.UTF8.GetBytes(template), "application/msexcel", "学生信息表.xls");
+            return File(Encoding.UTF8.GetBytes(template), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "学生信息表.xlsx");
         }
 
         private string GetStatus(int status)

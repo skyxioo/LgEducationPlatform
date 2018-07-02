@@ -88,6 +88,16 @@
                     { "sWidth": "10%", "mDataProp": "Phone" },
                     { "sWidth": "10%", "mDataProp": "Email" },
                     {
+                        "sWidth": "8%",
+                        "mDataProp": "RoleId",
+                        "mRender": function (data, type, row) {
+                            var value = "教师";
+                            if (data == 3)
+                                value = "管理员";
+                            return value;
+                        }
+                    },
+                    {
                         "sWidth": "8%", "mDataProp": "CreationTime",
                         "mRender": function (data, type, row) {
                             return moment(data).format("YYYY-MM-DD");
@@ -236,6 +246,7 @@
                     <th>真实姓名</th>
                     <th>手机号</th>
                     <th>邮箱</th>
+                    <th>身份</th>
                     <th>创建日期</th>
                     <th>状态</th>
                     <th>操作</th>

@@ -23,15 +23,21 @@ namespace Lg.EducationPlatform.Web.Controllers
             return View();
         }
 
+        [UserAuth(AllowRole = Enum.UserRole.管理员)]
         public ActionResult Add(int? id)
         {
             TeacherViewModel teacher = new TeacherViewModel();
-            ViewBag.UserRole = new List<SelectListItem>
+            var roleList = new List<SelectListItem>
             {
                 new SelectListItem { Text = "教师", Value = "1" }
             };
+            if (ViewBag.RoleId == (int)UserRole.超级管理员)
+                roleList.Add(new SelectListItem { Text = "管理员", Value = "3" });
 
-            if(id != null && id > 0)
+            ViewBag.UserRole = roleList;
+
+
+            if (id != null && id > 0)
             {
                 var user = _usersService.GetEntity(id.Value);
                 teacher.Id = user.Id;
@@ -44,6 +50,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             return View(teacher);
         }
 
+        [UserAuth(AllowRole = Enum.UserRole.管理员)]
         [HttpPost]
         public ActionResult Add(TeacherViewModel model)
         {
@@ -113,21 +120,21 @@ namespace Lg.EducationPlatform.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult ValidateUser(string username)
+        public ActionResult ValidateUser(string username, string id)
         {
-            UserDto userDto = ViewBag.User as UserDto;
             var user = _usersService.GetUser(username);
-            if (user == null || (user != null && user.UserId == userDto.UserId))
+            if (user == null || (user != null && user.UserId.ToString() == id))
                 return Json(true);
             else
                 return Json(false);
         }
 
+        [UserAuth(AllowRole = Enum.UserRole.管理员)]
         [HttpPost]
         public ActionResult GetTeachers(jqDataTableParameter tableParam)
         {
             var whereExp = PredicateBuilder.True<Users>();
-            whereExp = whereExp.And(p => !p.IsDeleted && p.RoleId == (int)UserRole.教师);
+            whereExp = whereExp.And(p => !p.IsDeleted && (p.RoleId == (int)UserRole.教师 || p.RoleId == (int)UserRole.管理员));
 
             //1.0 首先获取datatable提交过来的参数
             string echo = tableParam.sEcho;  //用于客户端自己的校验
@@ -144,6 +151,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                             RealName = s.RealName,
                             Email = s.Email,
                             Phone = s.Phone,
+                            RoleId = s.RoleId,
                             CreationTime = s.CreationTime,
                             IsActive = s.IsActive
                         }).ToList();

@@ -29,7 +29,8 @@
                             type: "post",
                             dataType: 'json',
                             data: {
-                                'username': function () { return jQuery('#UserName').val(); }
+                                'username': function () { return jQuery('#UserName').val(); },
+                                'id': function () { return jQuery('#Id').val(); }
                             }
                         }
                     },
