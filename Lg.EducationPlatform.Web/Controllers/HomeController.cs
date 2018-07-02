@@ -33,6 +33,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             return View(userModel);
         }
 
+        [HttpPost]
         public ActionResult EditProfile(EditUserViewModel model)
         {
             UserDto userDto = ViewBag.User as UserDto;

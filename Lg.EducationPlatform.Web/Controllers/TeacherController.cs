@@ -75,8 +75,9 @@ namespace Lg.EducationPlatform.Web.Controllers
                 var propertyNames = model.GetType().GetProperties()
                     .Where(p => p.Name != "Id")
                     .Select(p => p.Name)
-                    .ToArray();
-                result = _usersService.UpdateBy(teacher, p => p.Id == model.Id, true, propertyNames);
+                    .ToList();
+                propertyNames.Add("HashPassword");
+                result = _usersService.UpdateBy(teacher, p => p.Id == model.Id, true, propertyNames.ToArray());
                 if (result > 0)
                 {
                     return Json(new
