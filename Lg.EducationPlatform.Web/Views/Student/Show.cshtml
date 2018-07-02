@@ -46,7 +46,7 @@
             jQuery('body').addClass('withvernav');
 
             var roleId = @ViewBag.RoleId;
-            if (roleId != 0 || roleId != 3)
+            if (roleId != 0 && roleId != 3)
                 jQuery('#btn_audit').css({ "display": "none"});
             //var status = jQuery('#Status').val();
             //if (status.toLowerCase() == "true") {

@@ -241,7 +241,7 @@
                             //重新加载本页数据
                             jQuery('#archives-table').dataTable().fnDraw(false);
                         } else if (data) {
-                            layer.alert('删除失败', 8);
+                            layer.alert(data.Message, 8);
                         }
                     });
                 }, function () {
