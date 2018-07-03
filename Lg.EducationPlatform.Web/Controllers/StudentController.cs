@@ -88,12 +88,10 @@ namespace Lg.EducationPlatform.Web.Controllers
         {
             List<SelectListItem> eduItems = new List<SelectListItem>
             {
-                new SelectListItem{ Text = "无", Value = "0", Selected = true },
-                new SelectListItem{ Text = "初中", Value = "1" },
-                new SelectListItem{ Text = "高中", Value = "2" },
-                new SelectListItem{ Text = "中专", Value = "3" },
-                new SelectListItem{ Text = "大专在读", Value = "4" },
-                new SelectListItem{ Text = "大专毕业", Value = "5" }
+                new SelectListItem{ Text = "初中及以下", Value = "0", Selected = true },
+                new SelectListItem{ Text = "高中或中专", Value = "1" },
+                new SelectListItem{ Text = "大专", Value = "2" },
+                new SelectListItem{ Text = "本科及以上", Value = "3" }
             };
             List<SelectListItem> examItems = new List<SelectListItem>
             {
@@ -106,18 +104,26 @@ namespace Lg.EducationPlatform.Web.Controllers
                 new SelectListItem { Text = "工程财务管理", Value = "工程财务管理" },
                 new SelectListItem { Text = "汽车运用工程", Value = "汽车运用工程" }
             };
+            List<SelectListItem> politicalItems = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "群众", Value = "群众" },
+                new SelectListItem { Text = "党员", Value = "党员" },
+                new SelectListItem { Text = "无党派人士", Value = "无党派人士" },
+                new SelectListItem { Text = "其他", Value = "其他" }
+            };
             ViewBag.EduLevelItemList = eduItems;
             ViewBag.ExamLevelItemList = examItems;
             ViewBag.MajorItemList = majorItems;
+            ViewBag.PoliticalItemList = politicalItems;
 
-            ViewBag.Title = "长沙理工大学综合管理系统|学生管理|添加";
+            ViewBag.Title = "长沙理工海南自考部综合管理系统|学生管理|添加";
             ViewBag.Opened = 0;
             ViewBag.EndDate = "";
             StudentViewModel model = new StudentViewModel();
 
             if(id != null && id.Value > 0)
             {
-                ViewBag.Title = "长沙理工大学综合管理系统|学生管理|编辑";
+                ViewBag.Title = "长沙理工海南自考部综合管理系统|学生管理|编辑";
 
                 var student = _studentsService.GetEntity(id.Value);
                 model.Address = student.Address;
@@ -301,23 +307,17 @@ namespace Lg.EducationPlatform.Web.Controllers
             byte level = 0;
             switch(education)
             {
-                case "无":
+                case "初中及以下":
                     level = 0;
                     break;
-                case "初中":
+                case "高中或中专":
                     level = 1;
                     break;
-                case "高中":
+                case "大专":
                     level = 2;
                     break;
-                case "中专":
+                case "本科及以上":
                     level = 3;
-                    break;
-                case "大专在读":
-                    level = 4;
-                    break;
-                case "大专毕业":
-                    level = 5;
                     break;
                 default:
                     level = 0;
@@ -328,26 +328,20 @@ namespace Lg.EducationPlatform.Web.Controllers
 
         private string GetEducationalLevel(byte education)
         {
-            var level = "无";
+            var level = "初中及以下";
             switch (education)
             {
                 case 0:
-                    level = "无";
+                    level = "初中及以下";
                     break;
                 case 1:
-                    level = "初中";
+                    level = "高中或中专";
                     break;
                 case 2:
-                    level = "高中";
+                    level = "大专";
                     break;
                 case 3:
-                    level = "中专";
-                    break;
-                case 4:
-                    level = "大专在读";
-                    break;
-                case 5:
-                    level = "大专毕业";
+                    level = "本科及以上";
                     break;
             }
             return level;
