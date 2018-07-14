@@ -53,6 +53,7 @@
       <DependentUpon>Services.tt</DependentUpon>
     </Compile>
     <Compile Include="ServiceSession.cs" />
+    <Compile Include="StudentsService.cs" />
     <Compile Include="UsersService.cs" />
     <Compile Include="WebSettingsService.cs" />
   </ItemGroup>

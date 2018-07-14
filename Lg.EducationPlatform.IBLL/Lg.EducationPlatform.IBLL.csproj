@@ -52,6 +52,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IServiceSession.tt</DependentUpon>
     </Compile>
+    <Compile Include="IStudentsService.cs" />
     <Compile Include="IUsersService.cs" />
     <Compile Include="IWebSettingsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

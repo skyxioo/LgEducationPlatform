@@ -69,6 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EduDbModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="FormatModel\FileModel.cs" />
     <Compile Include="FormatModel\ItemModel.cs" />
     <Compile Include="FormatModel\JsonModel.cs" />
     <Compile Include="jqDataTableModel\jqDataTableModel.cs" />

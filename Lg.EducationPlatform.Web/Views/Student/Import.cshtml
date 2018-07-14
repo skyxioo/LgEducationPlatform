@@ -27,7 +27,7 @@
         jQuery(function () {
             jQuery('input:checkbox, input:radio, select.uniformselect, input:file').uniform();
             jQuery('#student,#stu_import').addClass('current');
-            jQuery('body').addClass('withvernav');
+            jQuery('body').addClass('withvernav'); 
 
             jQuery("#importform").submit(function () {
                 jQuery('#btn_submit').attr("disabled", true);
@@ -70,7 +70,64 @@
                 jQuery('#btn_submit').attr("disabled", false);
                 return false;
             });
+
+            jQuery("#importPicsform").submit(function () {
+                jQuery('#btn_upload').attr("disabled", true);
+                var fileObj = document.getElementById("file_pics").files;
+                var params = new FormData();
+                if (fileObj.length > 0) {
+                    params.append("zip", fileObj[0]);
+                } else {
+                    layer.msg("请选择zip文件", {
+                        closeBtn: 1,
+                        skin: 'layui-layer-molv',
+                        shift: 4,
+                        time: 2000
+                    });
+                    jQuery('#btn_upload').attr("disabled", false);
+                    return false;
+                }
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "/Student/ImportPics",
+                    data: params,
+                    contentType: false,//必须false才会自动加上正确的Content-Type
+                    processData: false,//必须false才会避开jQuery对 formdata 的默认处理 ，XMLHttpRequest会对 formdata 进行正确的处理
+                    success: function (data) {
+                        if (data.Status == "1") {
+                            layer.alert(data.Message);
+                        } else if (data) {
+                            layer.alert(data.Message, 8);
+                        }
+                    },
+                    error: function (err) {
+                        layer.alert(err, {
+                            time: 2000
+                        });
+                    }
+                });
+                jQuery('#btn_upload').attr("disabled", false);
+                return false;
+            });
         });
+
+        function validate_size(size, ele) {
+            var file = ele.value;
+            if (!/.zip$/.test(file)) {
+                layer.alert("压缩包文件类型必须是zip格式");
+                jQuery(ele).val("");
+                return false;
+            } else {
+                var filesize = ele.files[0].size
+                if (filesize > (size * 1024 * 1024)) {
+                    layer.alert("请上传大小不大于" + size + "MB的文件");
+                    jQuery(ele).val("");
+                    return false;
+                }
+            }
+            return true;
+        }
     </script>
 }
 
@@ -110,6 +167,18 @@
                     每次导入的数据都将是新增，请勿重复导入
                 </div><!--updatecontent-->
             </li>
+            <li>
+                <div class="comment_authorimg"><img src="../../images/thumbs/avatar5.png" alt=""></div>
+                <div class="commentcontent">
+                    导入表格文件后方可导入图片压缩包，压缩包仅支持zip格式
+                </div><!--updatecontent-->
+            </li>
+            <li>
+                <div class="comment_authorimg"><img src="../../images/thumbs/avatar5.png" alt=""></div>
+                <div class="commentcontent">
+                    免冠照以t1命名，身份证正反面照以s1、s2命名，放在以身份证号码命名的文件夹下
+                </div><!--updatecontent-->
+            </li>
         </ul>
         <form id="importform" class="stdform" method="post" enctype="multipart/form-data" action="">
             <p>
@@ -121,6 +190,18 @@
                     </div>
                 </span>
                 <button id="btn_submit" class="submit radius2" style="margin-left:20px;">上传表格</button>
+            </p>
+        </form>
+        <form id="importPicsform" class="stdform" method="post" enctype="multipart/form-data" action="">
+            <p>
+                <span class="field">
+                    <div class="uploader" id="uniform-undefined">
+                        <input name="file_pics" id="file_pics" size="19" accept=".zip" style="opacity: 0;" type="file" onchange="validate_size(10, this);" />
+                        <span class="filename" style="-moz-user-select: none;">未选择任何文件</span>
+                        <span class="action" style="-moz-user-select: none;">选择文件</span>
+                    </div>
+                </span>
+                <button id="btn_upload" class="submit radius2" style="margin-left:20px;">上传压缩包</button>
             </p>
         </form>
     </div>

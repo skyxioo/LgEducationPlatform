@@ -18,6 +18,7 @@ using Lg.EducationPlatform.Enum;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
+using System.Configuration;
 
 namespace Lg.EducationPlatform.Web.Controllers
 {
@@ -249,11 +250,19 @@ namespace Lg.EducationPlatform.Web.Controllers
                                 student.IdCard.Length != 18 ||
                                 student.Phone.Length != 11)
                             {
-                                info += "第" + idx + "行导入失败，必填项存在空值或身份证、手机号输入有误，请检查\r\n";
+                                info += "第" + idx + "行导入失败，必填项存在空值或身份证、手机号输入有误，请检查<br />";
                                 continue;
                             }
                             else
+                            {
+                                var stu = _studentsService.GetStudentByIdCard(student.IdCard);
+                                if(stu != null)
+                                {
+                                    info += "第" + idx + "行导入失败，身份证号已存在，请检查<br />";
+                                    continue;
+                                }
                                 list.Add(student);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -279,7 +288,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                             return Json(new
                             {
                                 Status = 1,
-                                Message = "导入成功\r\n" + info
+                                Message = "导入成功<br />" + info
                             });
                         }
                     }
@@ -288,7 +297,7 @@ namespace Lg.EducationPlatform.Web.Controllers
                     return Json(new
                     {
                         Status = 0,
-                        Message = "导入失败\r\n" + info
+                        Message = "导入失败<br />" + info
                     });
                 }
                 else
@@ -299,6 +308,142 @@ namespace Lg.EducationPlatform.Web.Controllers
                         Message = error
                     });
                 }
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ImportPics()
+        {
+            var info = "";
+            var files = Request.Files;
+            if (files.Count == 0)
+            {
+                return Json(new
+                {
+                    Status = 0,
+                    Message = "上传文件为空，请选择要上传的zip文件"
+                });
+            }
+            else
+            {
+                UserDto user = ViewBag.User as UserDto;
+                string savePath = Server.MapPath("~/Temp/") + DateTime.Now.ToString("yyyyMMddhhmmssfff") + Path.GetExtension(files[0].FileName);
+                files[0].SaveAs(savePath);
+
+                var zipPath = Server.MapPath("~/Temp/") + DateTime.Now.ToString("yyyyMMddhhmmssfff");
+                using (ZipFile zip = new ZipFile(savePath))
+                {
+                    zip.ExtractAll(zipPath, ExtractExistingFileAction.OverwriteSilently);
+                }
+
+                List<FileModel> lst = new List<FileModel>();
+                DirectoryInfo di = new DirectoryInfo(zipPath);
+                FindFile(di, lst);
+                if(lst.Count > 0)
+                {
+                    int headImgSize = int.Parse(ConfigurationManager.AppSettings["HeadImgSize"] ?? "100");
+                    int idCardImgSize = int.Parse(ConfigurationManager.AppSettings["IdCardImgSize"] ?? "500");
+                    foreach (var mode in lst)
+                    {
+                        FileInfo file = new FileInfo(mode.FullName);
+                        if(!".jpg,.jpeg,.png".Contains(file.Extension.ToLower()))
+                        {
+                            info += mode.DirectoryName + "：图片文件格式仅限于.jpg,.jpeg,.png<br />";
+                            continue;
+                        }
+
+                        if(file.Name.ToLower().Contains("t1."))
+                        {
+                            if((file.Length / 1024.0) > headImgSize)
+                            {
+                                info += mode.DirectoryName + "：免冠照大于" + headImgSize + "KB<br />";
+                                continue;
+                            }
+                        }
+                        else if(file.Name.ToLower().Contains("s1."))
+                        {
+                            if ((file.Length / 1024.0) > idCardImgSize)
+                            {
+                                info += mode.DirectoryName + "：身份证正面照大于" + idCardImgSize + "KB<br />";
+                                continue;
+                            }
+                        }
+                        else if (file.Name.ToLower().Contains("s2."))
+                        {
+                            if ((file.Length / 1024.0) > idCardImgSize)
+                            {
+                                info += mode.DirectoryName + "：身份证反面照大于" + idCardImgSize + "KB<br />";
+                                continue;
+                            }
+                        }
+
+                        var idCard = mode.DirectoryName;
+                        var student = _studentsService.GetStudentByIdCard(idCard);
+                        var fileName = Guid.NewGuid().ToString() + file.Extension;
+                        file.CopyTo(Server.MapPath("~/Uploads/") + fileName);
+                        if(file.Name.ToLower().Contains("t1."))
+                        {
+                            student.BareheadedPhotoPath = "/Uploads/" + fileName;
+                            _studentsService.UpdateBy(student, p => p.Id == student.Id, false, "BareheadedPhotoPath");
+                        }
+                        else if(file.Name.ToLower().Contains("s1."))
+                        {
+                            student.IdCardFrontPath = "/Uploads/" + fileName;
+                            _studentsService.UpdateBy(student, p => p.Id == student.Id, false, "IdCardFrontPath");
+                        }
+                        else if(file.Name.ToLower().Contains("s2."))
+                        {
+                            student.IdCardBackPath = "/Uploads/" + fileName;
+                            _studentsService.UpdateBy(student, p => p.Id == student.Id, false, "IdCardBackPath");
+                        }
+                    }
+
+                    int result = _studentsService.SaveChanges();
+                    if(result < 1)
+                    {
+                        return Json(new
+                        {
+                            Status = 0,
+                            Message = "导入失败"
+                        });
+                    }
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        Status = 0,
+                        Message = "导入失败"
+                    });
+                }
+            }
+
+            return Json(new
+            {
+                Status = 1,
+                Message = string.IsNullOrEmpty(info) ? "导入成功！" : "部分导入成功<br />" + info
+            });
+        }
+
+        private void FindFile(DirectoryInfo di, List<FileModel> lst)
+        {
+            FileInfo[] fis = di.GetFiles();
+            for (int i = 0; i < fis.Length; i++)
+            {
+                var name = fis[i].Name.ToLower();
+                if (name.Contains("t1.") || name.Contains("s1.") || name.Contains("s2."))
+                {
+                    FileModel model = new FileModel();
+                    model.DirectoryName = di.Name;
+                    model.FullName = fis[i].FullName;
+                    lst.Add(model);
+                }
+            }
+
+            DirectoryInfo[] dis = di.GetDirectories();
+            for (int j = 0; j < dis.Length; j++)
+            {
+                FindFile(dis[j], lst);
             }
         }
 
@@ -371,6 +516,19 @@ namespace Lg.EducationPlatform.Web.Controllers
                             Message = "开放注册时间已过，不允许添加学生信息"
                         });
                     }
+                }
+            }
+
+            var student = _studentsService.GetStudentByIdCard(model.IdCard);
+            if(student != null)
+            {
+                if((model.Id > 0 && model.Id != student.Id) || model.Id < 1)
+                {
+                    return Json(new
+                    {
+                        Status = 0,
+                        Message = "身份证号已经存在，不允许重复添加"
+                    });
                 }
             }
 
@@ -660,7 +818,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             return result;
         }
 
-        public FileResult DownLoad()
+        public FileResult DownLoad(int id)
         {
             Expression<Func<Students, bool>> expression = OperateHelper.Current.Session["Expression"] as Expression<Func<Students, bool>>;
             var students = _studentsService.GetDataListBy(expression).ToList();
@@ -669,12 +827,27 @@ namespace Lg.EducationPlatform.Web.Controllers
                 string basePath = Server.MapPath("~");
                 foreach (var stu in students)
                 {
-                    if (!string.IsNullOrWhiteSpace(stu.BareheadedPhotoPath))
-                        zip.AddFile(basePath + stu.BareheadedPhotoPath, stu.SurName);
-                    if (!string.IsNullOrWhiteSpace(stu.IdCardBackPath))
-                        zip.AddFile(basePath + stu.IdCardBackPath, stu.SurName);
-                    if (!string.IsNullOrWhiteSpace(stu.IdCardFrontPath))
-                        zip.AddFile(basePath + stu.IdCardFrontPath, stu.SurName);
+                    if (id == 0)
+                    {
+                        if (!string.IsNullOrWhiteSpace(stu.BareheadedPhotoPath))
+                            zip.AddFile(basePath + stu.BareheadedPhotoPath, stu.SurName);
+                        if (!string.IsNullOrWhiteSpace(stu.IdCardBackPath))
+                            zip.AddFile(basePath + stu.IdCardBackPath, stu.SurName);
+                        if (!string.IsNullOrWhiteSpace(stu.IdCardFrontPath))
+                            zip.AddFile(basePath + stu.IdCardFrontPath, stu.SurName);
+                    }
+                    else if(id == 1)
+                    {
+                        if (!string.IsNullOrWhiteSpace(stu.BareheadedPhotoPath))
+                            zip.AddFile(basePath + stu.BareheadedPhotoPath, stu.SurName);
+                    }
+                    else if(id == 2)
+                    {
+                        if (!string.IsNullOrWhiteSpace(stu.IdCardBackPath))
+                            zip.AddFile(basePath + stu.IdCardBackPath, stu.SurName);
+                        if (!string.IsNullOrWhiteSpace(stu.IdCardFrontPath))
+                            zip.AddFile(basePath + stu.IdCardFrontPath, stu.SurName);
+                    }
                 }
                 var savePath = Server.MapPath("~/Temp/"+DateTime.Now.ToString("yyyyMMddHHmmssfff")+".zip");
                 zip.Save(savePath);
