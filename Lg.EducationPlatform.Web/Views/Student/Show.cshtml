@@ -131,7 +131,7 @@
                     //layer.alert('操作成功', {
                     //    time: 2000
                     //});
-                    location.href = "/Student/Index";
+                    history.go(-1);//location.href = "/Student/Index";
                 } else if (data) {
                     layer.alert('操作失败', 8);
                 }

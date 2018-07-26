@@ -676,7 +676,7 @@ namespace Lg.EducationPlatform.Web.Controllers
             }
             //学生姓名
             if (!string.IsNullOrWhiteSpace(realname))
-                whereExp = whereExp.And(p => p.SurName == realname.Trim());
+                whereExp = whereExp.And(p => p.SurName.Contains(realname.Trim()));
             //身份证号
             if (!string.IsNullOrWhiteSpace(idcard))
                 whereExp = whereExp.And(p => p.IdCard == idcard.Trim());
